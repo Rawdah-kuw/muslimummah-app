@@ -1,0 +1,30 @@
+workflows:
+  ios-verify:
+    name: iOS compile check (unsigned)
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      xcode: latest
+    scripts:
+      - name: Regenerate iOS platform folder
+        script: flutter create --platforms=ios --org app --project-name muslimummah .
+      - name: Set app display name
+        script: |
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName Muslim Ummah" ios/Runner/Info.plist || \
+          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string Muslim Ummah" ios/Runner/Info.plist || true
+      - name: Get packages
+        script: flutter pub get
+      - name: Build unsigned iOS
+        script: flutter build ios --release --no-codesign
+
+  # ── Filled in later, once the Apple Developer account + signing are set up ──
+  # ios-testflight:
+  #   name: iOS build → TestFlight
+  #   integrations:
+  #     app_store_connect: CodemagicKey
+  #   environment:
+  #     ios_signing:
+  #       distribution_type: app_store
+  #       bundle_identifier: app.muslimummah
+  #   ...

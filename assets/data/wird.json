@@ -1,0 +1,22 @@
+[
+  { "type": "ayah", "ar": "﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾", "en": "“And say: My Lord, increase me in knowledge.”", "source": { "ar": "طه: ١١٤", "en": "Ta-Ha 114" } },
+  { "type": "ayah", "ar": "﴿ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ﴾", "en": "“For indeed, with hardship comes ease.”", "source": { "ar": "الشرح: ٥", "en": "Ash-Sharh 5" } },
+  { "type": "ayah", "ar": "﴿ وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا ﴾", "en": "“And whoever fears Allah — He will make for him a way out.”", "source": { "ar": "الطلاق: ٢", "en": "At-Talaq 2" } },
+  { "type": "ayah", "ar": "﴿ فَاذْكُرُونِي أَذْكُرْكُمْ ﴾", "en": "“So remember Me; I will remember you.”", "source": { "ar": "البقرة: ١٥٢", "en": "Al-Baqarah 152" } },
+  { "type": "ayah", "ar": "﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾", "en": "“Verily, in the remembrance of Allah do hearts find rest.”", "source": { "ar": "الرعد: ٢٨", "en": "Ar-Ra'd 28" } },
+  { "type": "ayah", "ar": "﴿ وَاللَّهُ يُحِبُّ الْمُحْسِنِينَ ﴾", "en": "“And Allah loves the doers of good.”", "source": { "ar": "آل عمران: ١٣٤", "en": "Aal 'Imran 134" } },
+  { "type": "ayah", "ar": "﴿ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ ﴾", "en": "“Indeed, Allah is with the patient.”", "source": { "ar": "البقرة: ١٥٣", "en": "Al-Baqarah 153" } },
+  { "type": "ayah", "ar": "﴿ حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ ﴾", "en": "“Sufficient for us is Allah, and He is the best Disposer of affairs.”", "source": { "ar": "آل عمران: ١٧٣", "en": "Aal 'Imran 173" } },
+  { "type": "hadith", "ar": "«إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ»", "en": "“Actions are but by intentions.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
+  { "type": "hadith", "ar": "«مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ»", "en": "“Whoever believes in Allah and the Last Day, let him speak good or remain silent.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
+  { "type": "hadith", "ar": "«لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ»", "en": "“None of you truly believes until he loves for his brother what he loves for himself.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
+  { "type": "hadith", "ar": "«الدِّينُ النَّصِيحَةُ»", "en": "“The religion is sincerity (naseehah).”", "source": { "ar": "رواه مسلم", "en": "Muslim" } },
+  { "type": "hadith", "ar": "«اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ، وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا، وَخَالِقِ النَّاسَ بِخُلُقٍ حَسَنٍ»", "en": "“Fear Allah wherever you are; follow a bad deed with a good one to erase it; and treat people with good character.”", "source": { "ar": "رواه الترمذي وقال حسن", "en": "Tirmidhi (hasan)" } },
+  { "type": "hadith", "ar": "«مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ»", "en": "“Whoever travels a path seeking knowledge, Allah makes easy for him a path to Paradise.”", "source": { "ar": "رواه مسلم", "en": "Muslim" } },
+  { "type": "hadith", "ar": "«الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ»", "en": "“A good word is charity.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
+  { "type": "hadith", "ar": "«كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ»", "en": "“Two words light on the tongue, heavy on the scale: SubhanAllahi wa bihamdihi, SubhanAllahil-'Azeem.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
+  { "type": "hadith", "ar": "«الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ»", "en": "“The Muslim is the one from whose tongue and hand the Muslims are safe.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
+  { "type": "dua", "ar": "«اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ»", "en": "“O Allah, help me to remember You, to thank You, and to worship You well.”", "source": { "ar": "رواه أبو داود، صحيح", "en": "Abu Dawud (sahih)" } },
+  { "type": "dua", "ar": "«اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى»", "en": "“O Allah, I ask You for guidance, piety, chastity, and self-sufficiency.”", "source": { "ar": "رواه مسلم", "en": "Muslim" } },
+  { "type": "dua", "ar": "﴿ رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ ﴾", "en": "“Our Lord, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire.”", "source": { "ar": "البقرة: ٢٠١", "en": "Al-Baqarah 201" } }
+]

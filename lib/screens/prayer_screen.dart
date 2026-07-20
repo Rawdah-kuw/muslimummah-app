@@ -33,7 +33,7 @@ class _PrayerScreenState extends State<PrayerScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(tr('تعذّر جلب المواقيت. تأكدي من الإنترنت.',
+                  Text(tr('تعذّر جلب المواقيت. تأكد من الإنترنت.',
                       'Could not load prayer times. Check your internet.')),
                   const SizedBox(height: 10),
                   FilledButton(
@@ -94,6 +94,9 @@ class _PrayerScreenState extends State<PrayerScreen> {
                   color: AppColors.pearl50,
                   fontSize: 18,
                   fontWeight: FontWeight.w700)),
+          const SizedBox(height: 2),
+          Text('${d.gregorian.replaceAll('-', '/')} م',
+              style: const TextStyle(color: AppColors.sage300, fontSize: 13)),
           const SizedBox(height: 6),
           if (next != null)
             Text(

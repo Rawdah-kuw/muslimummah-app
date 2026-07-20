@@ -91,7 +91,7 @@ class _AskTabState extends State<_AskTab> {
           textInputAction: TextInputAction.search,
           onSubmitted: _run,
           decoration: InputDecoration(
-            hintText: tr('اكتبي سؤالك…', 'Type your question…'),
+            hintText: tr('اكتب سؤالك…', 'Type your question…'),
             filled: true,
             prefixIcon: const Icon(Icons.search),
             suffixIcon: IconButton(
@@ -214,7 +214,7 @@ class _TrustedTabState extends State<_TrustedTab> {
           textInputAction: TextInputAction.search,
           onSubmitted: (_) => _search(),
           decoration: InputDecoration(
-            hintText: tr('ابحثي في المواقع الموثوقة…', 'Search trusted sites…'),
+            hintText: tr('ابحث في المواقع الموثوقة…', 'Search trusted sites…'),
             filled: true,
             prefixIcon: const Icon(Icons.travel_explore),
             suffixIcon: IconButton(

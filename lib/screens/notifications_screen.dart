@@ -35,12 +35,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(tr('التذكيرات', 'Reminders'))),
+      appBar: AppBar(title: Text(tr('ذكّرني', 'Remind me'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            tr('فعّلي التذكيرات اليومية التي تريدينها، واختاري وقت كل منها.',
+            tr('فعّل التذكيرات اليومية التي تريدها، واختر وقت كل منها.',
                 'Turn on the daily reminders you want, and pick a time for each.'),
             style: TextStyle(
                 color: Theme.of(context)

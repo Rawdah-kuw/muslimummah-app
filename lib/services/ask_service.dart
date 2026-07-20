@@ -29,12 +29,12 @@ class AskService {
 
     if (resp.statusCode == 429) {
       throw AskException(lang == 'ar'
-          ? 'أكثرتَ من الأسئلة — انتظري دقيقة ثم أعيدي المحاولة.'
+          ? 'أكثرتَ من الأسئلة — انتظر دقيقة ثم أعِد المحاولة.'
           : 'Too many questions — please wait a minute and try again.');
     }
     if (resp.statusCode != 200) {
       throw AskException(lang == 'ar'
-          ? 'تعذّر الاتصال. تأكدي من الإنترنت ثم أعيدي المحاولة.'
+          ? 'تعذّر الاتصال. تأكد من الإنترنت ثم أعِد المحاولة.'
           : 'Could not connect. Check your internet and try again.');
     }
 

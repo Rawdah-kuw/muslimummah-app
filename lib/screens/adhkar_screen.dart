@@ -6,12 +6,14 @@ import '../models/models.dart';
 import '../theme.dart';
 
 class AdhkarScreen extends StatelessWidget {
-  const AdhkarScreen({super.key});
+  final int initialTab;
+  const AdhkarScreen({super.key, this.initialTab = 0});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
+      initialIndex: initialTab,
       child: Scaffold(
         appBar: AppBar(
           title: Text(tr('أذكار الصباح والمساء', 'Morning & Evening Adhkar')),

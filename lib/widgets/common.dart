@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 import '../theme.dart';
+
+/// Share plain text (with the site link) via the OS share sheet.
+Future<void> shareText(String text) async {
+  await Share.share(text);
+}
+
+const String kSiteUrl = 'https://muslimummah.app';
 
 /// Open an external link (YouTube, Instagram, WhatsApp, mailto…).
 Future<void> openUrl(BuildContext context, String url) async {
@@ -13,7 +21,7 @@ Future<void> openUrl(BuildContext context, String url) async {
   }
 }
 
-/// A small pearl/crescent brand mark.
+/// The pearl brand mark — a small glossy sphere (a pearl), matching the logo.
 class PearlMark extends StatelessWidget {
   final double size;
   final Color? color;
@@ -21,11 +29,19 @@ class PearlMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ??
-        (Theme.of(context).brightness == Brightness.dark
-            ? AppColors.darkHeading
-            : AppColors.pine800);
-    return Icon(Icons.brightness_3, size: size, color: c);
+    return Container(
+      width: size,
+      height: size,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          center: Alignment(-0.35, -0.35),
+          radius: 0.95,
+          colors: [Color(0xFFFFFFFF), AppColors.sage500, AppColors.pine800],
+          stops: [0.0, 0.55, 1.0],
+        ),
+      ),
+    );
   }
 }
 

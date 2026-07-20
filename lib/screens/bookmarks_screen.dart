@@ -23,7 +23,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(32),
                 child: Text(
-                  tr('لا توجد كتب محفوظة بعد. اضغطي على أيقونة الحفظ في أي كتاب.',
+                  tr('لا توجد كتب محفوظة بعد. اضغط على أيقونة الحفظ في أي كتاب.',
                       'No saved books yet. Tap the bookmark icon on any book.'),
                   textAlign: TextAlign.center,
                   style: TextStyle(

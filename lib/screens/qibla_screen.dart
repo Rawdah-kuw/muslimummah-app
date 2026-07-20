@@ -48,7 +48,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                 size: 48, color: AppColors.sage600),
             const SizedBox(height: 14),
             Text(
-              tr('نحتاج إذن الموقع والبوصلة لتحديد اتجاه القبلة. فعّلي الموقع للتطبيق ثم أعيدي المحاولة.',
+              tr('نحتاج إذن الموقع والبوصلة لتحديد اتجاه القبلة. فعّل الموقع للتطبيق ثم أعِد المحاولة.',
                   'We need location and compass access to find the Qibla. Enable location for the app, then retry.'),
               textAlign: TextAlign.center,
             ),
@@ -77,7 +77,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
         ),
         const SizedBox(height: 4),
         Text(
-          tr('وجّهي أعلى الجهاز نحو السهم الأخضر', 'Point the top of your device toward the green arrow'),
+          tr('وجّه أعلى الجهاز نحو السهم الأخضر', 'Point the top of your device toward the green arrow'),
           style: TextStyle(
               fontSize: 12.5,
               color: Theme.of(context)

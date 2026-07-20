@@ -5,6 +5,7 @@ import '../data/content.dart';
 import '../models/models.dart';
 import '../services/prefs.dart';
 import '../theme.dart';
+import '../widgets/common.dart';
 import 'reader_screen.dart';
 
 class BookDetailScreen extends StatelessWidget {
@@ -21,7 +22,15 @@ class BookDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(tr('تفاصيل الكتاب', 'Book')),
-        actions: [_BookmarkButton(book.id)],
+        actions: [
+          IconButton(
+            tooltip: tr('مشاركة', 'Share'),
+            icon: const Icon(Icons.ios_share),
+            onPressed: () => shareText(
+                '${AppState.I.loc(book.title)}\n${AppState.I.loc(book.author)}\n\n$kSiteUrl'),
+          ),
+          _BookmarkButton(book.id),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(18),
@@ -95,10 +104,13 @@ class BookDetailScreen extends StatelessWidget {
   Widget _readButton(
       BuildContext context, String label, String url, String title,
       {bool filled = true}) {
-    void open() => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => ReaderScreen(url: url, title: title)));
+    void open() {
+      Prefs.setLastBook(book.id);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => ReaderScreen(url: url, title: title)));
+    }
     final icon = const Icon(Icons.chrome_reader_mode_outlined);
     return SizedBox(
       width: double.infinity,

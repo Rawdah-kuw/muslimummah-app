@@ -14,7 +14,7 @@ class AccountsScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(tr('حسابات موصى بها', 'Recommended Accounts')),
+          title: Text(tr('منارات', 'Beacons')),
           bottom: TabBar(
             labelColor: AppColors.sage700,
             indicatorColor: AppColors.sage600,

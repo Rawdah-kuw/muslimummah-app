@@ -62,4 +62,8 @@ class Prefs {
   // Tasbih running total.
   static int tasbihTotal() => _p.getInt('mu_tasbih_total') ?? 0;
   static Future<void> setTasbihTotal(int n) => _p.setInt('mu_tasbih_total', n);
+
+  // Last opened book (for "continue reading").
+  static int lastBook() => _p.getInt('mu_last_book') ?? -1;
+  static Future<void> setLastBook(int id) => _p.setInt('mu_last_book', id);
 }

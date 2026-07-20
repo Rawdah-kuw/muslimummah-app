@@ -42,7 +42,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             onChanged: (v) => setState(() => _query = v),
             decoration: InputDecoration(
               isDense: true,
-              hintText: tr('ابحثي بالعنوان أو المؤلف…', 'Search title or author…'),
+              hintText: tr('ابحث بالعنوان أو المؤلف…', 'Search title or author…'),
               prefixIcon: const Icon(Icons.search, size: 20),
               filled: true,
               border: OutlineInputBorder(

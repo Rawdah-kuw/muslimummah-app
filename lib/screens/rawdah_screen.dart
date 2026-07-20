@@ -257,6 +257,14 @@ class _LessonCard extends StatelessWidget {
           'https://wa.me/965${lesson.phone}'));
     }
 
+    buttons.add(OutlinedButton.icon(
+      onPressed: () => shareText(
+          '${lesson.title}\n${lesson.teacher} · ${lesson.time}\n${[lesson.location, lesson.area].where((s) => s.isNotEmpty).join(' — ')}\n\nروضة — أمة الإسلام\n$kSiteUrl'),
+      icon: const Icon(Icons.ios_share, size: 18),
+      label: Text(tr('مشاركة', 'Share'),
+          style: const TextStyle(fontSize: 12.5)),
+    ));
+
     return Wrap(spacing: 8, runSpacing: 8, children: buttons);
   }
 

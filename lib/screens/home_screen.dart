@@ -11,6 +11,8 @@ import 'prayer_screen.dart';
 import 'adhkar_screen.dart';
 import 'tasbih_screen.dart';
 import 'bookmarks_screen.dart';
+import 'qibla_screen.dart';
+import 'notifications_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final void Function(int) onTab;
@@ -190,11 +192,28 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         EntryCard(
+          icon: Icons.explore_outlined,
+          title: tr('اتجاه القبلة', 'Qibla'),
+          subtitle: tr('بوصلة تشير إلى الكعبة', 'A compass pointing to the Kaaba'),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const QiblaScreen())),
+        ),
+        const SizedBox(height: 12),
+        EntryCard(
           icon: Icons.touch_app_outlined,
           title: tr('السبحة', 'Tasbih'),
           subtitle: tr('عدّاد التسبيح', 'A digital dhikr counter'),
           onTap: () => Navigator.push(context,
               MaterialPageRoute(builder: (_) => const TasbihScreen())),
+        ),
+        const SizedBox(height: 12),
+        EntryCard(
+          icon: Icons.notifications_none,
+          title: tr('التذكيرات', 'Reminders'),
+          subtitle: tr('تذكير الورد والأذكار والدروس',
+              'Wird, adhkar, and lesson reminders'),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const NotificationsScreen())),
         ),
         const SizedBox(height: 12),
         EntryCard(

@@ -21,6 +21,10 @@ class Prefs {
   static Future<void> setBool(String key, bool value) =>
       _p.setBool(key, value);
 
+  static int getInt(String key, int fallback) => _p.getInt(key) ?? fallback;
+
+  static Future<void> setInt(String key, int value) => _p.setInt(key, value);
+
   // Curriculum progress: a set of completed playlist ids.
   static Set<int> completedPlaylists() {
     final list = _p.getStringList('mu_progress') ?? [];

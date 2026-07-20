@@ -7,6 +7,7 @@ import 'config.dart';
 import 'theme.dart';
 import 'data/content.dart';
 import 'services/prefs.dart';
+import 'services/notification_service.dart';
 import 'widgets/root_nav.dart';
 
 Future<void> main() async {
@@ -14,6 +15,7 @@ Future<void> main() async {
   await Prefs.init();
   await AppState.I.load();
   await ContentRepo.load();
+  await NotificationService.init();
   await Supabase.initialize(
     url: Config.supabaseUrl,
     anonKey: Config.supabaseAnonKey,

@@ -3,9 +3,14 @@ import '../app_state.dart';
 import '../data/content.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import '../services/prayer_service.dart';
 import 'accounts_screen.dart';
 import 'about_screen.dart';
 import 'privacy_screen.dart';
+import 'prayer_screen.dart';
+import 'adhkar_screen.dart';
+import 'tasbih_screen.dart';
+import 'bookmarks_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final void Function(int) onTab;
@@ -61,6 +66,10 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 16),
+
+        // Prayer times + Hijri date
+        _PrayerCard(),
         const SizedBox(height: 16),
 
         // Daily wird
@@ -159,6 +168,43 @@ class HomeScreen extends StatelessWidget {
           onTap: () => Navigator.push(context,
               MaterialPageRoute(builder: (_) => const PrivacyScreen())),
         ),
+
+        const SizedBox(height: 20),
+        SectionHead(tr('أدوات', 'Tools')),
+        EntryCard(
+          icon: Icons.mosque_outlined,
+          title: tr('مواقيت الصلاة', 'Prayer Times'),
+          subtitle: tr('مواقيت اليوم والتاريخ الهجري',
+              'Today\'s times and the Hijri date'),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const PrayerScreen())),
+        ),
+        const SizedBox(height: 12),
+        EntryCard(
+          icon: Icons.wb_sunny_outlined,
+          title: tr('أذكار الصباح والمساء', 'Morning & Evening Adhkar'),
+          subtitle: tr('أذكار مأثورة مع العدّاد',
+              'Authentic adhkar with a counter'),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const AdhkarScreen())),
+        ),
+        const SizedBox(height: 12),
+        EntryCard(
+          icon: Icons.touch_app_outlined,
+          title: tr('السبحة', 'Tasbih'),
+          subtitle: tr('عدّاد التسبيح', 'A digital dhikr counter'),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const TasbihScreen())),
+        ),
+        const SizedBox(height: 12),
+        EntryCard(
+          icon: Icons.bookmark_border,
+          title: tr('المحفوظات', 'Saved'),
+          subtitle: tr('كتبك المحفوظة', 'Your saved books'),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const BookmarksScreen())),
+        ),
+
         const SizedBox(height: 24),
         Center(
           child: Text(
@@ -172,6 +218,91 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Compact prayer + Hijri card on the Home screen.
+class _PrayerCard extends StatefulWidget {
+  @override
+  State<_PrayerCard> createState() => _PrayerCardState();
+}
+
+class _PrayerCardState extends State<_PrayerCard> {
+  late Future<PrayerData> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = PrayerService.today();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (_) => const PrayerScreen())),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: dark
+                ? [const Color(0xFF16211B), const Color(0xFF1B2E24)]
+                : [AppColors.pine800, AppColors.pine700],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: FutureBuilder<PrayerData>(
+          future: _future,
+          builder: (context, snap) {
+            if (!snap.hasData) {
+              return Row(
+                children: [
+                  const Icon(Icons.mosque_outlined, color: AppColors.sage300),
+                  const SizedBox(width: 10),
+                  Text(
+                    snap.hasError
+                        ? tr('مواقيت الصلاة', 'Prayer times')
+                        : tr('جارٍ التحميل…', 'Loading…'),
+                    style: const TextStyle(color: AppColors.pearl50),
+                  ),
+                ],
+              );
+            }
+            final d = snap.data!;
+            final next = PrayerService.nextPrayer(d);
+            return Row(
+              children: [
+                const Icon(Icons.mosque, color: AppColors.sage300, size: 26),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(d.hijriAr,
+                          style: const TextStyle(
+                              color: AppColors.pearl50,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700)),
+                      if (next != null)
+                        Text(
+                          '${tr('القادمة', 'Next')}: ${tr(PrayerData.labelAr[next.key]!, PrayerData.labelEn[next.key]!)} — ${next.value}',
+                          style: const TextStyle(
+                              color: AppColors.sage300, fontSize: 13),
+                        ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right, color: AppColors.sage300),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

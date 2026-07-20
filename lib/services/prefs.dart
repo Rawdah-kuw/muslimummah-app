@@ -36,4 +36,26 @@ class Prefs {
     }
     await _p.setStringList('mu_progress', set.map((e) => e.toString()).toList());
   }
+
+  // Bookmarked book ids.
+  static Set<int> bookmarks() {
+    final list = _p.getStringList('mu_bookmarks') ?? [];
+    return list.map(int.tryParse).whereType<int>().toSet();
+  }
+
+  static bool isBookmarked(int id) => bookmarks().contains(id);
+
+  static Future<void> setBookmark(int id, bool on) async {
+    final set = bookmarks();
+    if (on) {
+      set.add(id);
+    } else {
+      set.remove(id);
+    }
+    await _p.setStringList('mu_bookmarks', set.map((e) => e.toString()).toList());
+  }
+
+  // Tasbih running total.
+  static int tasbihTotal() => _p.getInt('mu_tasbih_total') ?? 0;
+  static Future<void> setTasbihTotal(int n) => _p.setInt('mu_tasbih_total', n);
 }

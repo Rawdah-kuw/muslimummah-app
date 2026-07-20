@@ -101,6 +101,20 @@ class Wird {
       );
 }
 
+class Dhikr {
+  final String ar;
+  final int count;
+  final String source;
+  final String note;
+  Dhikr(this.ar, this.count, this.source, this.note);
+  factory Dhikr.fromJson(Map j) => Dhikr(
+        (j['ar'] ?? '').toString(),
+        (j['count'] ?? 1) as int,
+        (j['source'] ?? '').toString(),
+        (j['note'] ?? '').toString(),
+      );
+}
+
 class Account {
   final int id;
   final String url;

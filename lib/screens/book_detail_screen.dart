@@ -3,6 +3,7 @@ import '../app_state.dart';
 import '../config.dart';
 import '../data/content.dart';
 import '../models/models.dart';
+import '../services/prefs.dart';
 import '../theme.dart';
 import 'reader_screen.dart';
 
@@ -18,7 +19,10 @@ class BookDetailScreen extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(tr('تفاصيل الكتاب', 'Book'))),
+      appBar: AppBar(
+        title: Text(tr('تفاصيل الكتاب', 'Book')),
+        actions: [_BookmarkButton(book.id)],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(18),
         children: [
@@ -102,6 +106,28 @@ class BookDetailScreen extends StatelessWidget {
           ? FilledButton.icon(onPressed: open, icon: icon, label: Text(label))
           : OutlinedButton.icon(
               onPressed: open, icon: icon, label: Text(label)),
+    );
+  }
+}
+
+class _BookmarkButton extends StatefulWidget {
+  final int bookId;
+  const _BookmarkButton(this.bookId);
+  @override
+  State<_BookmarkButton> createState() => _BookmarkButtonState();
+}
+
+class _BookmarkButtonState extends State<_BookmarkButton> {
+  @override
+  Widget build(BuildContext context) {
+    final saved = Prefs.isBookmarked(widget.bookId);
+    return IconButton(
+      tooltip: tr('حفظ', 'Save'),
+      icon: Icon(saved ? Icons.bookmark : Icons.bookmark_border),
+      onPressed: () async {
+        await Prefs.setBookmark(widget.bookId, !saved);
+        if (mounted) setState(() {});
+      },
     );
   }
 }

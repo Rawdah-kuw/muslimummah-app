@@ -28,3 +28,4 @@ flutter:
     - assets/data/curriculum.json
     - assets/data/wird.json
     - assets/data/accounts.json
+    - assets/data/adhkar.json

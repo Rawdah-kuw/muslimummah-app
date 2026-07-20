@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../data/content.dart';
 import '../models/models.dart';
+import '../services/prefs.dart';
 import '../theme.dart';
 import 'book_detail_screen.dart';
 
@@ -13,17 +14,48 @@ class LibraryScreen extends StatefulWidget {
 
 class _LibraryScreenState extends State<LibraryScreen> {
   String _cat = 'all';
+  String _query = '';
+
+  List<Book> get _filtered {
+    var list = ContentRepo.booksByCat(_cat);
+    if (_query.trim().isNotEmpty) {
+      final q = _query.trim();
+      list = list
+          .where((b) =>
+              AppState.I.loc(b.title).contains(q) ||
+              AppState.I.loc(b.author).contains(q) ||
+              b.title['en'].toString().toLowerCase().contains(q.toLowerCase()) ||
+              b.author['en'].toString().toLowerCase().contains(q.toLowerCase()))
+          .toList();
+    }
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final books = ContentRepo.booksByCat(_cat);
+    final books = _filtered;
     return Column(
       children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
+          child: TextField(
+            onChanged: (v) => setState(() => _query = v),
+            decoration: InputDecoration(
+              isDense: true,
+              hintText: tr('ابحثي بالعنوان أو المؤلف…', 'Search title or author…'),
+              prefixIcon: const Icon(Icons.search, size: 20),
+              filled: true,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none),
+            ),
+          ),
+        ),
         SizedBox(
-          height: 52,
+          height: 48,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             children: ContentRepo.bookCats.map((c) {
               final sel = c.key == _cat;
               return Padding(
@@ -38,12 +70,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ),
         Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: books.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (_, i) => _BookTile(books[i]),
-          ),
+          child: books.isEmpty
+              ? Center(child: Text(tr('لا نتائج', 'No results')))
+              : ListView.separated(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: books.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  itemBuilder: (_, i) =>
+                      _BookTile(books[i], onChanged: () => setState(() {})),
+                ),
         ),
       ],
     );
@@ -52,15 +87,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
 class _BookTile extends StatelessWidget {
   final Book book;
-  const _BookTile(this.book);
+  final VoidCallback onChanged;
+  const _BookTile(this.book, {required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
+    final saved = Prefs.isBookmarked(book.id);
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
-        onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (_) => BookDetailScreen(book: book))),
+        onTap: () async {
+          await Navigator.push(context,
+              MaterialPageRoute(builder: (_) => BookDetailScreen(book: book)));
+          onChanged();
+        },
         child: Padding(
           padding: const EdgeInsets.all(14),
           child: Row(
@@ -105,6 +145,14 @@ class _BookTile extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              IconButton(
+                icon: Icon(saved ? Icons.bookmark : Icons.bookmark_border,
+                    color: saved ? AppColors.sage600 : null),
+                onPressed: () async {
+                  await Prefs.setBookmark(book.id, !saved);
+                  onChanged();
+                },
               ),
             ],
           ),

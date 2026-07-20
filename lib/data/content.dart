@@ -18,6 +18,9 @@ class ContentRepo {
   static late List<Account> youtube;
   static late List<Account> instagram;
 
+  static late List<Dhikr> adhkarMorning;
+  static late List<Dhikr> adhkarEvening;
+
   static Future<void> load() async {
     final booksJson =
         jsonDecode(await rootBundle.loadString('assets/data/books.json'));
@@ -43,6 +46,13 @@ class ContentRepo {
         (acc['youtube'] as List).map((e) => Account.fromJson(e)).toList();
     instagram =
         (acc['instagram'] as List).map((e) => Account.fromJson(e)).toList();
+
+    final adh =
+        jsonDecode(await rootBundle.loadString('assets/data/adhkar.json'));
+    adhkarMorning =
+        (adh['morning'] as List).map((e) => Dhikr.fromJson(e)).toList();
+    adhkarEvening =
+        (adh['evening'] as List).map((e) => Dhikr.fromJson(e)).toList();
   }
 
   static Book? bookById(int id) {

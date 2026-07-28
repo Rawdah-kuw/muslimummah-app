@@ -113,7 +113,8 @@ class _DhikrCardState extends State<_DhikrCard> {
               Text(
                 d.ar,
                 textAlign: TextAlign.right,
-                style: const TextStyle(fontSize: 20, height: 2.1),
+                style: const TextStyle(
+                    fontSize: 21, height: 2.1, fontFamily: 'Amiri'),
               ),
               if (d.source.isNotEmpty || d.note.isNotEmpty) ...[
                 const SizedBox(height: 10),

@@ -35,12 +35,17 @@ class AccountsScreen extends StatelessWidget {
   }
 
   Widget _list(BuildContext context, List<Account> items, IconData icon) {
+    // Featured / official accounts appear first (keeping their relative order).
+    final ordered = [
+      ...items.where((a) => a.feat || a.official),
+      ...items.where((a) => !(a.feat || a.official)),
+    ];
     return ListView.separated(
       padding: const EdgeInsets.all(16),
-      itemCount: items.length,
+      itemCount: ordered.length,
       separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemBuilder: (_, i) {
-        final a = items[i];
+        final a = ordered[i];
         return Card(
           child: ListTile(
             leading: Icon(icon, color: AppColors.sage700),
@@ -59,7 +64,18 @@ class AccountsScreen extends StatelessWidget {
             ),
             subtitle: Text(AppState.I.loc(a.subtitle),
                 maxLines: 2, overflow: TextOverflow.ellipsis),
-            trailing: const Icon(Icons.open_in_new, size: 18),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.ios_share, size: 18),
+                  tooltip: tr('مشاركة', 'Share'),
+                  onPressed: () => shareText(
+                      '${AppState.I.loc(a.name)}${a.handle.isNotEmpty ? '\n@${a.handle}' : ''}\n${a.url}\n\nمنارات — أمة الإسلام'),
+                ),
+                const Icon(Icons.open_in_new, size: 18),
+              ],
+            ),
             onTap: () => openUrl(context, a.url),
           ),
         );

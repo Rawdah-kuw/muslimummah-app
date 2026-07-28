@@ -117,15 +117,26 @@ class _ScienceScreenState extends State<ScienceScreen> {
                         const SizedBox(height: 6),
                         Wrap(
                           spacing: 8,
-                          children: p.sources.map((s) {
-                            final ch = ContentRepo.plChannels[s.ch] ?? const {};
-                            return OutlinedButton.icon(
-                              onPressed: () => openUrl(context, s.url),
-                              icon: const Icon(Icons.play_arrow, size: 18),
-                              label: Text(AppState.I.loc(ch),
+                          runSpacing: 4,
+                          children: [
+                            ...p.sources.map((s) {
+                              final ch =
+                                  ContentRepo.plChannels[s.ch] ?? const {};
+                              return OutlinedButton.icon(
+                                onPressed: () => openUrl(context, s.url),
+                                icon: const Icon(Icons.play_arrow, size: 18),
+                                label: Text(AppState.I.loc(ch),
+                                    style: const TextStyle(fontSize: 12)),
+                              );
+                            }),
+                            OutlinedButton.icon(
+                              onPressed: () => shareText(
+                                  '${AppState.I.loc(p.title)}\n${AppState.I.loc(level)}\n${p.sources.isNotEmpty ? p.sources.first.url : ''}\n\nالمنهج — أمة الإسلام\n$kSiteUrl'),
+                              icon: const Icon(Icons.ios_share, size: 16),
+                              label: Text(tr('مشاركة', 'Share'),
                                   style: const TextStyle(fontSize: 12)),
-                            );
-                          }).toList(),
+                            ),
+                          ],
                         ),
                       ],
                     ),

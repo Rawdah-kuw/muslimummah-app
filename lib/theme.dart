@@ -65,6 +65,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
+      fontFamily: 'Tajawal',
       scaffoldBackgroundColor: bg,
       appBarTheme: AppBarTheme(
         backgroundColor: bg,

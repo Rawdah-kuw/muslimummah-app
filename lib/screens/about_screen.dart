@@ -4,6 +4,79 @@ import '../config.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 
+class _Station {
+  final IconData icon;
+  final String phaseAr, phaseEn;
+  final String titleAr, titleEn;
+  final String descAr, descEn;
+  final bool isFinal;
+  final bool accent;
+  const _Station(this.icon, this.phaseAr, this.phaseEn, this.titleAr,
+      this.titleEn, this.descAr, this.descEn,
+      {this.isFinal = false, this.accent = false});
+}
+
+const _stations = <_Station>[
+  _Station(
+      Icons.home_outlined,
+      'النشأة',
+      'Upbringing',
+      'كويتيّ نشأ بين لغتين',
+      'A Kuwaiti raised between two languages',
+      'وُلد لأسرة كويتية، وكبر وتعلّم في المملكة المتحدة، فأتقن العربية والإنجليزية.',
+      'Born to a Kuwaiti family, he grew up and studied in the UK, mastering both Arabic and English.'),
+  _Station(
+      Icons.school_outlined,
+      'الدراسة',
+      'Studies',
+      'تفوّقٌ وطبٌّ وعلمٌ شرعي',
+      'Excellence, medicine, and religious knowledge',
+      'تفوّق وسافر ليكمل دراسة الطب، وفي الوقت نفسه يطوّر نفسه في العلم الشرعي.',
+      'He excelled and travelled to study medicine, while developing himself in religious knowledge.'),
+  _Station(
+      Icons.groups_outlined,
+      'مجموعة «مسلم أمة»',
+      'The “Muslim Ummah” group',
+      'دعوةٌ للمهتدين الجدد',
+      'Outreach to new Muslims',
+      'أسّس مع أخيه محمد مجموعة واتساب وجّهها للمهتدين الجدد ولكل محبٍّ للتعرّف على الإسلام.',
+      'With his brother Mohammad he founded a WhatsApp group for new Muslims and anyone wishing to learn about Islam.'),
+  _Station(
+      Icons.menu_book_outlined,
+      'المكتبة الرقمية',
+      'The digital library',
+      'جمعٌ للعلم النافع',
+      'Gathering beneficial knowledge',
+      'أنشأ مكتبة رقمية جمع فيها الكتب النافعة للمسلمين الجدد، إلى جانب كتاباته وملاحظاته.',
+      'He built a digital library of beneficial books for new Muslims, alongside his own writings and notes.'),
+  _Station(
+      Icons.search,
+      'الحلم',
+      'The dream',
+      'باحثٌ ذكيٌّ موثوق',
+      'A trustworthy smart search',
+      'طمح لباحث ذكي يستخلص الإجابة من المصادر الموثوقة فقط، بعد أن لمس قصور الأدوات المتاحة.',
+      'He dreamed of a smart search that draws answers only from trusted sources, having seen the limits of available tools.'),
+  _Station(
+      Icons.nightlight_round,
+      'الوداع',
+      'Farewell',
+      'رحيلٌ عن ٢١ عامًا',
+      'Departing at 21',
+      'توفّاه الله قبل أن يكتمل المشروع، عن عمرٍ ناهز الواحد والعشرين عامًا، رحمه الله.',
+      'Allah took him before the project was complete, at around twenty-one years of age, may Allah have mercy on him.',
+      isFinal: true),
+  _Station(
+      Icons.spa_outlined,
+      'إكمال المشوار',
+      'Continuing the journey',
+      'صدقةٌ جارية',
+      'An ongoing charity',
+      'نكمل اليوم ما بدأه علي — هذه الشبكة صدقة جارية عنه، نسأل الله أن يتقبّلها ويرفع درجاته.',
+      'Today we continue what Ali began — this network is an ongoing charity for him; we ask Allah to accept it and raise his rank.',
+      accent: true),
+];
+
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
@@ -22,16 +95,10 @@ class AboutScreen extends StatelessWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
           ),
-          const SizedBox(height: 18),
-          _p(tr(
-            'أُنشئت هذه المنصّة صدقةً جارية عن علي عبد العزيز الصدّيقي رحمه الله، جمعًا لما ينفع طالب العلم: مكتبة كتب موثوقة، ومنهج تعلّم متدرّج عبر قوائم مختارة، وبحث ذكي يجيب من نصوص الكتب، ودليلٍ لمجالس ودروس الذكر «روضة».',
-            'This platform was built as an ongoing charity (sadaqah jariyah) for Ali Abdulaziz Alseddiqi, may Allah have mercy on him — gathering what benefits the seeker of knowledge: a trusted book library, a graded learning curriculum through selected playlists, a smart search that answers from the books, and the "Rawdah" guide to dhikr gatherings.',
-          )),
-          _p(tr(
-            'كان حلمه أن يَسهُل على الناس الوصول إلى العلم النافع الصحيح، فجُعل هذا العمل امتدادًا لأثره، نسأل الله أن يتقبّله وأن يجعله في ميزان حسناته.',
-            'His hope was to make beneficial, authentic knowledge easy to reach. This work is made an extension of his legacy — we ask Allah to accept it and to place it in the scale of his good deeds.',
-          )),
           const SizedBox(height: 20),
+          for (var i = 0; i < _stations.length; i++)
+            _stationRow(context, _stations[i], i == _stations.length - 1),
+          const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -41,10 +108,11 @@ class AboutScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  tr('«إِذَا مَاتَ الإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثٍ: صَدَقَةٍ جَارِيَةٍ، أَوْ عِلْمٍ يُنْتَفَعُ بِهِ، أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ»',
-                      'When a person dies, his deeds end except for three: an ongoing charity, knowledge that is benefited from, or a righteous child who prays for him.'),
+                  tr('«إِذَا مَاتَ ابْنُ آدَمَ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثٍ: صَدَقَةٍ جَارِيَةٍ، أَوْ عِلْمٍ يُنْتَفَعُ بِهِ، أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ»',
+                      'When the son of Adam dies, his deeds end except for three: an ongoing charity, knowledge that is benefited from, or a righteous child who prays for him.'),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15, height: 1.9),
+                  style: const TextStyle(
+                      fontSize: 16, height: 1.9, fontFamily: 'Amiri'),
                 ),
                 const SizedBox(height: 8),
                 Text(tr('رواه مسلم', 'Muslim'),
@@ -73,8 +141,66 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _p(String text) => Padding(
-        padding: const EdgeInsets.only(bottom: 14),
-        child: Text(text, style: const TextStyle(fontSize: 15, height: 1.9)),
-      );
+  Widget _stationRow(BuildContext context, _Station s, bool isLast) {
+    final circleColor =
+        (s.isFinal || s.accent) ? AppColors.pine800 : AppColors.sage600;
+    final cardColor = s.accent
+        ? AppColors.sage100
+        : (s.isFinal ? AppColors.pearl100 : Theme.of(context).cardColor);
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: circleColor, shape: BoxShape.circle),
+                child: Icon(s.icon, size: 19, color: AppColors.pearl50),
+              ),
+              if (!isLast)
+                Expanded(
+                  child: Container(
+                      width: 2,
+                      color: AppColors.sage300.withValues(alpha: 0.7)),
+                ),
+            ],
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.pearl200),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(tr(s.phaseAr, s.phaseEn),
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.sage600)),
+                  const SizedBox(height: 3),
+                  Text(tr(s.titleAr, s.titleEn),
+                      style: const TextStyle(
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.pine800)),
+                  const SizedBox(height: 5),
+                  Text(tr(s.descAr, s.descEn),
+                      style: const TextStyle(fontSize: 13, height: 1.6)),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

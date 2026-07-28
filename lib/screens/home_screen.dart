@@ -8,6 +8,7 @@ import '../widgets/scene.dart';
 import '../services/prayer_service.dart';
 import '../services/prefs.dart';
 import '../services/rawdah_service.dart';
+import '../services/wird_image.dart';
 import 'about_screen.dart';
 import 'privacy_screen.dart';
 import 'prayer_screen.dart';
@@ -168,16 +169,18 @@ class HomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700, color: AppColors.sage700)),
           const Spacer(),
           InkWell(
-            onTap: () => shareText(
-                '${w.ar}\n${AppState.I.loc(w.source)}\n\n$kSiteUrl'),
+            onTap: () => WirdImage.share(w),
             child: const Icon(Icons.ios_share, size: 18, color: AppColors.sage700),
           ),
         ]),
         const SizedBox(height: 10),
         Text(AppState.I.lang == 'ar' ? w.ar : w.en,
             textAlign: TextAlign.center,
-            style:
-                const TextStyle(fontSize: 18, height: 1.9, fontWeight: FontWeight.w600)),
+            style: TextStyle(
+                fontSize: 20,
+                height: 1.9,
+                fontWeight: FontWeight.w600,
+                fontFamily: AppState.I.lang == 'ar' ? 'Amiri' : null)),
         const SizedBox(height: 6),
         Align(
           alignment: AlignmentDirectional.centerEnd,

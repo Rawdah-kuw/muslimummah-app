@@ -56,15 +56,12 @@ class BookDetailScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 15, height: 1.8)),
           const SizedBox(height: 24),
 
-          // Read buttons
-          if (book.bilingual && book.fileEn != null) ...[
-            _readButton(context, tr('اقرأ (عربي)', 'Read (Arabic)'),
-                Config.fileUrl(book.fileAr), AppState.I.loc(book.title)),
-            const SizedBox(height: 10),
-            _readButton(context, tr('اقرأ (إنجليزي)', 'Read (English)'),
-                Config.fileUrl(book.fileEn!), AppState.I.loc(book.title),
-                filled: false),
-          ] else
+          // Read button (bilingual books get an in-reader AR/EN toggle)
+          if (book.bilingual && book.fileEn != null)
+            _readButton(context, tr('اقرأ الكتاب (عربي/إنجليزي)', 'Read (AR/EN)'),
+                Config.fileUrl(book.fileAr), AppState.I.loc(book.title),
+                enUrl: Config.fileUrl(book.fileEn!))
+          else
             _readButton(context, tr('اقرأ الكتاب', 'Read the book'),
                 Config.fileUrl(book.fileAr), AppState.I.loc(book.title)),
 
@@ -103,13 +100,14 @@ class BookDetailScreen extends StatelessWidget {
 
   Widget _readButton(
       BuildContext context, String label, String url, String title,
-      {bool filled = true}) {
+      {bool filled = true, String? enUrl}) {
     void open() {
       Prefs.setLastBook(book.id);
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) => ReaderScreen(url: url, title: title)));
+              builder: (_) =>
+                  ReaderScreen(url: url, enUrl: enUrl, title: title)));
     }
     final icon = const Icon(Icons.chrome_reader_mode_outlined);
     return SizedBox(

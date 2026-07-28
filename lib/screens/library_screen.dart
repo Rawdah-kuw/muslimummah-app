@@ -61,7 +61,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: ChoiceChip(
-                  label: Text(AppState.I.loc(c.label)),
+                  label: Text(
+                      '${AppState.I.loc(c.label)} (${ContentRepo.booksByCat(c.key).length})'),
                   selected: sel,
                   onSelected: (_) => setState(() => _cat = c.key),
                 ),

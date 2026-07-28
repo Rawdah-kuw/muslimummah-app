@@ -1,0 +1,42 @@
+name: Build Android release (.aab)
+
+# Produces the signed .aab that gets uploaded to Google Play.
+# Run it manually from the Actions tab; download the .aab from the run's
+# Artifacts section when it finishes.
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Restore the signing key
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload.keystore
+
+      - name: Write key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storeFile=upload.keystore
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Get packages
+        run: flutter pub get
+
+      - name: Build signed app bundle
+        run: flutter build appbundle --release
+
+      - name: Upload the .aab
+        uses: actions/upload-artifact@v4
+        with:
+          name: muslimummah-release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error

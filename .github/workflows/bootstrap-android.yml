@@ -1,0 +1,35 @@
+name: Bootstrap Android project
+
+# One-time helper: generates the native android/ folder with Flutter and
+# commits it back into the repo, so we have a stable place to configure
+# signing, the package name, and the target API level.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Generate the android/ folder
+        run: flutter create --platforms=android --org app --project-name muslimummah .
+
+      - name: Commit android/ back into the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add android
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — android/ already present."
+          else
+            git commit -m "Bootstrap: add generated Android project folder"
+            git push
+          fi

@@ -1,123 +1,220 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/models.dart';
 
-/// Reads published Rawdah lessons from Supabase and applies the display rules
-/// from the project notes (section 7): publish/pause filter, week window,
-/// de-duplication, gender inference, chronological ordering.
+/// Reads published Rawdah lessons from Supabase and applies the exact same
+/// rules as the website's components/Rawdah.jsx, in order:
+///   0. read only is_published = true
+///   1. hide paused / ended / more-than-a-week-away (Kuwait date)
+///   2. de-duplicate by normalized title|teacher|day
+///   3. resolve gender (explicit field, else infer)
+/// Plus helpers for chronological time sorting and day ordering.
 class RawdahService {
   static SupabaseClient get _db => Supabase.instance.client;
 
+  /// The seven Arabic day names, indexed like JS getDay() (0 = Sunday).
+  static const days = [
+    'الأحد',
+    'الاثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس',
+    'الجمعة',
+    'السبت',
+  ];
+
+  /// Main WhatsApp group — fallback for any lesson with no dedicated link.
+  static const groupLink =
+      'https://chat.whatsapp.com/J394CWBV7zw3aIexoulZAQ';
+
+  // ── Fetch + filter ──────────────────────────────────────────────
   static Future<List<Lesson>> fetchLessons() async {
     final rows = await _db.from('lessons').select().eq('is_published', true);
 
-    final list = <Lesson>[];
+    final todayKw = _todayKuwaitStr();
+    final horizonKw = _dateStr(_kuwaitNow().add(const Duration(days: 7)));
+
+    final seen = <String>{};
+    final out = <Lesson>[];
     for (final r in (rows as List)) {
       final map = Map<String, dynamic>.from(r as Map);
-      if (map['is_paused'] == true) continue; // hidden while paused
-      final lesson = Lesson.fromJson(map);
-      if (lesson.gender.isEmpty) {
-        lesson.gender = _inferGender(lesson.teacher);
+
+      // 1. paused (temporary holiday for recurring lessons)
+      if (map['is_paused'] == true) continue;
+
+      final isRecurring = map['is_recurring'] == true;
+      final rawDate = (map['lesson_date'] ?? '').toString().trim();
+      final lessonDate = rawDate.isEmpty ? null : rawDate;
+
+      // 1. ended (dated, non-recurring, already passed in Kuwait)
+      if (!isRecurring &&
+          lessonDate != null &&
+          lessonDate.compareTo(todayKw) < 0) {
+        continue;
       }
-      // Week window: hide a dated, non-recurring lesson more than 7 days out.
-      if (!lesson.isRecurring && lesson.lessonDate != null) {
-        final d = DateTime.tryParse(lesson.lessonDate!);
-        if (d != null) {
-          final days = d.difference(_todayMidnight()).inDays;
-          if (days > 7) continue;
-        }
+      // 1. more than a week away — appears only within its week
+      if (!isRecurring &&
+          lessonDate != null &&
+          lessonDate.compareTo(horizonKw) > 0) {
+        continue;
       }
-      list.add(lesson);
-    }
 
-    // De-duplicate by title|teacher|day|time.
-    final seen = <String>{};
-    final deduped = <Lesson>[];
-    for (final l in list) {
-      final key = '${_norm(l.title)}|${_norm(l.teacher)}|${_norm(l.day)}|${_norm(l.time)}';
-      if (seen.add(key)) deduped.add(l);
+      final l = Lesson.fromJson(map);
+      // 3. resolve gender once (explicit field wins, else infer)
+      l.gender = genderOf(l);
+
+      // 2. de-duplicate by normalized title|teacher|day (keep first)
+      final key =
+          '${normalizeText(l.title)}|${normalizeText(l.teacher)}|${l.day}';
+      if (seen.contains(key)) continue;
+      seen.add(key);
+
+      out.add(l);
     }
-    return deduped;
+    return out;
   }
 
-  /// True if a dated, non-recurring lesson is in the past ("ended").
-  static bool isEnded(Lesson l) {
-    if (l.isRecurring || l.lessonDate == null) return false;
-    final d = DateTime.tryParse(l.lessonDate!);
-    if (d == null) return false;
-    return d.isBefore(_todayMidnight());
+  // ── Gender ──────────────────────────────────────────────────────
+  /// Resolved gender: explicit field wins, otherwise inferred, else "نساء".
+  static String genderOf(Lesson l) {
+    if (l.gender == 'رجال') return 'رجال';
+    if (l.gender == 'نساء') return 'نساء';
+    return _inferGender(l.teacher, l.title) ?? 'نساء';
   }
 
-  static DateTime _todayMidnight() {
-    final n = DateTime.now();
-    return DateTime(n.year, n.month, n.day);
-  }
-
-  static String _norm(String s) => s.replaceAll(RegExp(r'\s+'), ' ').trim();
-
-  static String _inferGender(String teacher) {
-    const women = ['الشيخة', 'الدكتورة', 'الأستاذة', 'الواعظة', 'الباحثة', 'المعلمة'];
-    const men = ['الشيخ', 'الدكتور', 'الأستاذ'];
-    for (final w in women) {
-      if (teacher.contains(w)) return 'نساء';
+  /// Infer gender from honorifics / kunya / name patterns. Female is checked
+  /// first so «أم عبد الكريم» stays female despite «عبد».
+  static String? _inferGender(String teacher, String title) {
+    final s = ('$teacher $title')
+        .replaceAll(RegExp(r'[إأآا]'), 'ا')
+        .replaceAll('ة', 'ه')
+        .replaceAll('ى', 'ي')
+        .replaceAll(RegExp(r'\s+'), ' ');
+    // — female signals (first) —
+    if (RegExp(
+            r'(الشيخه|الدكتوره|الاستاذه|الواعظه|الباحثه|المعلمه|الداعيه|الاخت|المربيه|المدربه)')
+        .hasMatch(s)) return 'نساء';
+    if (RegExp(r'(^|\s)ام\s').hasMatch(s)) return 'نساء';
+    if (RegExp(r'للنساء|النساء فقط|نسائي').hasMatch(s)) return 'نساء';
+    if (RegExp(
+            r'(مريم|فاطمه|نوره|حصه|ساره|ابتسام|جميله|منيره|هيا|دلال|شيخه|موضي|بشاير|غريبه|امل|هدي|عائشه|خديجه|زينب|رقيه|اسماء|لطيفه|منال|صفاء|انفال|شيماء|وضحه|حنان|شهد|نجلاء|عبير)')
+        .hasMatch(s)) return 'نساء';
+    // — male signals —
+    if (RegExp(r'(الشيخ|الدكتور|الاستاذ|الداعي)(?!ه)').hasMatch(s)) {
+      return 'رجال';
     }
-    for (final m in men) {
-      if (teacher.contains(m)) return 'رجال';
-    }
-    return 'نساء'; // default
+    if (RegExp(r'(^|\s)(ابو|بن|ابن)\s').hasMatch(s)) return 'رجال';
+    if (RegExp(r'(^|\s)عبد\s?ال').hasMatch(s)) return 'رجال';
+    if (RegExp(
+            r'(محمد|احمد|علي|عمر|خالد|يوسف|ابراهيم|صالح|سعد|فهد|ناصر|سلطان|بدر|طارق|زياد|حسن|حسين|عثمان|مشاري|عادل|وليد|ماجد|فيصل|عبدالله|سلمان)')
+        .hasMatch(s)) return 'رجال';
+    return null;
   }
 
-  // ── Day ordering (Arabic), starting from today ──
-  static const _weekdayAr = {
-    1: 'الإثنين',
-    2: 'الثلاثاء',
-    3: 'الأربعاء',
-    4: 'الخميس',
-    5: 'الجمعة',
-    6: 'السبت',
-    7: 'الأحد',
+  static bool isWomen(Lesson l) => genderOf(l) == 'نساء';
+
+  // ── Time parsing (minutes from midnight, for sorting) ───────────
+  static final List<MapEntry<String, int>> _prayerTimes = [
+    MapEntry(r'(?:بعد|عقب)\s*العشاء', 1200),
+    MapEntry(r'قبل\s*العشاء', 1170),
+    MapEntry(r'(?:بعد|عقب)\s*المغرب', 1110),
+    MapEntry(r'قبل\s*المغرب', 1050),
+    MapEntry(r'(?:بعد|عقب)\s*العصر', 960),
+    MapEntry(r'قبل\s*العصر', 870),
+    MapEntry(r'(?:بعد|عقب)\s*الظهر', 750),
+    MapEntry(r'قبل\s*الظهر', 690),
+    MapEntry(r'(?:بعد|عقب)\s*الضحي', 540),
+    MapEntry(r'(?:بعد|عقب)\s*(?:الاشراق|الشروق)', 420),
+    MapEntry(r'(?:بعد|عقب)\s*الفجر', 330),
+    MapEntry(r'العشاء', 1195),
+    MapEntry(r'المغرب', 1105),
+    MapEntry(r'العصر', 955),
+    MapEntry(r'الظهر', 745),
+    MapEntry(r'الشروق|الاشراق', 415),
+    MapEntry(r'الفجر', 325),
+  ];
+
+  static int parseTime(String? t) {
+    if (t == null || t.isEmpty) return 9999;
+    final s = _toLatinDigits(t)
+        .replaceAll(RegExp(r'[إأآا]'), 'ا')
+        .replaceAll('ة', 'ه')
+        .replaceAll('ى', 'ي')
+        .replaceAll('صلاه', ' ')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
+    for (final e in _prayerTimes) {
+      if (RegExp(e.key).hasMatch(s)) return e.value;
+    }
+    final m = RegExp(r'(\d{1,2}):(\d{2})').firstMatch(s);
+    if (m == null) return 9999;
+    var h = int.parse(m.group(1)!);
+    final min = int.parse(m.group(2)!);
+    final pm = RegExp(r'م|pm|مساء', caseSensitive: false).hasMatch(s);
+    final am = RegExp(r'ص|am|صباح', caseSensitive: false).hasMatch(s);
+    if (pm && h < 12) h += 12;
+    if (am && h == 12) h = 0;
+    if (!pm && !am && h >= 1 && h <= 7) h += 12;
+    return h * 60 + min;
+  }
+
+  // ── Text normalization + dedup key ──────────────────────────────
+  static const _honorifics = {
+    'د', 'ا', 'الدكتور', 'الدكتوره', 'دكتور', 'دكتوره', 'الشيخ', 'الشيخه',
+    'شيخ', 'شيخه', 'الاستاذ', 'الاستاذه', 'استاذ', 'استاذه', 'الاخت',
+    'الواعظه', 'الداعيه', 'المعلمه', 'الباحثه',
   };
 
-  /// The seven Arabic day names ordered starting from today.
-  static List<String> orderedDays() {
-    final today = DateTime.now().weekday; // 1..7
-    return List.generate(7, (i) {
-      final wd = ((today - 1 + i) % 7) + 1;
-      return _weekdayAr[wd]!;
-    });
+  static String normalizeText(String? s) {
+    if (s == null || s.isEmpty) return '';
+    final t = _toLatinDigits(s)
+        .replaceAll(RegExp(r'[ً-ْ]'), '') // diacritics
+        .replaceAll(RegExp(r'[إأآا]'), 'ا')
+        .replaceAll('ة', 'ه')
+        .replaceAll('ى', 'ي')
+        .replaceAll(RegExp(r'''[.،,؛:!؟"'()\-_]'''), ' ')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim()
+        .toLowerCase();
+    return t
+        .split(' ')
+        .where((w) => w.isNotEmpty && !_honorifics.contains(w))
+        .join(' ');
   }
 
-  static String normalizeDay(String day) {
-    final d = day.trim();
-    if (d.contains('اثن') || d.contains('إثن')) return 'الإثنين';
-    return d;
+  // ── Day ordering (starting from today, Kuwait) ──────────────────
+  static DateTime _kuwaitNow() =>
+      DateTime.now().toUtc().add(const Duration(hours: 3));
+
+  static String _dateStr(DateTime d) {
+    final mm = d.month.toString().padLeft(2, '0');
+    final dd = d.day.toString().padLeft(2, '0');
+    return '${d.year}-$mm-$dd';
   }
 
-  /// Convert a displayed time to minutes-since-midnight for sorting.
-  static int timeToMinutes(String raw) {
-    final t = _toLatinDigits(raw);
-    // Named prayer times.
-    if (raw.contains('الفجر')) return 5 * 60;
-    if (raw.contains('الظهر')) return 13 * 60;
-    if (raw.contains('العصر')) return 16 * 60;
-    if (raw.contains('المغرب')) return 18 * 60 + 30;
-    if (raw.contains('العشاء')) return 20 * 60;
-    final m = RegExp(r'(\d{1,2})\s*[:٫].*?(\d{1,2})').firstMatch(t);
-    int hour = 0, min = 0;
-    final simple = RegExp(r'(\d{1,2}):(\d{1,2})').firstMatch(t);
-    if (simple != null) {
-      hour = int.parse(simple.group(1)!);
-      min = int.parse(simple.group(2)!);
-    } else if (m != null) {
-      hour = int.parse(m.group(1)!);
-      min = int.parse(m.group(2)!);
-    } else {
-      return 23 * 60 + 59;
+  static String _todayKuwaitStr() => _dateStr(_kuwaitNow());
+
+  static String todayName() => days[_kuwaitNow().weekday % 7];
+
+  /// The seven days ordered starting from today, then wrapping.
+  static List<String> orderedFromToday() {
+    final ti = days.indexOf(todayName());
+    if (ti < 0) return List.of(days);
+    return [...days.sublist(ti), ...days.sublist(0, ti)];
+  }
+
+  /// Ordered-from-today days that actually have lessons.
+  static List<String> daysWithLessons(List<Lesson> lessons) => orderedFromToday()
+      .where((dn) => lessons.any((l) => l.day == dn))
+      .toList();
+
+  /// Format an ISO date (YYYY-MM-DD) as D/M/YYYY.
+  static String fmtDate(String? d) {
+    if (d == null || d.isEmpty) return '';
+    final p = d.split('-');
+    if (p.length == 3) {
+      return '${int.parse(p[2])}/${int.parse(p[1])}/${p[0]}';
     }
-    final pm = raw.contains('م') && !raw.contains('ص');
-    final am = raw.contains('ص');
-    if (pm && hour < 12) hour += 12;
-    if (am && hour == 12) hour = 0;
-    return hour * 60 + min;
+    return d;
   }
 
   static String _toLatinDigits(String s) {

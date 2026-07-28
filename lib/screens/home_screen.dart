@@ -537,16 +537,14 @@ class _RawdahTodayState extends State<_RawdahToday> {
             child: FutureBuilder<List<Lesson>>(
               future: _future,
               builder: (context, snap) {
-                final today = RawdahService.orderedDays().first;
+                final today = RawdahService.todayName();
                 Lesson? lesson;
                 if (snap.hasData) {
                   final items = snap.data!
-                      .where((l) =>
-                          RawdahService.normalizeDay(l.day) == today &&
-                          !RawdahService.isEnded(l))
+                      .where((l) => l.day == today)
                       .toList()
-                    ..sort((a, b) => RawdahService.timeToMinutes(a.time)
-                        .compareTo(RawdahService.timeToMinutes(b.time)));
+                    ..sort((a, b) => RawdahService.parseTime(a.time)
+                        .compareTo(RawdahService.parseTime(b.time)));
                   if (items.isNotEmpty) lesson = items.first;
                 }
                 if (lesson == null) {

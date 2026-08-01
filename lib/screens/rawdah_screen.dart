@@ -3,6 +3,7 @@ import '../app_state.dart';
 import '../models/models.dart';
 import '../services/lesson_image.dart';
 import '../services/rawdah_service.dart';
+import '../services/schedule_image.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 
@@ -152,6 +153,22 @@ class _RawdahScreenState extends State<RawdahScreen> {
                       ],
                     ),
                   ),
+                  if (!searching && results.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 0),
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: OutlinedButton.icon(
+                          onPressed: () =>
+                              ScheduleImage.share(selDay, results),
+                          icon: const Icon(Icons.ios_share, size: 18),
+                          label: Text(
+                              tr('مشاركة جدول اليوم كصورة',
+                                  'Share day schedule as image'),
+                              style: const TextStyle(fontSize: 12.5)),
+                        ),
+                      ),
+                    ),
                   Expanded(
                     child: results.isEmpty
                         ? Center(

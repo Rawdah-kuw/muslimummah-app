@@ -63,10 +63,10 @@ class ContentRepo {
   }
 
   /// Wird that changes daily based on the day-of-year.
-  static Wird wirdOfToday() {
-    final now = DateTime.now();
-    final dayOfYear =
-        now.difference(DateTime(now.year, 1, 1)).inDays;
+  static Wird wirdOfToday() => wirdForDate(DateTime.now());
+
+  static Wird wirdForDate(DateTime d) {
+    final dayOfYear = d.difference(DateTime(d.year, 1, 1)).inDays;
     return wird[dayOfYear % wird.length];
   }
 

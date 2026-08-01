@@ -29,7 +29,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     _Reminder('evening', NotificationService.idEvening, 'أذكار المساء',
         'Evening Adhkar', 'حان وقت أذكار المساء', 'Time for the evening adhkar', 17, 30),
     _Reminder('rawdah', NotificationService.idRawdah, 'دروس روضة',
-        'Rawdah Lessons', 'تفقّد دروس اليوم في روضة', "Check today's Rawdah lessons", 16, 0),
+        'Rawdah Lessons', 'لا تنسَ نصيبك من مجالس الذكر 🌿',
+        "Don't miss your share of the circles of dhikr 🌿", 16, 0),
   ];
 
   @override
@@ -84,15 +85,24 @@ class _ReminderTileState extends State<_ReminderTile> {
     await Prefs.setInt('notif_${r.key}_m', _m);
     if (_on) {
       await NotificationService.requestPermissions();
-      await NotificationService.scheduleDaily(
-        r.id,
-        _h,
-        _m,
-        AppState.I.lang == 'ar' ? r.titleAr : r.titleEn,
-        AppState.I.lang == 'ar' ? r.bodyAr : r.bodyEn,
-      );
+      if (r.key == 'wird') {
+        // Wird shows the actual daily reminder text (scheduled 14 days ahead).
+        await NotificationService.scheduleWird(_h, _m, AppState.I.lang == 'ar');
+      } else {
+        await NotificationService.scheduleDaily(
+          r.id,
+          _h,
+          _m,
+          AppState.I.lang == 'ar' ? r.titleAr : r.titleEn,
+          AppState.I.lang == 'ar' ? r.bodyAr : r.bodyEn,
+        );
+      }
     } else {
-      await NotificationService.cancel(r.id);
+      if (r.key == 'wird') {
+        await NotificationService.cancelWird();
+      } else {
+        await NotificationService.cancel(r.id);
+      }
     }
   }
 

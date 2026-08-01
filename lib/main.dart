@@ -16,6 +16,14 @@ Future<void> main() async {
   await AppState.I.load();
   await ContentRepo.load();
   await NotificationService.init();
+  // Keep the daily-Wird notification series topped up with each day's text.
+  if (Prefs.getBool('notif_wird', false)) {
+    await NotificationService.scheduleWird(
+      Prefs.getInt('notif_wird_h', 7),
+      Prefs.getInt('notif_wird_m', 0),
+      AppState.I.lang == 'ar',
+    );
+  }
   await Supabase.initialize(
     url: Config.supabaseUrl,
     anonKey: Config.supabaseAnonKey,

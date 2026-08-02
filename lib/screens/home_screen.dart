@@ -46,11 +46,11 @@ class HomeScreen extends StatelessWidget {
         _wird(context, w, dark),
         const SizedBox(height: 16),
 
-        // Foundation: Library + Curriculum
+        // Foundation set (graduated green scale): Library · Curriculum · Rawdah
         Row(children: [
           Expanded(
               child: _foundation(
-                  Scenes.pine,
+                  Scenes.libCard,
                   tr('المكتبة', 'Library'),
                   tr('${ContentRepo.books.length} كتابًا موثوقًا',
                       '${ContentRepo.books.length} trusted books'),
@@ -58,17 +58,15 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
               child: _foundation(
-                  Scenes.sage,
+                  Scenes.curCard,
                   tr('المنهج', 'Curriculum'),
                   tr('${ContentRepo.playlists.length} قائمة · ٩ علوم',
                       '${ContentRepo.playlists.length} lists · 9 sciences'),
                   () => onTab(2))),
         ]),
-        const SizedBox(height: 18),
-
-        _label(tr('في روضة اليوم', 'Rawdah today')),
-        _RawdahToday(onOpen: () => onTab(4)),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
+        _RawdahCard(onOpen: () => onTab(4)),
+        const SizedBox(height: 16),
 
         _PrayerMini(),
         const SizedBox(height: 16),
@@ -502,15 +500,17 @@ class _PrayerMiniState extends State<_PrayerMini> {
   }
 }
 
-/// Today's nearest Rawdah lesson (from Supabase).
-class _RawdahToday extends StatefulWidget {
+/// Rawdah — a full-width foundation card (light, matching the graduated scale),
+/// showing today's nearest lesson from Supabase.
+class _RawdahCard extends StatefulWidget {
   final VoidCallback onOpen;
-  const _RawdahToday({required this.onOpen});
+  const _RawdahCard({required this.onOpen});
   @override
-  State<_RawdahToday> createState() => _RawdahTodayState();
+  State<_RawdahCard> createState() => _RawdahCardState();
 }
 
-class _RawdahTodayState extends State<_RawdahToday> {
+class _RawdahCardState extends State<_RawdahCard> {
+  static const _scene = Scenes.rawdahCard;
   late Future<List<Lesson>> _future;
 
   @override
@@ -521,20 +521,26 @@ class _RawdahTodayState extends State<_RawdahToday> {
 
   @override
   Widget build(BuildContext context) {
-    const scene = Scenes.night;
     return GestureDetector(
       onTap: widget.onOpen,
       child: Container(
+        height: 108,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-              colors: [Color(0xFF223452), Color(0xFF14251E)],
+              colors: [Color(0xFFD3E3D9), Color(0xFFB4CDBD)],
               begin: Alignment.topRight,
               end: Alignment.bottomLeft),
           borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+                color: const Color(0xFFB4CDBD).withValues(alpha: 0.35),
+                blurRadius: 12,
+                offset: const Offset(0, 6))
+          ],
         ),
         clipBehavior: Clip.antiAlias,
         child: Stack(children: [
-          Positioned.fill(child: PearlBackdrop(scene)),
+          const Positioned.fill(child: PearlBackdrop(_scene)),
           Padding(
             padding: const EdgeInsets.all(16),
             child: FutureBuilder<List<Lesson>>(
@@ -543,48 +549,29 @@ class _RawdahTodayState extends State<_RawdahToday> {
                 final today = RawdahService.todayName();
                 Lesson? lesson;
                 if (snap.hasData) {
-                  final items = snap.data!
-                      .where((l) => l.day == today)
-                      .toList()
+                  final items = snap.data!.where((l) => l.day == today).toList()
                     ..sort((a, b) => RawdahService.parseTime(a.time)
                         .compareTo(RawdahService.parseTime(b.time)));
                   if (items.isNotEmpty) lesson = items.first;
                 }
-                if (lesson == null) {
-                  return Row(children: [
-                    const Expanded(
-                      child: Text('روضة — مجالس ودروس الذكر',
-                          style: TextStyle(
-                              color: AppColors.pearl50,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800)),
-                    ),
-                    const Icon(Icons.chevron_left, color: AppColors.sage300),
-                  ]);
-                }
+                final sub = lesson != null
+                    ? '${tr('أقرب درس', 'Next')}: ${lesson.title}${lesson.time.isNotEmpty ? ' · ${lesson.time}' : ''}'
+                    : tr('مجالس ودروس الذكر', 'Dhikr circles & lessons');
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(tr('أقرب درس اليوم', "Today's next lesson"),
-                        style: const TextStyle(
-                            color: Color(0xFF9FB0C9), fontSize: 12)),
-                    const SizedBox(height: 3),
-                    Text(lesson.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            color: AppColors.pearl50,
-                            fontSize: 16,
+                    Text('روضة',
+                        style: TextStyle(
+                            color: _scene.onColor,
+                            fontSize: 18,
                             fontWeight: FontWeight.w800)),
-                    const SizedBox(height: 5),
-                    Text(
-                        [lesson.teacher, lesson.time, lesson.location]
-                            .where((s) => s.isNotEmpty)
-                            .join(' · '),
+                    const SizedBox(height: 3),
+                    Text(sub,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            color: Color(0xFFC7D2E2), fontSize: 12.5)),
+                        style:
+                            TextStyle(color: _scene.subColor, fontSize: 11.5)),
                   ],
                 );
               },

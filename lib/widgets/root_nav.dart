@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../app_state.dart';
-import '../theme.dart';
 import '../screens/home_screen.dart';
 import '../screens/library_screen.dart';
 import '../screens/curriculum_screen.dart';
@@ -71,65 +70,31 @@ class _RootNavState extends State<RootNav> {
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: [
           NavigationDestination(
-            icon: const _NavDot(false),
-            selectedIcon: const _NavDot(true),
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home_rounded),
             label: tr('الرئيسية', 'Home'),
           ),
           NavigationDestination(
-            icon: const _NavDot(false),
-            selectedIcon: const _NavDot(true),
+            icon: const Icon(Icons.menu_book_outlined),
+            selectedIcon: const Icon(Icons.menu_book_rounded),
             label: tr('المكتبة', 'Library'),
           ),
           NavigationDestination(
-            icon: const _NavDot(false),
-            selectedIcon: const _NavDot(true),
+            icon: const Icon(Icons.school_outlined),
+            selectedIcon: const Icon(Icons.school_rounded),
             label: tr('المنهج', 'Curriculum'),
           ),
           NavigationDestination(
-            icon: const _NavDot(false),
-            selectedIcon: const _NavDot(true),
+            icon: const Icon(Icons.search_outlined),
+            selectedIcon: const Icon(Icons.search_rounded),
             label: tr('ابحث', 'Search'),
           ),
           NavigationDestination(
-            icon: const _NavDot(false),
-            selectedIcon: const _NavDot(true),
+            icon: const Icon(Icons.spa_outlined),
+            selectedIcon: const Icon(Icons.spa_rounded),
             label: tr('روضة', 'Rawdah'),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// A pearl-circle nav mark: hollow ring when idle, glossy pearl when selected.
-class _NavDot extends StatelessWidget {
-  final bool selected;
-  const _NavDot(this.selected);
-
-  @override
-  Widget build(BuildContext context) {
-    if (selected) {
-      return Container(
-        width: 13,
-        height: 13,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            center: Alignment(-0.35, -0.35),
-            radius: 0.95,
-            colors: [Color(0xFFFFFFFF), AppColors.sage500, AppColors.pine800],
-            stops: [0.0, 0.55, 1.0],
-          ),
-        ),
-      );
-    }
-    return Container(
-      width: 11,
-      height: 11,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-            color: AppColors.sage500.withValues(alpha: 0.6), width: 1.5),
       ),
     );
   }

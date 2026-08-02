@@ -21,6 +21,12 @@ class CardScene {
 class Scenes {
   static const pine = CardScene([Color(0xFF1B3B2B), Color(0xFF2E5442)], true);
   static const sage = CardScene([Color(0xFF4F7263), Color(0xFF77A08D)], true);
+  // Foundation set — a graduated green scale: Library (darkest) → Curriculum
+  // (mid) → Rawdah (lightest, dark text). One colour family, ordered depth.
+  static const libCard = CardScene([Color(0xFF1B3B2B), Color(0xFF10271C)], true);
+  static const curCard = CardScene([Color(0xFF54786A), Color(0xFF3E5A4E)], true);
+  static const rawdahCard =
+      CardScene([Color(0xFFD3E3D9), Color(0xFFB4CDBD)], false);
   // Maghrib sunset — warm amber into dusky plum.
   static const dusk = CardScene([Color(0xFFCB6E45), Color(0xFF5A3A58)], true);
   static const night = CardScene([Color(0xFF223452), Color(0xFF14251E)], true);

@@ -1,0 +1,35 @@
+name: Bootstrap iOS project
+
+# One-time helper: generates the native ios/ folder with Flutter and commits it
+# back into the repo, so we have a stable place to set the bundle id, the
+# location-permission text, and the app icon before building on Codemagic.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Generate the ios/ folder
+        run: flutter create --platforms=ios --org app --project-name muslimummah .
+
+      - name: Commit ios/ back into the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ios
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — ios/ already present."
+          else
+            git commit -m "Bootstrap: add generated iOS project folder"
+            git push
+          fi

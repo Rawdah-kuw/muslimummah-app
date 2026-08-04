@@ -16,11 +16,12 @@ class LessonImage {
       final dir = await getTemporaryDirectory();
       final f = File('${dir.path}/rawdah-lesson.png');
       await f.writeAsBytes(bytes);
-      await SharePlus.instance
-          .share(ShareParams(files: [XFile(f.path)], text: caption));
+      await Share.shareXFiles([XFile(f.path)],
+          text: caption, sharePositionOrigin: const Rect.fromLTWH(0, 0, 100, 100));
     } catch (_) {
       // If anything goes wrong drawing the image, share the text instead.
-      await SharePlus.instance.share(ShareParams(text: caption));
+      await Share.share(caption,
+          sharePositionOrigin: const Rect.fromLTWH(0, 0, 100, 100));
     }
   }
 

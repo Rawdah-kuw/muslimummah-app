@@ -3,9 +3,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import '../theme.dart';
 
+/// A non-null anchor rect so the iOS share sheet always has a source to
+/// present from (required on iPad; harmless on iPhone).
+const Rect kShareOrigin = Rect.fromLTWH(0, 0, 100, 100);
+
 /// Share plain text (with the site link) via the OS share sheet.
 Future<void> shareText(String text) async {
-  await SharePlus.instance.share(ShareParams(text: text));
+  await Share.share(text, sharePositionOrigin: kShareOrigin);
 }
 
 const String kSiteUrl = 'https://muslimummah.app';

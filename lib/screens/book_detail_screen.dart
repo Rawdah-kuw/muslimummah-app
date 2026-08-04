@@ -155,8 +155,9 @@ class _DownloadButtonState extends State<_DownloadButton> {
       final safe = widget.url.split('/').last;
       final f = File('${dir.path}/$safe');
       await f.writeAsBytes(resp.bodyBytes);
-      await SharePlus.instance
-          .share(ShareParams(files: [XFile(f.path)], text: widget.title));
+      await Share.shareXFiles([XFile(f.path)],
+          text: widget.title,
+          sharePositionOrigin: const Rect.fromLTWH(0, 0, 100, 100));
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

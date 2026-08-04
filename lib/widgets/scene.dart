@@ -35,11 +35,20 @@ class Scenes {
   static const sky = CardScene([Color(0xFFBFD8EC), Color(0xFFEDF3F0)], false);
   static const pearl = CardScene([Color(0xFFF7F4ED), Color(0xFFE7E4D8)], false);
 
-  // Adhkar cards: morning = light sky blue (dark text); evening = deep indigo.
+  // Adhkar cards: morning = light sky blue (dark text); evening = deep,
+  // muted indigo/slate (calm, not vivid).
   static const morningSky =
       CardScene([Color(0xFFBFE0F2), Color(0xFFE9F3F8)], false);
   static const eveningIndigo =
-      CardScene([Color(0xFF283A7A), Color(0xFF161F45)], true);
+      CardScene([Color(0xFF333E63), Color(0xFF1B2138)], true);
+
+  // Tools grid — one cohesive muted "earthy garden" family.
+  static const toolTeal = CardScene([Color(0xFF4F6E68), Color(0xFF6B8A84)], true);
+  static const toolSage = CardScene([Color(0xFF3E5A4E), Color(0xFF557264)], true);
+  static const toolSlate = CardScene([Color(0xFF5A6A82), Color(0xFF74869C)], true);
+  static const toolClay = CardScene([Color(0xFFB08968), Color(0xFFC7A488)], false);
+  static const toolSand = CardScene([Color(0xFFC7B299), Color(0xFFDDCCB6)], false);
+  static const toolMoss = CardScene([Color(0xFF9CAF88), Color(0xFFBCC9A8)], false);
 
   // Curriculum palette — muted, cohesive "earthy garden" set (Option B).
   static const curriculum = [
@@ -58,15 +67,17 @@ class Scenes {
 /// Paints the brand mark as a soft watermark: an open ring with a glossy pearl.
 class _PearlPainter extends CustomPainter {
   final CardScene scene;
-  _PearlPainter(this.scene);
+  final bool rtl;
+  _PearlPainter(this.scene, {this.rtl = true});
 
   @override
   void paint(Canvas canvas, Size size) {
     final dark = scene.dark;
-    // Anchored to the far-left edge so it never sits under the text (RTL text
-    // is right-aligned). Small and soft.
+    // Sit on the side opposite the text so it never overlaps it: text is
+    // start-aligned (right in RTL → pearl left; left in LTR → pearl right).
     final r = math.min(size.height * 0.34, size.width * 0.16);
-    final center = Offset(r * 0.85, size.height * 0.5);
+    final cx = rtl ? r * 0.85 : size.width - r * 0.85;
+    final center = Offset(cx, size.height * 0.5);
 
     // Open ring ("C" of the logo); its left side clips off the edge.
     final arcPaint = Paint()
@@ -97,7 +108,8 @@ class _PearlPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _PearlPainter old) => old.scene != scene;
+  bool shouldRepaint(covariant _PearlPainter old) =>
+      old.scene != scene || old.rtl != rtl;
 }
 
 /// The pearl motif as a fill-able backdrop (use inside a Stack / Positioned.fill).
@@ -105,8 +117,10 @@ class PearlBackdrop extends StatelessWidget {
   final CardScene scene;
   const PearlBackdrop(this.scene, {super.key});
   @override
-  Widget build(BuildContext context) =>
-      CustomPaint(painter: _PearlPainter(scene), size: Size.infinite);
+  Widget build(BuildContext context) => CustomPaint(
+      painter: _PearlPainter(scene,
+          rtl: Directionality.of(context) == TextDirection.rtl),
+      size: Size.infinite);
 }
 
 /// A compact, tappable gradient card for a main section (text + pearl motif).
@@ -149,7 +163,10 @@ class SceneCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            Positioned.fill(child: CustomPaint(painter: _PearlPainter(scene))),
+            Positioned.fill(
+                child: CustomPaint(
+                    painter: _PearlPainter(scene,
+                        rtl: Directionality.of(context) == TextDirection.rtl))),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               child: Column(
@@ -205,7 +222,10 @@ class ToolTile extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            Positioned.fill(child: CustomPaint(painter: _PearlPainter(scene))),
+            Positioned.fill(
+                child: CustomPaint(
+                    painter: _PearlPainter(scene,
+                        rtl: Directionality.of(context) == TextDirection.rtl))),
             Padding(
               padding: const EdgeInsets.all(14),
               child: Align(

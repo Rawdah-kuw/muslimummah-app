@@ -91,7 +91,7 @@ class _RootNavState extends State<RootNav> {
           NavigationDestination(
             icon: const Icon(Icons.school_outlined),
             selectedIcon: const Icon(Icons.school_rounded),
-            label: tr('المنهج', 'Curriculum'),
+            label: tr('المنهج', 'Courses'),
           ),
           NavigationDestination(
             icon: const Icon(Icons.search_outlined),

@@ -94,17 +94,6 @@ class _ReaderScreenState extends State<ReaderScreen> {
         title:
             Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         actions: [
-          if (bilingual)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: TextButton(
-                onPressed: _toggle,
-                style: TextButton.styleFrom(
-                    foregroundColor: AppColors.sage600,
-                    textStyle: const TextStyle(fontWeight: FontWeight.w800)),
-                child: Text(_showingEn ? 'ع' : 'EN'),
-              ),
-            ),
           IconButton(
             tooltip: tr('افتح في المتصفّح', 'Open in browser'),
             icon: const Icon(Icons.open_in_new),
@@ -112,7 +101,56 @@ class _ReaderScreenState extends State<ReaderScreen> {
           ),
         ],
       ),
-      body: _body(context),
+      body: Column(
+        children: [
+          if (bilingual) _langBar(context),
+          Expanded(child: _body(context)),
+        ],
+      ),
+    );
+  }
+
+  /// A clear, always-visible Arabic / English switch for bilingual books.
+  Widget _langBar(BuildContext context) {
+    Widget seg(String label, bool en) {
+      final active = _showingEn == en;
+      return Expanded(
+        child: GestureDetector(
+          onTap: () {
+            if (_showingEn != en) _toggle();
+          },
+          child: Container(
+            margin: const EdgeInsets.all(4),
+            padding: const EdgeInsets.symmetric(vertical: 9),
+            decoration: BoxDecoration(
+              color: active ? AppColors.sage600 : Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: active
+                    ? Colors.white
+                    : Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 10, 12, 6),
+      decoration: BoxDecoration(
+        color: AppColors.sage100,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(children: [
+        seg('العربية', false),
+        seg('English', true),
+      ]),
     );
   }
 

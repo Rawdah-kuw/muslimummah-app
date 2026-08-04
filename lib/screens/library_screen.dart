@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../app_state.dart';
+import '../config.dart';
 import '../data/content.dart';
 import '../models/models.dart';
 import '../services/prefs.dart';
 import '../theme.dart';
+import '../widgets/common.dart';
 import 'book_detail_screen.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -51,6 +53,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
           ),
         ),
+        const _LibraryNotice(),
         SizedBox(
           height: 48,
           child: ListView(
@@ -171,4 +174,67 @@ class _BookTile extends StatelessWidget {
         child: Text(s,
             style: const TextStyle(fontSize: 11, color: AppColors.sage700)),
       );
+}
+
+/// A discreet notice: the library's books are shared as freely-distributable
+/// (open) knowledge; tapping opens the full note with a way to report.
+class _LibraryNotice extends StatelessWidget {
+  const _LibraryNotice();
+
+  void _open(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(tr('عن كتب المكتبة', 'About the library')),
+        content: Text(
+          tr(
+            'نعتبر هذه الكتب مما يُنشر لعموم النفع ابتغاءً للأجر. إن كنت صاحب حقٍّ في أي كتاب وتودّ التحقق أو إزالته، فتواصل معنا وسنستجيب فوراً.',
+            'We treat these books as freely-shared knowledge, offered seeking reward. If you hold rights to any book and wish to verify or request its removal, contact us and we will respond promptly.',
+          ),
+          style: const TextStyle(height: 1.7),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => openUrl(
+                context,
+                'mailto:${Config.contactEmail}?subject=${Uri.encodeComponent(tr('بخصوص كتاب في المكتبة', 'Regarding a library book'))}'),
+            child: Text(tr('تواصل / إبلاغ', 'Contact / report')),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(tr('حسناً', 'OK')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _open(context),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(12, 2, 12, 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.sage100,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.info_outline, size: 16, color: AppColors.sage700),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                tr('كتب المكتبة مُتاحة للنفع العام — اضغط للتفاصيل والإبلاغ.',
+                    'Books here are shared for public benefit — tap for details & reporting.'),
+                style: const TextStyle(
+                    fontSize: 11.5, color: AppColors.sage700),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

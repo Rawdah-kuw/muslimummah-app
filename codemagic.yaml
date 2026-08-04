@@ -14,6 +14,8 @@ workflows:
       vars:
         BUNDLE_ID: "app.muslimummah"
     scripts:
+      - name: Use CocoaPods for all plugins (disable Swift Package Manager)
+        script: flutter config --no-enable-swift-package-manager
       - name: Get Flutter packages
         script: flutter pub get
       - name: Install CocoaPods dependencies
@@ -35,4 +37,6 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
-        submit_to_testflight: true
+        # Upload the build (available for internal testing immediately).
+        # External beta review is submitted manually once test info is filled.
+        submit_to_testflight: false

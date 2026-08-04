@@ -7,15 +7,8 @@ import 'science_screen.dart';
 class CurriculumScreen extends StatelessWidget {
   const CurriculumScreen({super.key});
 
-  static const _scenes = [
-    Scenes.pine,
-    Scenes.sage,
-    Scenes.sky,
-    Scenes.night,
-    Scenes.dusk,
-    Scenes.dawn,
-    Scenes.pearl,
-  ];
+  // Muted, cohesive "earthy garden" palette (Option B).
+  static const _scenes = Scenes.curriculum;
 
   @override
   Widget build(BuildContext context) {

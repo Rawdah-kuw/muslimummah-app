@@ -82,6 +82,21 @@ class NotificationService {
     await _plugin.cancel(id);
   }
 
+  /// Fire an immediate notification so the user can confirm that permission is
+  /// granted and reminders will actually be delivered on this device.
+  static Future<void> showTest(bool ar) async {
+    await init();
+    await requestPermissions();
+    await _plugin.show(
+      999,
+      ar ? 'تذكير تجريبي 🌿' : 'Test reminder 🌿',
+      ar
+          ? 'الإشعارات تعمل — ستصلك التذكيرات في أوقاتها بإذن الله.'
+          : 'Notifications work — your reminders will arrive on time.',
+      _details,
+    );
+  }
+
   // ── Daily Wird: schedule the next 14 days, each with that day's actual
   //    reminder text. Rescheduled on every app start to stay topped up. ──
   static const _wirdBase = 100;

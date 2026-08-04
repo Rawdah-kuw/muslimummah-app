@@ -119,7 +119,8 @@ class _RawdahScreenState extends State<RawdahScreen> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 4),
                             child: ChoiceChip(
-                              label: Text(dn),
+                              label: Text(RawdahService.dayLabel(
+                                  dn, AppState.I.lang == 'en')),
                               selected: sel,
                               onSelected: (_) => setState(() => _day = dn),
                             ),
@@ -283,7 +284,7 @@ class _LessonCard extends StatelessWidget {
           // Day + date line
           Row(
             children: [
-              Text(l.day,
+              Text(RawdahService.dayLabel(l.day, AppState.I.lang == 'en'),
                   style: const TextStyle(
                       fontWeight: FontWeight.w700, color: AppColors.pine800)),
               if (l.lessonDate != null) ...[

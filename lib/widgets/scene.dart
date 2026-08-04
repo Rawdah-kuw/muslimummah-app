@@ -34,6 +34,25 @@ class Scenes {
   static const dawn = CardScene([Color(0xFFAFC6E6), Color(0xFFF3E0C7)], false);
   static const sky = CardScene([Color(0xFFBFD8EC), Color(0xFFEDF3F0)], false);
   static const pearl = CardScene([Color(0xFFF7F4ED), Color(0xFFE7E4D8)], false);
+
+  // Adhkar cards: morning = light sky blue (dark text); evening = deep indigo.
+  static const morningSky =
+      CardScene([Color(0xFFBFE0F2), Color(0xFFE9F3F8)], false);
+  static const eveningIndigo =
+      CardScene([Color(0xFF283A7A), Color(0xFF161F45)], true);
+
+  // Curriculum palette — muted, cohesive "earthy garden" set (Option B).
+  static const curriculum = [
+    CardScene([Color(0xFF2E4A3C), Color(0xFF3E5A4E)], true),
+    CardScene([Color(0xFF3E5A4E), Color(0xFF557264)], true),
+    CardScene([Color(0xFF4F6E68), Color(0xFF6B8A84)], true),
+    CardScene([Color(0xFF6E7F55), Color(0xFF8A9A6B)], true),
+    CardScene([Color(0xFF8296A8), Color(0xFF9FB1C0)], true),
+    CardScene([Color(0xFF7A6E86), Color(0xFF948AA0)], true),
+    CardScene([Color(0xFFB08968), Color(0xFFC7A488)], false),
+    CardScene([Color(0xFFC7B299), Color(0xFFDDCCB6)], false),
+    CardScene([Color(0xFF9CAF88), Color(0xFFBCC9A8)], false),
+  ];
 }
 
 /// Paints the brand mark as a soft watermark: an open ring with a glossy pearl.

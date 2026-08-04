@@ -207,6 +207,44 @@ class RawdahService {
       .where((dn) => lessons.any((l) => l.day == dn))
       .toList();
 
+  /// English names for the seven days (parallel to [days]).
+  static const _daysEn = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  /// Localized label for an Arabic day name (English in English mode).
+  static String dayLabel(String arDay, bool english) {
+    if (!english) return arDay;
+    final i = days.indexOf(arDay);
+    return i >= 0 ? _daysEn[i] : arDay;
+  }
+
+  /// The next upcoming lesson relative to the current Kuwait time. Considers
+  /// today's remaining lessons first, then wraps to the next day that has any.
+  static Lesson? nextLesson(List<Lesson> all) {
+    if (all.isEmpty) return null;
+    final now = _kuwaitNow();
+    final nowMin = now.hour * 60 + now.minute;
+    final ordered = orderedFromToday();
+    for (var i = 0; i < ordered.length; i++) {
+      final dn = ordered[i];
+      var items = all.where((l) => l.day == dn).toList()
+        ..sort((a, b) => parseTime(a.time).compareTo(parseTime(b.time)));
+      if (i == 0) {
+        // Today — keep only lessons whose time has not passed yet.
+        items = items.where((l) => parseTime(l.time) >= nowMin).toList();
+      }
+      if (items.isNotEmpty) return items.first;
+    }
+    return null;
+  }
+
   /// Format an ISO date (YYYY-MM-DD) as D/M/YYYY.
   static String fmtDate(String? d) {
     if (d == null || d.isEmpty) return '';

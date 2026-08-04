@@ -220,11 +220,20 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(title,
-                    style: TextStyle(
-                        color: scene.onColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800)),
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(title,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: TextStyle(
+                            color: scene.onColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800)),
+                  ),
+                ),
                 const SizedBox(height: 3),
                 Text(subtitle,
                     maxLines: 1,
@@ -239,7 +248,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _adhkarNow(BuildContext context) {
-    final scene = _isMorning ? Scenes.dawn : Scenes.dusk;
+    final scene = _isMorning ? Scenes.morningSky : Scenes.eveningIndigo;
     return GestureDetector(
       onTap: () =>
           _push(context, AdhkarScreen(initialTab: _isMorning ? 0 : 1)),
@@ -546,14 +555,9 @@ class _RawdahCardState extends State<_RawdahCard> {
             child: FutureBuilder<List<Lesson>>(
               future: _future,
               builder: (context, snap) {
-                final today = RawdahService.todayName();
-                Lesson? lesson;
-                if (snap.hasData) {
-                  final items = snap.data!.where((l) => l.day == today).toList()
-                    ..sort((a, b) => RawdahService.parseTime(a.time)
-                        .compareTo(RawdahService.parseTime(b.time)));
-                  if (items.isNotEmpty) lesson = items.first;
-                }
+                final lesson = snap.hasData
+                    ? RawdahService.nextLesson(snap.data!)
+                    : null;
                 final sub = lesson != null
                     ? '${tr('أقرب درس', 'Next')}: ${lesson.title}${lesson.time.isNotEmpty ? ' · ${lesson.time}' : ''}'
                     : tr('مجالس ودروس الذكر', 'Dhikr circles & lessons');
@@ -561,7 +565,7 @@ class _RawdahCardState extends State<_RawdahCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text('روضة',
+                    Text(tr('روضة', 'Rawdah'),
                         style: TextStyle(
                             color: _scene.onColor,
                             fontSize: 18,

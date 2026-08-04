@@ -49,6 +49,23 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     .onSurface
                     .withValues(alpha: 0.65)),
           ),
+          const SizedBox(height: 10),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.notifications_active_outlined, size: 18),
+            label: Text(tr('إرسال تنبيه تجريبي الآن',
+                'Send a test notification now')),
+            onPressed: () async {
+              await NotificationService.showTest(AppState.I.lang == 'ar');
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(tr(
+                      'إن لم يصلك التنبيه، فعّل الإشعارات لهذا التطبيق من إعدادات جهازك.',
+                      'If it does not arrive, enable notifications for this app in your device Settings.')),
+                  duration: const Duration(seconds: 5),
+                ));
+              }
+            },
+          ),
           const SizedBox(height: 12),
           ..._reminders.map((r) => _ReminderTile(r)),
         ],

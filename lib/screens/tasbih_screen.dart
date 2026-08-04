@@ -36,13 +36,19 @@ class _TasbihScreenState extends State<TasbihScreen> {
     _total = Prefs.tasbihTotal();
   }
 
+  bool _sound = true;
+  bool _haptics = true;
+
   void _tap() {
-    HapticFeedback.lightImpact();
+    if (_haptics) HapticFeedback.lightImpact();
+    if (_sound) SystemSound.play(SystemSoundType.click);
     setState(() {
       _count++;
       _total++;
     });
-    if (_count == _presets[_i].target) HapticFeedback.mediumImpact();
+    if (_count == _presets[_i].target && _haptics) {
+      HapticFeedback.mediumImpact();
+    }
     Prefs.setTasbihTotal(_total);
   }
 
@@ -57,6 +63,14 @@ class _TasbihScreenState extends State<TasbihScreen> {
       appBar: AppBar(
         title: Text(tr('السبحة', 'Tasbih')),
         actions: [
+          IconButton(
+              onPressed: () => setState(() => _sound = !_sound),
+              icon: Icon(_sound ? Icons.volume_up : Icons.volume_off),
+              tooltip: tr('الصوت', 'Sound')),
+          IconButton(
+              onPressed: () => setState(() => _haptics = !_haptics),
+              icon: Icon(_haptics ? Icons.vibration : Icons.smartphone),
+              tooltip: tr('الاهتزاز', 'Vibration')),
           IconButton(
               onPressed: _resetCount,
               icon: const Icon(Icons.refresh),

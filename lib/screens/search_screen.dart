@@ -4,8 +4,8 @@ import '../config.dart';
 import '../data/content.dart';
 import '../services/ask_service.dart';
 import '../theme.dart';
-import '../widgets/common.dart';
 import 'book_detail_screen.dart';
+import 'in_app_browser.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -195,13 +195,18 @@ class _TrustedTab extends StatefulWidget {
 class _TrustedTabState extends State<_TrustedTab> {
   final _c = TextEditingController();
 
+  void _open(String url, String title) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => InAppBrowser(url: url, title: title)));
+  }
+
   void _search() {
     final q = _c.text.trim();
     if (q.isEmpty) return;
     final sites = Config.approvedSites.map((s) => 'site:$s').join(' OR ');
     final url =
         'https://www.google.com/search?q=${Uri.encodeComponent('$q ($sites)')}';
-    openUrl(context, url);
+    _open(url, q);
   }
 
   @override
@@ -232,8 +237,8 @@ class _TrustedTabState extends State<_TrustedTab> {
               child: ListTile(
                 leading: const Icon(Icons.public, color: AppColors.sage700),
                 title: Text(s),
-                trailing: const Icon(Icons.open_in_new, size: 18),
-                onTap: () => openUrl(context, 'https://$s'),
+                trailing: const Icon(Icons.chevron_right, size: 18),
+                onTap: () => _open('https://$s', s),
               ),
             )),
       ],

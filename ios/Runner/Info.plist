@@ -68,5 +68,11 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>يُستخدم موقعك لتحديد اتجاه القبلة فقط، ولا يُخزَّن ولا يُشارَك.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>يُستخدم موقعك لتحديد اتجاه القبلة فقط، ولا يُخزَّن ولا يُشارَك.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>يُستخدم موقعك لتحديد اتجاه القبلة فقط، ولا يُخزَّن ولا يُشارَك.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

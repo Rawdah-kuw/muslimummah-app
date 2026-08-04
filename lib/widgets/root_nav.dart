@@ -57,15 +57,24 @@ class _RootNavState extends State<RootNav> {
       ),
       body: IndexedStack(
         index: _index,
+        // NOTE: these must NOT be const — they read AppState.I.lang directly,
+        // so they need to rebuild when the language is toggled.
         children: [
           HomeScreen(onTab: _goTab),
-          const LibraryScreen(),
-          const CurriculumScreen(),
-          const SearchScreen(),
-          const RawdahScreen(),
+          LibraryScreen(),
+          CurriculumScreen(),
+          SearchScreen(),
+          RawdahScreen(),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          // Keep long labels (e.g. "Curriculum") on a single line.
+          labelTextStyle: WidgetStateProperty.all(
+            const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          ),
+        ),
+        child: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: [
@@ -95,6 +104,7 @@ class _RootNavState extends State<RootNav> {
             label: tr('روضة', 'Rawdah'),
           ),
         ],
+        ),
       ),
     );
   }

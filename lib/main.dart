@@ -52,7 +52,7 @@ class MuslimUmmahApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: const RootNav(),
+          home: RootNav(),
         );
       },
     );

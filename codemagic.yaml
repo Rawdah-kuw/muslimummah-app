@@ -14,8 +14,45 @@ workflows:
       vars:
         BUNDLE_ID: "app.muslimummah"
     scripts:
-      - name: Use CocoaPods for all plugins (disable Swift Package Manager)
-        script: flutter config --no-enable-swift-package-manager
+      - name: Regenerate iOS with CocoaPods (classic template, no Swift PM)
+        script: |
+          set -e
+          # Preserve the pearl app icons across the regeneration.
+          rm -rf /tmp/appicon
+          if [ -d ios/Runner/Assets.xcassets/AppIcon.appiconset ]; then
+            cp -r ios/Runner/Assets.xcassets/AppIcon.appiconset /tmp/appicon
+          fi
+          flutter config --no-enable-swift-package-manager
+          rm -rf ios
+          flutter create --platforms=ios --org app --project-name muslimummah .
+          # Restore the pearl app icons.
+          if [ -d /tmp/appicon ]; then
+            rm -rf ios/Runner/Assets.xcassets/AppIcon.appiconset
+            cp -r /tmp/appicon ios/Runner/Assets.xcassets/AppIcon.appiconset
+          fi
+          # Re-apply the app's Info.plist settings.
+          python3 - <<'PY'
+          import re
+          p = 'ios/Runner/Info.plist'
+          s = open(p, encoding='utf-8').read()
+          desc = 'يُستخدم موقعك لتحديد اتجاه القبلة فقط، ولا يُخزَّن ولا يُشارَك.'
+          name = 'أمة الإسلام'
+          if '<key>CFBundleDisplayName</key>' in s:
+              s = re.sub(r'(<key>CFBundleDisplayName</key>\s*<string>)[^<]*(</string>)',
+                         lambda m: m.group(1) + name + m.group(2), s)
+              dn = ''
+          else:
+              dn = '\t<key>CFBundleDisplayName</key>\n\t<string>' + name + '</string>\n'
+          extra = (dn +
+                   '\t<key>NSLocationWhenInUseUsageDescription</key>\n\t<string>' + desc + '</string>\n' +
+                   '\t<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>\n\t<string>' + desc + '</string>\n' +
+                   '\t<key>NSLocationAlwaysUsageDescription</key>\n\t<string>' + desc + '</string>\n' +
+                   '\t<key>ITSAppUsesNonExemptEncryption</key>\n\t<false/>\n')
+          if 'NSLocationWhenInUseUsageDescription' not in s:
+              s = s.replace('</dict>\n</plist>', extra + '</dict>\n</plist>')
+          open(p, 'w', encoding='utf-8').write(s)
+          print('Info.plist patched')
+          PY
       - name: Get Flutter packages
         script: flutter pub get
       - name: Install CocoaPods dependencies

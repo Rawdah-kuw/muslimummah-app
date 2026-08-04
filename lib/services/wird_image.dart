@@ -26,9 +26,10 @@ class WirdImage {
       final dir = await getTemporaryDirectory();
       final f = File('${dir.path}/muslim-ummah-wird.png');
       await f.writeAsBytes(bytes);
-      await Share.shareXFiles([XFile(f.path)], text: caption);
+      await SharePlus.instance
+          .share(ShareParams(files: [XFile(f.path)], text: caption));
     } catch (_) {
-      await Share.share(caption);
+      await SharePlus.instance.share(ShareParams(text: caption));
     }
   }
 

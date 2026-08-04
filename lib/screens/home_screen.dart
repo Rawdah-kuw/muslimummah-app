@@ -15,7 +15,6 @@ import 'prayer_screen.dart';
 import 'adhkar_screen.dart';
 import 'tasbih_screen.dart';
 import 'bookmarks_screen.dart';
-import 'qibla_screen.dart';
 import 'notifications_screen.dart';
 import 'accounts_screen.dart';
 import 'book_detail_screen.dart';
@@ -392,8 +391,6 @@ class HomeScreen extends StatelessWidget {
       crossAxisSpacing: 10,
       childAspectRatio: 1.15,
       children: [
-        tile(tr('اتجاه القبلة', 'Qibla'), Scenes.toolTeal,
-            () => _push(context, const QiblaScreen())),
         tile(tr('السبحة', 'Tasbih'), Scenes.toolSage,
             () => _push(context, const TasbihScreen())),
         tile(tr('ذكّرني', 'Remind me'), Scenes.toolSlate,

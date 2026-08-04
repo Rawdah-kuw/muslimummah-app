@@ -25,6 +25,11 @@ workflows:
           flutter config --no-enable-swift-package-manager
           rm -rf ios
           flutter create --platforms=ios --org app --project-name muslimummah .
+          # Raise the minimum iOS version to 15.0 (Apple no longer accepts 12.0).
+          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g' ios/Runner.xcodeproj/project.pbxproj
+          /usr/libexec/PlistBuddy -c "Set :MinimumOSVersion 15.0" ios/Flutter/AppFrameworkInfo.plist || true
+          sed -i '' "s/^# *platform :ios.*/platform :ios, '15.0'/" ios/Podfile
+          sed -i '' "s/^platform :ios.*/platform :ios, '15.0'/" ios/Podfile
           # Restore the pearl app icons.
           if [ -d /tmp/appicon ]; then
             rm -rf ios/Runner/Assets.xcassets/AppIcon.appiconset

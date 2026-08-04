@@ -15,16 +15,17 @@ class ScheduleImage {
         'جدول دروس $day — روضة · أمة الإسلام\nجميع الأوقات بتوقيت الكويت (GMT+3)\nhttps://muslimummah.app';
     try {
       if (lessons.isEmpty) {
-        await Share.share(caption);
+        await SharePlus.instance.share(ShareParams(text: caption));
         return;
       }
       final bytes = await _render(day, lessons);
       final dir = await getTemporaryDirectory();
       final f = File('${dir.path}/rawdah-schedule.png');
       await f.writeAsBytes(bytes);
-      await Share.shareXFiles([XFile(f.path)], text: caption);
+      await SharePlus.instance
+          .share(ShareParams(files: [XFile(f.path)], text: caption));
     } catch (_) {
-      await Share.share(caption);
+      await SharePlus.instance.share(ShareParams(text: caption));
     }
   }
 

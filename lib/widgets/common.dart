@@ -5,7 +5,7 @@ import '../theme.dart';
 
 /// Share plain text (with the site link) via the OS share sheet.
 Future<void> shareText(String text) async {
-  await Share.share(text);
+  await SharePlus.instance.share(ShareParams(text: text));
 }
 
 const String kSiteUrl = 'https://muslimummah.app';

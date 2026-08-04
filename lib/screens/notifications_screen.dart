@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../services/notification_service.dart';
+import '../services/prayer_service.dart';
 import '../services/prefs.dart';
 import '../theme.dart';
 
@@ -67,8 +68,66 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             },
           ),
           const SizedBox(height: 12),
+          const _PrayerToggle(),
           ..._reminders.map((r) => _ReminderTile(r)),
         ],
+      ),
+    );
+  }
+}
+
+/// Turns on a reminder for each of the five daily prayers (times from the
+/// prayer service, refreshed automatically).
+class _PrayerToggle extends StatefulWidget {
+  const _PrayerToggle();
+  @override
+  State<_PrayerToggle> createState() => _PrayerToggleState();
+}
+
+class _PrayerToggleState extends State<_PrayerToggle> {
+  late bool _on = Prefs.getBool('notif_prayers', false);
+  bool _busy = false;
+
+  Future<void> _apply(bool v) async {
+    setState(() {
+      _on = v;
+      _busy = true;
+    });
+    await Prefs.setBool('notif_prayers', v);
+    try {
+      if (v) {
+        await NotificationService.requestPermissions();
+        final pd = await PrayerService.today();
+        await NotificationService.schedulePrayers(
+            pd.timings, AppState.I.lang == 'ar');
+      } else {
+        await NotificationService.cancelPrayers();
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(tr('تعذّر جلب مواقيت الصلاة. تأكّد من الإنترنت.',
+              'Could not load prayer times. Check your connection.')),
+        ));
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: SwitchListTile(
+        title: Text(tr('تنبيه الصلوات الخمس', 'Five daily prayers'),
+            style: const TextStyle(fontWeight: FontWeight.w700)),
+        subtitle: Text(_busy
+            ? tr('جارٍ التحديث…', 'Updating…')
+            : tr('تذكير عند دخول وقت كل صلاة', 'A reminder at each prayer time')),
+        value: _on,
+        activeColor: AppColors.sage600,
+        onChanged: _busy ? null : _apply,
       ),
     );
   }

@@ -43,6 +43,14 @@ class NotificationService {
         ?.requestNotificationsPermission();
   }
 
+  // Show alerts even while the app is in the foreground (iOS suppresses them
+  // by default).
+  static const _iosDetails = DarwinNotificationDetails(
+    presentAlert: true,
+    presentBadge: true,
+    presentSound: true,
+  );
+
   static final _details = NotificationDetails(
     android: AndroidNotificationDetails(
       'mu_daily',
@@ -51,7 +59,7 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
     ),
-    iOS: const DarwinNotificationDetails(),
+    iOS: _iosDetails,
   );
 
   static tz.TZDateTime _nextTime(int hour, int minute) {
@@ -111,7 +119,7 @@ class NotificationService {
           priority: Priority.high,
           styleInformation: BigTextStyleInformation(body),
         ),
-        iOS: const DarwinNotificationDetails(),
+        iOS: _iosDetails,
       );
 
   static Future<void> scheduleWird(int hour, int minute, bool ar) async {
@@ -144,6 +152,53 @@ class NotificationService {
     await init();
     for (var i = 0; i < _wirdDays; i++) {
       await _plugin.cancel(_wirdBase + i);
+    }
+  }
+
+  // ── The five daily prayers. Scheduled as daily-repeating reminders at each
+  //    prayer time, and refreshed on every app start so they stay accurate. ──
+  static const _prayerBase = 200;
+  static const _prayerKeys = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  static const _prayerAr = {
+    'Fajr': 'الفجر',
+    'Dhuhr': 'الظهر',
+    'Asr': 'العصر',
+    'Maghrib': 'المغرب',
+    'Isha': 'العشاء',
+  };
+  static const _prayerEn = {
+    'Fajr': 'Fajr',
+    'Dhuhr': 'Dhuhr',
+    'Asr': 'Asr',
+    'Maghrib': 'Maghrib',
+    'Isha': 'Isha',
+  };
+
+  /// Schedule a reminder for each of the five prayers using [timings]
+  /// (a map like {"Fajr": "04:12", ...}).
+  static Future<void> schedulePrayers(
+      Map<String, String> timings, bool ar) async {
+    await init();
+    await cancelPrayers();
+    for (var i = 0; i < _prayerKeys.length; i++) {
+      final k = _prayerKeys[i];
+      final t = timings[k];
+      if (t == null || !t.contains(':')) continue;
+      final p = t.split(':');
+      final h = int.tryParse(p[0]) ?? 0;
+      final m = int.tryParse(p[1]) ?? 0;
+      final title = ar
+          ? '🕌 حان وقت صلاة ${_prayerAr[k]}'
+          : '🕌 Time for ${_prayerEn[k]} prayer';
+      final body = ar ? 'أقِم الصلاة، أقبِل على ربّك 🤲' : 'It\'s time to pray. 🤲';
+      await scheduleDaily(_prayerBase + i, h, m, title, body);
+    }
+  }
+
+  static Future<void> cancelPrayers() async {
+    await init();
+    for (var i = 0; i < _prayerKeys.length; i++) {
+      await _plugin.cancel(_prayerBase + i);
     }
   }
 }

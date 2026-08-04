@@ -155,12 +155,13 @@ class _DownloadButtonState extends State<_DownloadButton> {
       final safe = widget.url.split('/').last;
       final f = File('${dir.path}/$safe');
       await f.writeAsBytes(resp.bodyBytes);
-      await Share.shareXFiles([XFile(f.path)], text: widget.title);
+      await SharePlus.instance
+          .share(ShareParams(files: [XFile(f.path)], text: widget.title));
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(tr('تعذّر التحميل. تأكّد من الإنترنت وحاول مجدداً.',
-              'Download failed. Check your connection and try again.')),
+          content: Text(tr('تعذّر حفظ الكتاب. حاول مرة أخرى.',
+              'Could not save the book. Please try again.')),
         ));
       }
     } finally {

@@ -8,6 +8,7 @@ import 'theme.dart';
 import 'data/content.dart';
 import 'services/prefs.dart';
 import 'services/notification_service.dart';
+import 'services/prayer_service.dart';
 import 'widgets/root_nav.dart';
 
 Future<void> main() async {
@@ -28,6 +29,16 @@ Future<void> main() async {
     url: Config.supabaseUrl,
     anonKey: Config.supabaseAnonKey,
   );
+  // Refresh the five-prayer reminders with today's exact times (best effort).
+  if (Prefs.getBool('notif_prayers', false)) {
+    () async {
+      try {
+        final pd = await PrayerService.today();
+        await NotificationService.schedulePrayers(
+            pd.timings, AppState.I.lang == 'ar');
+      } catch (_) {/* offline — keep the existing schedule */}
+    }();
+  }
   runApp(const MuslimUmmahApp());
 }
 

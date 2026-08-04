@@ -8,7 +8,7 @@ workflows:
     environment:
       groups:
         - ios_signing
-      flutter: stable
+      flutter: 3.29.3
       xcode: latest
       cocoapods: default
       vars:

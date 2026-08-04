@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_state.dart';
 
 /// Muslim Ummah visual identity — pine green + pearl cream + sage.
 class AppColors {
@@ -62,10 +63,14 @@ class AppTheme {
 
   static ThemeData _base(ColorScheme scheme, Color bg, Color text) {
     final dark = scheme.brightness == Brightness.dark;
+    final ar = AppState.I.lang == 'ar';
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
-      fontFamily: 'Tajawal',
+      // Arabic → Tajawal; English → clean default sans, with Tajawal as a
+      // fallback so any Arabic glyphs still render well.
+      fontFamily: ar ? 'Tajawal' : null,
+      fontFamilyFallback: ar ? null : const ['Tajawal'],
       scaffoldBackgroundColor: bg,
       appBarTheme: AppBarTheme(
         backgroundColor: bg,

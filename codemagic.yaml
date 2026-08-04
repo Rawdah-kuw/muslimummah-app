@@ -6,12 +6,11 @@ workflows:
     integrations:
       app_store_connect: CodemagicAppStore
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: app.muslimummah
       flutter: stable
       xcode: latest
       cocoapods: default
+      vars:
+        BUNDLE_ID: "app.muslimummah"
     scripts:
       - name: Get Flutter packages
         script: flutter pub get
@@ -20,7 +19,7 @@ workflows:
       - name: Set up code signing (create certificate & profile if missing)
         script: |
           keychain initialize
-          app-store-connect fetch-signing-files "app.muslimummah" \
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --create
           keychain add-certificates

@@ -17,8 +17,14 @@ workflows:
         script: flutter pub get
       - name: Install CocoaPods dependencies
         script: find . -name "Podfile" -execdir pod install \;
-      - name: Set up code signing (automatic, via App Store Connect API key)
-        script: xcode-project use-profiles
+      - name: Set up code signing (create certificate & profile if missing)
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files "app.muslimummah" \
+            --type IOS_APP_STORE \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
       - name: Build signed IPA
         script: flutter build ipa --release --export-options-plist=/Users/builder/export_options.plist
     artifacts:

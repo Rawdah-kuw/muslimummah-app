@@ -171,19 +171,39 @@ class HomeScreen extends StatelessWidget {
           ),
         ]),
         const SizedBox(height: 10),
-        Text(AppState.I.lang == 'ar' ? w.ar : w.en,
+        // Always show the Arabic original …
+        Text(w.ar,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                height: 1.9,
+            textDirection: TextDirection.rtl,
+            style: const TextStyle(
+                fontSize: 21,
+                height: 2.0,
                 fontWeight: FontWeight.w600,
-                fontFamily: AppState.I.lang == 'ar' ? 'Amiri' : null)),
-        const SizedBox(height: 6),
+                fontFamily: 'Amiri')),
+        const SizedBox(height: 10),
+        Divider(
+            height: 1,
+            thickness: 1,
+            color: AppColors.sage300.withValues(alpha: 0.4)),
+        const SizedBox(height: 10),
+        // … then the meaning beneath, so the wird is always understood.
+        Text(w.en,
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.ltr,
+            style: TextStyle(
+                fontSize: 14.5,
+                height: 1.55,
+                fontStyle: FontStyle.italic,
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.82))),
+        const SizedBox(height: 8),
         Align(
           alignment: AlignmentDirectional.centerEnd,
           child: Text('— ${AppState.I.loc(w.source)}',
               style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 12.5,
                   color:
                       Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6))),
         ),

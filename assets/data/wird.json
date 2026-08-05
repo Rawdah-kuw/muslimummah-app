@@ -1,22 +1,317 @@
 [
-  { "type": "ayah", "ar": "﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾", "en": "“And say: My Lord, increase me in knowledge.”", "source": { "ar": "طه: ١١٤", "en": "Ta-Ha 114" } },
-  { "type": "ayah", "ar": "﴿ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ﴾", "en": "“For indeed, with hardship comes ease.”", "source": { "ar": "الشرح: ٥", "en": "Ash-Sharh 5" } },
-  { "type": "ayah", "ar": "﴿ وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا ﴾", "en": "“And whoever fears Allah — He will make for him a way out.”", "source": { "ar": "الطلاق: ٢", "en": "At-Talaq 2" } },
-  { "type": "ayah", "ar": "﴿ فَاذْكُرُونِي أَذْكُرْكُمْ ﴾", "en": "“So remember Me; I will remember you.”", "source": { "ar": "البقرة: ١٥٢", "en": "Al-Baqarah 152" } },
-  { "type": "ayah", "ar": "﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾", "en": "“Verily, in the remembrance of Allah do hearts find rest.”", "source": { "ar": "الرعد: ٢٨", "en": "Ar-Ra'd 28" } },
-  { "type": "ayah", "ar": "﴿ وَاللَّهُ يُحِبُّ الْمُحْسِنِينَ ﴾", "en": "“And Allah loves the doers of good.”", "source": { "ar": "آل عمران: ١٣٤", "en": "Aal 'Imran 134" } },
-  { "type": "ayah", "ar": "﴿ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ ﴾", "en": "“Indeed, Allah is with the patient.”", "source": { "ar": "البقرة: ١٥٣", "en": "Al-Baqarah 153" } },
-  { "type": "ayah", "ar": "﴿ حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ ﴾", "en": "“Sufficient for us is Allah, and He is the best Disposer of affairs.”", "source": { "ar": "آل عمران: ١٧٣", "en": "Aal 'Imran 173" } },
-  { "type": "hadith", "ar": "«إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ»", "en": "“Actions are but by intentions.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
-  { "type": "hadith", "ar": "«مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ»", "en": "“Whoever believes in Allah and the Last Day, let him speak good or remain silent.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
-  { "type": "hadith", "ar": "«لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ»", "en": "“None of you truly believes until he loves for his brother what he loves for himself.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
-  { "type": "hadith", "ar": "«الدِّينُ النَّصِيحَةُ»", "en": "“The religion is sincerity (naseehah).”", "source": { "ar": "رواه مسلم", "en": "Muslim" } },
-  { "type": "hadith", "ar": "«اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ، وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا، وَخَالِقِ النَّاسَ بِخُلُقٍ حَسَنٍ»", "en": "“Fear Allah wherever you are; follow a bad deed with a good one to erase it; and treat people with good character.”", "source": { "ar": "رواه الترمذي وقال حسن", "en": "Tirmidhi (hasan)" } },
-  { "type": "hadith", "ar": "«مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ»", "en": "“Whoever travels a path seeking knowledge, Allah makes easy for him a path to Paradise.”", "source": { "ar": "رواه مسلم", "en": "Muslim" } },
-  { "type": "hadith", "ar": "«الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ»", "en": "“A good word is charity.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
-  { "type": "hadith", "ar": "«كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ»", "en": "“Two words light on the tongue, heavy on the scale: SubhanAllahi wa bihamdihi, SubhanAllahil-'Azeem.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
-  { "type": "hadith", "ar": "«الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ»", "en": "“The Muslim is the one from whose tongue and hand the Muslims are safe.”", "source": { "ar": "متفق عليه", "en": "Bukhari & Muslim" } },
-  { "type": "dua", "ar": "«اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ»", "en": "“O Allah, help me to remember You, to thank You, and to worship You well.”", "source": { "ar": "رواه أبو داود، صحيح", "en": "Abu Dawud (sahih)" } },
-  { "type": "dua", "ar": "«اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى»", "en": "“O Allah, I ask You for guidance, piety, chastity, and self-sufficiency.”", "source": { "ar": "رواه مسلم", "en": "Muslim" } },
-  { "type": "dua", "ar": "﴿ رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ ﴾", "en": "“Our Lord, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire.”", "source": { "ar": "البقرة: ٢٠١", "en": "Al-Baqarah 201" } }
+  {
+    "type": "ayah",
+    "ar": "﴿ وَقُلْ رَبِّ زِدْنِي عِلْمًا ﴾",
+    "en": "And say, “My Lord, increase me in knowledge.”",
+    "source": {
+      "ar": "طه: ١١٤",
+      "en": "Ta-Ha 114 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ»",
+    "en": "Actions are but by intentions.",
+    "source": {
+      "ar": "متفق عليه · الأربعون النووية (١)",
+      "en": "Bukhari & Muslim · 40 Hadith Nawawi (1)"
+    }
+  },
+  {
+    "type": "dua",
+    "ar": "«اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ»",
+    "en": "O Allah, help me in remembering You, in giving You thanks, and in worshipping You well.",
+    "source": {
+      "ar": "رواه أبو داود (صحيح)",
+      "en": "Abu Dawud 1522 (Sahih)"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ﴾",
+    "en": "For indeed, with hardship [will be] ease.",
+    "source": {
+      "ar": "الشرح: ٥",
+      "en": "Ash-Sharh 5 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ»",
+    "en": "Let him who believes in Allah and the Last Day speak good or keep silent.",
+    "source": {
+      "ar": "متفق عليه · الأربعون النووية (١٥)",
+      "en": "Bukhari & Muslim · 40 Hadith Nawawi (15)"
+    }
+  },
+  {
+    "type": "dua",
+    "ar": "«اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى»",
+    "en": "O Allah, I ask You for guidance, piety (taqwa), chastity and self-sufficiency.",
+    "source": {
+      "ar": "رواه مسلم",
+      "en": "Sahih Muslim 2721"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا ﴾",
+    "en": "And whoever fears Allah – He will make for him a way out.",
+    "source": {
+      "ar": "الطلاق: ٢",
+      "en": "At-Talaq 2 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ»",
+    "en": "None of you [truly] believes until he loves for his brother that which he loves for himself.",
+    "source": {
+      "ar": "متفق عليه · الأربعون النووية (١٣)",
+      "en": "Bukhari & Muslim · 40 Hadith Nawawi (13)"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ فَاذْكُرُونِي أَذْكُرْكُمْ ﴾",
+    "en": "So remember Me; I will remember you.",
+    "source": {
+      "ar": "البقرة: ١٥٢",
+      "en": "Al-Baqarah 152 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«الدِّينُ النَّصِيحَةُ»",
+    "en": "The religion is sincere advice (naseehah).",
+    "source": {
+      "ar": "رواه مسلم · الأربعون النووية (٧)",
+      "en": "Muslim · 40 Hadith Nawawi (7)"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾",
+    "en": "Unquestionably, by the remembrance of Allah hearts are assured.",
+    "source": {
+      "ar": "الرعد: ٢٨",
+      "en": "Ar-Ra'd 28 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ، وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا، وَخَالِقِ النَّاسَ بِخُلُقٍ حَسَنٍ»",
+    "en": "Have taqwa of Allah wherever you are; follow a bad deed with a good deed which will wipe it out; and behave well towards people.",
+    "source": {
+      "ar": "رواه الترمذي (حسن) · الأربعون النووية (١٨)",
+      "en": "Tirmidhi (hasan) · 40 Hadith Nawawi (18)"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ وَاللَّهُ يُحِبُّ الْمُحْسِنِينَ ﴾",
+    "en": "And Allah loves the doers of good.",
+    "source": {
+      "ar": "آل عمران: ١٣٤",
+      "en": "Aal 'Imran 134 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ»",
+    "en": "He who treads a path in search of knowledge, Allah will make that path easy, leading to Paradise for him.",
+    "source": {
+      "ar": "رواه مسلم",
+      "en": "Sahih Muslim 2699"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ ﴾",
+    "en": "Indeed, Allah is with the patient.",
+    "source": {
+      "ar": "البقرة: ١٥٣",
+      "en": "Al-Baqarah 153 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ»",
+    "en": "A good word is charity.",
+    "source": {
+      "ar": "متفق عليه",
+      "en": "Bukhari 2989 & Muslim 1009"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ ﴾",
+    "en": "Sufficient for us is Allah, and [He is] the best Disposer of affairs.",
+    "source": {
+      "ar": "آل عمران: ١٧٣",
+      "en": "Aal 'Imran 173 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ، حَبِيبَتَانِ إِلَى الرَّحْمَنِ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ»",
+    "en": "Two words are light on the tongue, heavy on the scale, and beloved to the Most Merciful: ‘SubhanAllahi wa bihamdih, SubhanAllahil-ʿAzim.’",
+    "source": {
+      "ar": "متفق عليه",
+      "en": "Bukhari 6406 & Muslim 2694"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ ﴾",
+    "en": "Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire.",
+    "source": {
+      "ar": "البقرة: ٢٠١",
+      "en": "Al-Baqarah 201 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ»",
+    "en": "A Muslim is the one from whose tongue and hand the Muslims are safe.",
+    "source": {
+      "ar": "متفق عليه",
+      "en": "Bukhari 10 & Muslim 40"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«مَنْ أَحْدَثَ فِي أَمْرِنَا هَذَا مَا لَيْسَ مِنْهُ فَهُوَ رَدٌّ»",
+    "en": "He who innovates something in this matter of ours that is not of it will have it rejected.",
+    "source": {
+      "ar": "متفق عليه · الأربعون النووية (٥)",
+      "en": "Bukhari & Muslim · 40 Hadith Nawawi (5)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«مَا نَهَيْتُكُمْ عَنْهُ فَاجْتَنِبُوهُ، وَمَا أَمَرْتُكُمْ بِهِ فَأْتُوا مِنْهُ مَا اسْتَطَعْتُمْ»",
+    "en": "What I have forbidden you, avoid; and what I have ordered you [to do], do as much of it as you can.",
+    "source": {
+      "ar": "متفق عليه · الأربعون النووية (٩)",
+      "en": "Bukhari & Muslim · 40 Hadith Nawawi (9)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«دَعْ مَا يُرِيبُكَ إِلَى مَا لَا يُرِيبُكَ»",
+    "en": "Leave that which makes you doubt for that which does not make you doubt.",
+    "source": {
+      "ar": "رواه الترمذي والنسائي (حسن صحيح) · الأربعون النووية (١١)",
+      "en": "Tirmidhi & Nasa'i (hasan sahih) · 40 Hadith Nawawi (11)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«مِنْ حُسْنِ إِسْلَامِ الْمَرْءِ تَرْكُهُ مَا لَا يَعْنِيهِ»",
+    "en": "Part of the perfection of one's Islam is his leaving that which does not concern him.",
+    "source": {
+      "ar": "رواه الترمذي (حسن) · الأربعون النووية (١٢)",
+      "en": "Tirmidhi (hasan) · 40 Hadith Nawawi (12)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«لَا تَغْضَبْ»",
+    "en": "Do not become angry.",
+    "source": {
+      "ar": "رواه البخاري · الأربعون النووية (١٦)",
+      "en": "Sahih al-Bukhari · 40 Hadith Nawawi (16)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«إِذَا لَمْ تَسْتَحِ فَاصْنَعْ مَا شِئْتَ»",
+    "en": "If you feel no shame, then do as you wish.",
+    "source": {
+      "ar": "رواه البخاري · الأربعون النووية (٢٠)",
+      "en": "Sahih al-Bukhari · 40 Hadith Nawawi (20)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«قُلْ: آمَنْتُ بِاللَّهِ ثُمَّ اسْتَقِمْ»",
+    "en": "Say: ‘I believe in Allah’ – and then be steadfast.",
+    "source": {
+      "ar": "رواه مسلم · الأربعون النووية (٢١)",
+      "en": "Muslim · 40 Hadith Nawawi (21)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«ازْهَدْ فِي الدُّنْيَا يُحِبَّكَ اللَّهُ، وَازْهَدْ فِيمَا عِنْدَ النَّاسِ يُحِبَّكَ النَّاسُ»",
+    "en": "Renounce the world and Allah will love you; renounce what people possess and the people will love you.",
+    "source": {
+      "ar": "رواه ابن ماجه (حسن) · الأربعون النووية (٣١)",
+      "en": "Ibn Majah (hasan) · 40 Hadith Nawawi (31)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«لَا ضَرَرَ وَلَا ضِرَارَ»",
+    "en": "There should be neither harming nor reciprocating harm.",
+    "source": {
+      "ar": "رواه ابن ماجه والدارقطني (حسن) · الأربعون النووية (٣٢)",
+      "en": "Ibn Majah & Daraqutni (hasan) · 40 Hadith Nawawi (32)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«الْبَيِّنَةُ عَلَى الْمُدَّعِي، وَالْيَمِينُ عَلَى مَنْ أَنْكَرَ»",
+    "en": "The onus of proof is upon the claimant, and the oath is upon him who denies.",
+    "source": {
+      "ar": "رواه البيهقي وأصله في الصحيحين · الأربعون النووية (٣٣)",
+      "en": "Bayhaqi; its basis is in the two Sahihs · 40 Hadith Nawawi (33)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«مَنْ رَأَى مِنْكُمْ مُنْكَرًا فَلْيُغَيِّرْهُ بِيَدِهِ، فَإِنْ لَمْ يَسْتَطِعْ فَبِلِسَانِهِ، فَإِنْ لَمْ يَسْتَطِعْ فَبِقَلْبِهِ، وَذَلِكَ أَضْعَفُ الْإِيمَانِ»",
+    "en": "Whoever of you sees an evil, let him change it with his hand; if he is not able, then with his tongue; if he is not able, then with his heart – and that is the weakest of faith.",
+    "source": {
+      "ar": "رواه مسلم · الأربعون النووية (٣٤)",
+      "en": "Muslim · 40 Hadith Nawawi (34)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«إِنَّ اللَّهَ تَجَاوَزَ لِي عَنْ أُمَّتِي الْخَطَأَ وَالنِّسْيَانَ وَمَا اسْتُكْرِهُوا عَلَيْهِ»",
+    "en": "Allah has pardoned for me my Ummah: their mistakes, their forgetfulness, and that which they are forced to do.",
+    "source": {
+      "ar": "رواه ابن ماجه والبيهقي (حسن) · الأربعون النووية (٣٩)",
+      "en": "Ibn Majah & Bayhaqi (hasan) · 40 Hadith Nawawi (39)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«كُنْ فِي الدُّنْيَا كَأَنَّكَ غَرِيبٌ أَوْ عَابِرُ سَبِيلٍ»",
+    "en": "Be in this world as though you were a stranger or a wayfarer.",
+    "source": {
+      "ar": "رواه البخاري · الأربعون النووية (٤٠)",
+      "en": "Sahih al-Bukhari · 40 Hadith Nawawi (40)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يَكُونَ هَوَاهُ تَبَعًا لِمَا جِئْتُ بِهِ»",
+    "en": "None of you [truly] believes until his desire is subservient to that which I have brought.",
+    "source": {
+      "ar": "حديث حسن صحيح · الأربعون النووية (٤١)",
+      "en": "Hasan sahih · 40 Hadith Nawawi (41)"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«الْبِرُّ حُسْنُ الْخُلُقِ، وَالْإِثْمُ مَا حَاكَ فِي صَدْرِكَ وَكَرِهْتَ أَنْ يَطَّلِعَ عَلَيْهِ النَّاسُ»",
+    "en": "Righteousness is good character, and sin is that which wavers in your heart and which you dislike people finding out about.",
+    "source": {
+      "ar": "رواه مسلم · الأربعون النووية (٢٧)",
+      "en": "Muslim · 40 Hadith Nawawi (27)"
+    }
+  }
 ]

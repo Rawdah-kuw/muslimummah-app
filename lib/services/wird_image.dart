@@ -20,7 +20,7 @@ class WirdImage {
         ? (w.source['ar']?.toString() ?? '')
         : (w.source['en']?.toString() ?? '');
     final caption =
-        '${ar ? w.ar : w.en}\n$src\n\nأمة الإسلام\nhttps://muslimummah.app';
+        '${w.ar}\n\n${w.en}\n$src\n\nأمة الإسلام\nhttps://muslimummah.app';
     try {
       final bytes = await _render(w, ar);
       final dir = await getTemporaryDirectory();
@@ -64,33 +64,67 @@ class WirdImage {
         family: 'Tajawal',
         rtl: ar);
 
-    // Main text, auto-fit to a vertical budget.
-    final text = ar ? w.ar : w.en;
-    final family = ar ? 'Amiri' : null;
+    // Always render BOTH the Arabic original and the meaning, so the shared
+    // card is understood by everyone (matches the in-app wird card).
     const maxW = s - 220;
-    var size = 64.0;
-    var p = _para(text,
-        fontSize: size,
+
+    // Arabic original — auto-fit to its budget.
+    var arSize = 60.0;
+    var arPara = _para(w.ar,
+        fontSize: arSize,
         weight: FontWeight.w700,
         color: const Color(0xFF1B3B2B),
-        family: family,
-        rtl: ar,
+        family: 'Amiri',
+        rtl: true,
         maxWidth: maxW,
-        height: 1.55);
-    while (p.height > 520 && size > 30) {
-      size -= 4;
-      p = _para(text,
-          fontSize: size,
+        height: 1.7);
+    while (arPara.height > 360 && arSize > 28) {
+      arSize -= 4;
+      arPara = _para(w.ar,
+          fontSize: arSize,
           weight: FontWeight.w700,
           color: const Color(0xFF1B3B2B),
-          family: family,
-          rtl: ar,
+          family: 'Amiri',
+          rtl: true,
           maxWidth: maxW,
-          height: 1.55);
+          height: 1.7);
     }
-    final ty = 500 - p.height / 2;
-    canvas.drawParagraph(p, Offset(cx - maxW / 2, ty));
-    final y = ty + p.height + 20;
+
+    // Meaning / translation — smaller, auto-fit.
+    var enSize = 34.0;
+    var enPara = _para(w.en,
+        fontSize: enSize,
+        weight: FontWeight.w500,
+        color: const Color(0xFF44603F),
+        family: null,
+        rtl: false,
+        maxWidth: maxW,
+        height: 1.4);
+    while (enPara.height > 200 && enSize > 20) {
+      enSize -= 3;
+      enPara = _para(w.en,
+          fontSize: enSize,
+          weight: FontWeight.w500,
+          color: const Color(0xFF44603F),
+          family: null,
+          rtl: false,
+          maxWidth: maxW,
+          height: 1.4);
+    }
+
+    // Stack the two blocks (with a divider) centred in the 250–800 band.
+    const gap = 34.0;
+    final blockH = arPara.height + gap + 2 + gap + enPara.height;
+    var y = ((250 + 800) / 2) - blockH / 2;
+    canvas.drawParagraph(arPara, Offset(cx - maxW / 2, y));
+    y += arPara.height + gap;
+    canvas.drawLine(Offset(cx - 90, y), Offset(cx + 90, y),
+        Paint()
+          ..color = const Color(0xFFD7E4DD)
+          ..strokeWidth = 2);
+    y += gap + 2;
+    canvas.drawParagraph(enPara, Offset(cx - maxW / 2, y));
+    y += enPara.height + 24;
 
     final src = ar
         ? (w.source['ar']?.toString() ?? '')
@@ -100,7 +134,7 @@ class WirdImage {
           cx: cx,
           top: y,
           maxWidth: maxW,
-          fontSize: 36,
+          fontSize: 32,
           color: const Color(0xFF4F7263),
           weight: FontWeight.w500,
           family: 'Tajawal',

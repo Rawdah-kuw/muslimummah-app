@@ -313,5 +313,86 @@
       "ar": "رواه مسلم · الأربعون النووية (٢٧)",
       "en": "Muslim · 40 Hadith Nawawi (27)"
     }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ الْحَمْدُ لِلَّهِ الَّذِي أَنْزَلَ عَلَى عَبْدِهِ الْكِتَابَ وَلَمْ يَجْعَلْ لَهُ عِوَجًا ﴾",
+    "en": "[All] praise is [due] to Allah, who has sent down upon His Servant the Book and has not made therein any deviance.",
+    "source": {
+      "ar": "الكهف: ١",
+      "en": "Al-Kahf 1 · Sahih International"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ هُدًى لِلْمُتَّقِينَ ﴾",
+    "en": "This is the Book about which there is no doubt, a guidance for those conscious of Allah.",
+    "source": {
+      "ar": "البقرة: ٢",
+      "en": "Al-Baqarah 2 · Sahih International"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ أُولَٰئِكَ عَلَىٰ هُدًى مِنْ رَبِّهِمْ وَأُولَٰئِكَ هُمُ الْمُفْلِحُونَ ﴾",
+    "en": "Those are upon [right] guidance from their Lord, and it is those who are successful.",
+    "source": {
+      "ar": "البقرة: ٥",
+      "en": "Al-Baqarah 5 · Sahih International"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ فَمَنْ زُحْزِحَ عَنِ النَّارِ وَأُدْخِلَ الْجَنَّةَ فَقَدْ فَازَ ۗ وَمَا الْحَيَاةُ الدُّنْيَا إِلَّا مَتَاعُ الْغُرُورِ ﴾",
+    "en": "So he who is drawn away from the Fire and admitted to Paradise has attained [his desire]. And what is the life of this world except the enjoyment of delusion.",
+    "source": {
+      "ar": "آل عمران: ١٨٥",
+      "en": "Aal 'Imran 185 · Sahih International"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ أَلَا يَعْلَمُ مَنْ خَلَقَ وَهُوَ اللَّطِيفُ الْخَبِيرُ ﴾",
+    "en": "Does He who created not know, while He is the Subtle, the Acquainted?",
+    "source": {
+      "ar": "الملك: ١٤",
+      "en": "Al-Mulk 14 · Sahih International"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ وَمَا أُوتِيتُمْ مِنَ الْعِلْمِ إِلَّا قَلِيلًا ﴾",
+    "en": "And mankind have not been given of knowledge except a little.",
+    "source": {
+      "ar": "الإسراء: ٨٥",
+      "en": "Al-Isra 85 · Sahih International"
+    }
+  },
+  {
+    "type": "ayah",
+    "ar": "﴿ وَالْفَجْرِ ۝ وَلَيَالٍ عَشْرٍ ﴾",
+    "en": "By the dawn. And [by] the ten nights.",
+    "source": {
+      "ar": "الفجر: ١-٢",
+      "en": "Al-Fajr 1-2 · Sahih International"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«مَا مِنْ أَيَّامٍ الْعَمَلُ الصَّالِحُ فِيهِنَّ أَحَبُّ إِلَى اللَّهِ مِنْ هَٰذِهِ الْأَيَّامِ الْعَشْرِ»",
+    "en": "There are no days on which righteous deeds are more beloved to Allah than these ten days (of Dhul-Hijjah).",
+    "source": {
+      "ar": "رواه البخاري",
+      "en": "Sahih al-Bukhari 969"
+    }
+  },
+  {
+    "type": "hadith",
+    "ar": "«صِيَامُ يَوْمِ عَرَفَةَ أَحْتَسِبُ عَلَى اللَّهِ أَنْ يُكَفِّرَ السَّنَةَ الَّتِي قَبْلَهُ وَالسَّنَةَ الَّتِي بَعْدَهُ»",
+    "en": "Fasting the Day of 'Arafah — I anticipate from Allah that it expiates the year before it and the year after it.",
+    "source": {
+      "ar": "رواه مسلم",
+      "en": "Sahih Muslim 1162"
+    }
   }
 ]

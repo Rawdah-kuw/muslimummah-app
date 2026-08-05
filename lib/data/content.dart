@@ -15,6 +15,8 @@ class ContentRepo {
 
   static late List<Wird> wird;
 
+  static late List<Quote> quotes;
+
   static late List<Account> youtube;
   static late List<Account> instagram;
 
@@ -39,6 +41,10 @@ class ContentRepo {
 
     final wj = jsonDecode(await rootBundle.loadString('assets/data/wird.json'));
     wird = (wj as List).map((e) => Wird.fromJson(e)).toList();
+
+    final qj =
+        jsonDecode(await rootBundle.loadString('assets/data/quotes.json'));
+    quotes = (qj as List).map((e) => Quote.fromJson(e)).toList();
 
     final acc =
         jsonDecode(await rootBundle.loadString('assets/data/accounts.json'));
@@ -68,6 +74,15 @@ class ContentRepo {
   static Wird wirdForDate(DateTime d) {
     final dayOfYear = d.difference(DateTime(d.year, 1, 1)).inDays;
     return wird[dayOfYear % wird.length];
+  }
+
+  /// Quote of the day (from Sheikh Ali's books), rotates by day-of-year.
+  /// Offset so it does not always pair with the same wird.
+  static Quote? quoteOfToday() {
+    if (quotes.isEmpty) return null;
+    final d = DateTime.now();
+    final dayOfYear = d.difference(DateTime(d.year, 1, 1)).inDays;
+    return quotes[(dayOfYear + 3) % quotes.length];
   }
 
   static List<Book> booksByCat(String cat) =>

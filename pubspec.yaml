@@ -1,7 +1,7 @@
 name: muslimummah
 description: "Muslim Ummah — an Islamic knowledge network: books, curriculum, smart search, and Rawdah dhikr gatherings."
 publish_to: 'none'
-version: 1.1.0+12
+version: 1.2.0+13
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -34,6 +34,7 @@ flutter:
     - assets/data/books.json
     - assets/data/curriculum.json
     - assets/data/wird.json
+    - assets/data/quotes.json
     - assets/data/accounts.json
     - assets/data/adhkar.json
   fonts:

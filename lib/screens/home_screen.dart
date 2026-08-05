@@ -18,6 +18,7 @@ import 'bookmarks_screen.dart';
 import 'notifications_screen.dart';
 import 'accounts_screen.dart';
 import 'book_detail_screen.dart';
+import 'quote_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final void Function(int) onTab;
@@ -421,6 +422,8 @@ class HomeScreen extends StatelessWidget {
             () => _push(context, const BookmarksScreen())),
         tile(tr('الخصوصية', 'Privacy'), Scenes.toolMoss,
             () => _push(context, const PrivacyScreen())),
+        tile(tr('اقتباس اليوم', 'Quote'), Scenes.quote,
+            () => _push(context, const QuoteScreen())),
       ],
     );
   }

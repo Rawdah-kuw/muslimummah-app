@@ -50,6 +50,9 @@ class Scenes {
   static const toolSand = CardScene([Color(0xFFC7B299), Color(0xFFDDCCB6)], false);
   static const toolMoss = CardScene([Color(0xFF9CAF88), Color(0xFFBCC9A8)], false);
 
+  // Quote of the Day — dark green of the app-logo background (#16302A).
+  static const quote = CardScene([Color(0xFF16302A), Color(0xFF0F241F)], true);
+
   // Curriculum palette — muted, cohesive "earthy garden" set (Option B).
   static const curriculum = [
     CardScene([Color(0xFF2E4A3C), Color(0xFF3E5A4E)], true),

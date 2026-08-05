@@ -101,6 +101,18 @@ class Wird {
       );
 }
 
+class Quote {
+  final String ar; // verbatim Arabic from the book
+  final String en; // verbatim English (bilingual books)
+  final Map<String, dynamic> source; // {ar, en} → book title + author
+  Quote(this.ar, this.en, this.source);
+  factory Quote.fromJson(Map j) => Quote(
+        (j['ar'] ?? '').toString(),
+        (j['en'] ?? '').toString(),
+        Map<String, dynamic>.from(j['source'] ?? const {}),
+      );
+}
+
 class Dhikr {
   final String ar;
   final int count;

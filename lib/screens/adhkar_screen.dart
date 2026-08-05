@@ -47,7 +47,7 @@ class _AdhkarList extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       itemCount: items.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (_, i) => _DhikrCard(items[i], i + 1),
+      itemBuilder: (_, i) => _DhikrCard(items[i], i + 1, items.length),
     );
   }
 }
@@ -55,7 +55,8 @@ class _AdhkarList extends StatelessWidget {
 class _DhikrCard extends StatefulWidget {
   final Dhikr d;
   final int index;
-  const _DhikrCard(this.d, this.index);
+  final int total;
+  const _DhikrCard(this.d, this.index, this.total);
   @override
   State<_DhikrCard> createState() => _DhikrCardState();
 }
@@ -85,12 +86,18 @@ class _DhikrCardState extends State<_DhikrCard> {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: 14,
-                    backgroundColor: AppColors.sage100,
-                    child: Text('${widget.index}',
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: AppColors.sage100,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text('${widget.index} / ${widget.total}',
                         style: const TextStyle(
-                            fontSize: 12, color: AppColors.sage700)),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.sage700)),
                   ),
                   const Spacer(),
                   Container(

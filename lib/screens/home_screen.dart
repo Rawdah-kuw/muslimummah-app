@@ -471,14 +471,15 @@ class _PrayerMiniState extends State<_PrayerMini> {
                   children: [
                     if (next != null)
                       Text(
-                        '${tr('الصلاة القادمة', 'Next')}: ${tr(PrayerData.labelAr[next.key]!, PrayerData.labelEn[next.key]!)} — ${next.value}',
+                        '${tr('الصلاة القادمة', 'Next')}: ${tr(PrayerData.labelAr[next.key]!, PrayerData.labelEn[next.key]!)} — ${PrayerData.time12(next.value, AppState.I.lang == 'ar')}',
                         style: const TextStyle(
                             color: AppColors.pearl50,
                             fontSize: 15,
                             fontWeight: FontWeight.w800),
                       ),
                     const SizedBox(height: 2),
-                    Text('${d.hijriAr} · ${d.gregorian.replaceAll('-', '/')}',
+                    Text(
+                        '${d.hijri(AppState.I.lang == 'ar')} · ${d.gregorian.replaceAll('-', '/')}',
                         style: const TextStyle(
                             color: AppColors.sage300, fontSize: 11.5)),
                   ],
@@ -493,7 +494,7 @@ class _PrayerMiniState extends State<_PrayerMini> {
                             color: AppColors.pearl50,
                             fontSize: 17,
                             fontWeight: FontWeight.w800)),
-                    Text(tr('حتى الأذان', 'to adhan'),
+                    Text(tr('حتى الأذان', 'till adhan'),
                         style: const TextStyle(
                             color: AppColors.sage300, fontSize: 10)),
                   ],

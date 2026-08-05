@@ -7,11 +7,29 @@ import 'prefs.dart';
 /// it also works offline after the first fetch.
 class PrayerData {
   final Map<String, String> timings; // e.g. {"Fajr": "04:12", ...}
-  final String hijriAr; // e.g. "١٥ محرم ١٤٤٧"
+  final String hijriAr; // e.g. "١٥ محرم ١٤٤٧هـ"
+  final String hijriEn; // e.g. "15 Muharram 1447 AH"
   final String gregorian; // e.g. "20-07-2026"
   final String city;
 
-  PrayerData(this.timings, this.hijriAr, this.gregorian, this.city);
+  PrayerData(
+      this.timings, this.hijriAr, this.hijriEn, this.gregorian, this.city);
+
+  /// The Hijri date in the current language.
+  String hijri(bool ar) => ar ? hijriAr : hijriEn;
+
+  /// Format a 24h "HH:MM" time as a 12-hour clock (e.g. "3:31 PM" / "٣:٣١ م").
+  static String time12(String hhmm, bool ar) {
+    final p = hhmm.split(':');
+    if (p.length < 2) return hhmm;
+    final h = int.tryParse(p[0]) ?? 0;
+    final m = p[1];
+    final pm = h >= 12;
+    var h12 = h % 12;
+    if (h12 == 0) h12 = 12;
+    final suffix = ar ? (pm ? 'م' : 'ص') : (pm ? 'PM' : 'AM');
+    return '$h12:$m $suffix';
+  }
 
   static const order = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
   static const labelAr = {
@@ -34,6 +52,7 @@ class PrayerData {
   Map<String, dynamic> toJson() => {
         'timings': timings,
         'hijriAr': hijriAr,
+        'hijriEn': hijriEn,
         'gregorian': gregorian,
         'city': city,
       };
@@ -41,6 +60,7 @@ class PrayerData {
   factory PrayerData.fromJson(Map j) => PrayerData(
         Map<String, String>.from(j['timings']),
         j['hijriAr'] as String,
+        (j['hijriEn'] ?? j['hijriAr'] ?? '') as String,
         j['gregorian'] as String,
         (j['city'] ?? 'Kuwait City') as String,
       );
@@ -78,9 +98,11 @@ class PrayerService {
     final hijri = data['date']['hijri'] as Map;
     final hijriAr =
         '${hijri['day']} ${hijri['month']['ar']} ${hijri['year']}هـ';
+    final hijriEn =
+        '${hijri['day']} ${hijri['month']['en']} ${hijri['year']} AH';
     final greg = (data['date']['gregorian']['date'] ?? '').toString();
 
-    final pd = PrayerData(timings, hijriAr, greg, _city);
+    final pd = PrayerData(timings, hijriAr, hijriEn, greg, _city);
     await Prefs.setString('prayer_cache', jsonEncode(pd.toJson()));
     await Prefs.setString('prayer_date', todayKey);
     return pd;

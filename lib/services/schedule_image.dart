@@ -7,35 +7,49 @@ import 'package:share_plus/share_plus.dart';
 import '../models/models.dart';
 import 'rawdah_service.dart';
 
-/// Renders a full day's Rawdah schedule (all its lessons) into one tall
-/// shareable image, like the website's schedule card.
+/// Renders a day's Rawdah schedule as one or more reasonably-sized shareable
+/// images (paginated), like the website — so a busy day never becomes a single
+/// over-tall image that gets cut off.
 class ScheduleImage {
+  static const _perPage = 6; // lessons per image
+
   static Future<void> share(String day, List<Lesson> lessons) async {
     final caption =
         'جدول دروس $day — روضة · أمة الإسلام\nجميع الأوقات بتوقيت الكويت (GMT+3)\nhttps://muslimummah.app';
+    const origin = Rect.fromLTWH(0, 0, 100, 100);
     try {
       if (lessons.isEmpty) {
-        await Share.share(caption,
-            sharePositionOrigin: const Rect.fromLTWH(0, 0, 100, 100));
+        await Share.share(caption, sharePositionOrigin: origin);
         return;
       }
-      final bytes = await _render(day, lessons);
+      // Split into pages of a comfortable size.
+      final pages = <List<Lesson>>[];
+      for (var i = 0; i < lessons.length; i += _perPage) {
+        final end =
+            (i + _perPage < lessons.length) ? i + _perPage : lessons.length;
+        pages.add(lessons.sublist(i, end));
+      }
       final dir = await getTemporaryDirectory();
-      final f = File('${dir.path}/rawdah-schedule.png');
-      await f.writeAsBytes(bytes);
-      await Share.shareXFiles([XFile(f.path)],
-          text: caption, sharePositionOrigin: const Rect.fromLTWH(0, 0, 100, 100));
+      final files = <XFile>[];
+      for (var p = 0; p < pages.length; p++) {
+        final bytes = await _render(day, pages[p], p + 1, pages.length);
+        final f = File('${dir.path}/rawdah-schedule-${p + 1}.png');
+        await f.writeAsBytes(bytes);
+        files.add(XFile(f.path));
+      }
+      await Share.shareXFiles(files,
+          text: caption, sharePositionOrigin: origin);
     } catch (_) {
-      await Share.share(caption,
-          sharePositionOrigin: const Rect.fromLTWH(0, 0, 100, 100));
+      await Share.share(caption, sharePositionOrigin: origin);
     }
   }
 
-  static Future<Uint8List> _render(String day, List<Lesson> lessons) async {
+  static Future<Uint8List> _render(
+      String day, List<Lesson> lessons, int page, int totalPages) async {
     const w = 1080.0;
-    const headerH = 210.0;
-    const rowH = 210.0;
-    const footerH = 150.0;
+    const headerH = 190.0;
+    const rowH = 200.0;
+    const footerH = 130.0;
     final h = headerH + lessons.length * rowH + footerH;
 
     final rec = ui.PictureRecorder();
@@ -43,42 +57,41 @@ class ScheduleImage {
 
     c.drawRect(Rect.fromLTWH(0, 0, w, h),
         Paint()..color = const Color(0xFFFDFBF7));
-    // Header band
     c.drawRect(const Rect.fromLTWH(0, 0, w, headerH),
         Paint()..color = const Color(0xFF1B3B2B));
     _center(c, 'روضة · مجالس ودروس الذكر',
         cx: w / 2,
-        top: 46,
+        top: 42,
         maxWidth: w - 120,
-        fontSize: 30,
+        fontSize: 28,
         color: const Color(0xFFA8C3B4),
         weight: FontWeight.w500);
-    _center(c, day,
+    _center(c, totalPages > 1 ? '$day · $page/$totalPages' : day,
         cx: w / 2,
-        top: 96,
+        top: 90,
         maxWidth: w - 120,
-        fontSize: 58,
+        fontSize: 54,
         color: const Color(0xFFFDFBF7),
         weight: FontWeight.w800);
 
-    var y = headerH + 18.0;
+    var y = headerH;
     for (final l in lessons) {
-      _row(c, l, top: y, width: w, height: rowH - 18);
+      _row(c, l, top: y, width: w, height: rowH);
       y += rowH;
     }
 
     _center(c, 'جميع الأوقات بتوقيت الكويت (GMT+3)',
         cx: w / 2,
-        top: h - footerH + 24,
+        top: h - footerH + 28,
         maxWidth: w - 120,
-        fontSize: 26,
+        fontSize: 24,
         color: const Color(0xFF94A3B8),
         weight: FontWeight.w400);
     _center(c, 'شبكة أمة الإسلام · muslimummah.app',
         cx: w / 2,
-        top: h - footerH + 68,
+        top: h - footerH + 66,
         maxWidth: w - 120,
-        fontSize: 32,
+        fontSize: 30,
         color: const Color(0xFF1B3B2B),
         weight: FontWeight.w700);
 
@@ -92,36 +105,39 @@ class ScheduleImage {
     final women = RawdahService.genderOf(l) == 'نساء';
     final accent = women ? const Color(0xFFB58D88) : const Color(0xFF5A7A8A);
     final tint = women ? const Color(0xFFFBF1F3) : const Color(0xFFEEF4FA);
-    const pad = 40.0;
+    const pad = 34.0;
+    final cardH = height - 10;
     c.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(pad, top, width - 2 * pad, height),
-            const Radius.circular(24)),
+            Rect.fromLTWH(pad, top + 5, width - 2 * pad, cardH),
+            const Radius.circular(20)),
         Paint()..color = tint);
-    // Accent bar on the right edge (RTL layout).
+    // Accent bar on the right edge encodes the audience (rose = women).
     c.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(width - pad - 12, top + 16, 8, height - 32),
+            Rect.fromLTWH(width - pad - 10, top + 14, 7, cardH - 18),
             const Radius.circular(4)),
         Paint()..color = accent);
 
     final rightX = width - pad - 28;
-    final maxW = width - 2 * pad - 70;
-    _badge(c, women ? 'للنساء' : 'للجميع',
-        right: rightX, top: top + 22, bg: accent);
+    final maxW = width - 2 * pad - 56;
+    final fT = (height * 0.28).clamp(26.0, 38.0).toDouble();
+    final fS = (height * 0.20).clamp(20.0, 28.0).toDouble();
+    final fI = (height * 0.17).clamp(17.0, 24.0).toDouble();
+
     _rtl(c, l.title,
         rightX: rightX,
-        top: top + 72,
+        top: top + height * 0.12,
         maxWidth: maxW,
-        fontSize: 38,
+        fontSize: fT,
         color: const Color(0xFF1B3B2B),
         weight: FontWeight.w800);
     if (l.teacher.isNotEmpty) {
       _rtl(c, l.teacher,
           rightX: rightX,
-          top: top + 118,
+          top: top + height * 0.44,
           maxWidth: maxW,
-          fontSize: 30,
+          fontSize: fS,
           color: const Color(0xFF4F7263),
           weight: FontWeight.w600);
     }
@@ -130,9 +146,9 @@ class ScheduleImage {
     if (info.isNotEmpty) {
       _rtl(c, info,
           rightX: rightX,
-          top: top + 156,
+          top: top + height * 0.70,
           maxWidth: maxW,
-          fontSize: 26,
+          fontSize: fI,
           color: const Color(0xFF475569),
           weight: FontWeight.w400);
     }
@@ -168,31 +184,6 @@ class ScheduleImage {
         weight: weight,
         maxWidth: maxWidth);
     c.drawParagraph(p, Offset(rightX - maxWidth, top));
-  }
-
-  static void _badge(Canvas c, String text,
-      {required double right, required double top, required Color bg}) {
-    const fs = 24.0;
-    final measure = _para(text,
-        align: TextAlign.center,
-        fontSize: fs,
-        color: Colors.white,
-        weight: FontWeight.w700,
-        maxWidth: 400);
-    final pillW = measure.maxIntrinsicWidth + 36;
-    const pillH = 42.0;
-    final x = right - pillW;
-    c.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromLTWH(x, top, pillW, pillH), const Radius.circular(21)),
-        Paint()..color = bg);
-    final p = _para(text,
-        align: TextAlign.center,
-        fontSize: fs,
-        color: Colors.white,
-        weight: FontWeight.w700,
-        maxWidth: pillW);
-    c.drawParagraph(p, Offset(x, top + (pillH - p.height) / 2));
   }
 
   static ui.Paragraph _para(String text,

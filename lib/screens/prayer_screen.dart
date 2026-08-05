@@ -89,18 +89,18 @@ class _PrayerScreenState extends State<PrayerScreen> {
       ),
       child: Column(
         children: [
-          Text(d.hijriAr,
+          Text(d.hijri(AppState.I.lang == 'ar'),
               style: const TextStyle(
                   color: AppColors.pearl50,
                   fontSize: 18,
                   fontWeight: FontWeight.w700)),
           const SizedBox(height: 2),
-          Text('${d.gregorian.replaceAll('-', '/')} م',
+          Text(d.gregorian.replaceAll('-', '/'),
               style: const TextStyle(color: AppColors.sage300, fontSize: 13)),
           const SizedBox(height: 6),
           if (next != null)
             Text(
-              '${tr('الصلاة القادمة', 'Next')}: ${tr(PrayerData.labelAr[next.key]!, PrayerData.labelEn[next.key]!)} — ${next.value}',
+              '${tr('الصلاة القادمة', 'Next')}: ${tr(PrayerData.labelAr[next.key]!, PrayerData.labelEn[next.key]!)} — ${PrayerData.time12(next.value, AppState.I.lang == 'ar')}',
               style: const TextStyle(color: AppColors.sage300, fontSize: 14),
             ),
         ],
@@ -108,39 +108,74 @@ class _PrayerScreenState extends State<PrayerScreen> {
     );
   }
 
+  /// Human "time remaining until this prayer" (today, or the next occurrence).
+  String _untilText(String? hhmm) {
+    if (hhmm == null || !hhmm.contains(':')) return '';
+    final ar = AppState.I.lang == 'ar';
+    final p = hhmm.split(':');
+    final target = (int.tryParse(p[0]) ?? 0) * 60 + (int.tryParse(p[1]) ?? 0);
+    final now = DateTime.now();
+    var diff = target - (now.hour * 60 + now.minute);
+    if (diff <= 0) diff += 1440; // already passed today → next occurrence
+    final h = diff ~/ 60, m = diff % 60;
+    if (ar) {
+      final hp = h > 0 ? '$h ساعة' : '';
+      final mp = m > 0 ? '$m دقيقة' : '';
+      final sep = (h > 0 && m > 0) ? ' و' : '';
+      return 'متبقٍّ: ${hp.isEmpty && mp.isEmpty ? 'أقل من دقيقة' : '$hp$sep$mp'}';
+    } else {
+      final hp = h > 0 ? '${h}h' : '';
+      final mp = m > 0 ? '${m}m' : '';
+      final sep = (h > 0 && m > 0) ? ' ' : '';
+      return 'Remaining: ${hp.isEmpty && mp.isEmpty ? 'less than a minute' : '$hp$sep$mp'}';
+    }
+  }
+
   Widget _row(BuildContext context, String k, PrayerData d,
       MapEntry<String, String>? next) {
     final isNext = next != null && next.key == k;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(
-        color: isNext
-            ? AppColors.sage100
-            : Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-            color: isNext ? AppColors.sage600 : AppColors.pearl200),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            k == 'Sunrise' ? Icons.wb_twilight : Icons.mosque_outlined,
-            color: AppColors.sage700,
-            size: 20,
-          ),
-          const SizedBox(width: 12),
-          Text(tr(PrayerData.labelAr[k]!, PrayerData.labelEn[k]!),
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: isNext ? FontWeight.w800 : FontWeight.w600)),
-          const Spacer(),
-          Text(d.timings[k] ?? '--',
-              style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.pine800)),
-        ],
+    final ar = AppState.I.lang == 'ar';
+    return GestureDetector(
+      onTap: () {
+        final label = tr(PrayerData.labelAr[k]!, PrayerData.labelEn[k]!);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('$label — ${_untilText(d.timings[k])}'),
+          duration: const Duration(seconds: 3),
+        ));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: isNext ? AppColors.sage100 : Theme.of(context).cardTheme.color,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+              color: isNext ? AppColors.sage600 : AppColors.pearl200),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              k == 'Sunrise' ? Icons.wb_twilight : Icons.mosque_outlined,
+              color: AppColors.sage700,
+              size: 20,
+            ),
+            const SizedBox(width: 12),
+            Text(tr(PrayerData.labelAr[k]!, PrayerData.labelEn[k]!),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: isNext ? FontWeight.w800 : FontWeight.w600)),
+            const Spacer(),
+            Text(PrayerData.time12(d.timings[k] ?? '--', ar),
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.pine800)),
+            const SizedBox(width: 6),
+            Icon(Icons.touch_app_outlined,
+                size: 14,
+                color: AppColors.sage600.withValues(alpha: 0.5)),
+          ],
+        ),
       ),
     );
   }

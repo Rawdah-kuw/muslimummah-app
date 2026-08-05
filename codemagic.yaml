@@ -58,6 +58,20 @@ workflows:
           open(p, 'w', encoding='utf-8').write(s)
           print('Info.plist patched')
           PY
+          # Register the notification-centre delegate (needed for iOS local
+          # notifications to present reliably).
+          python3 - <<'PY'
+          p = 'ios/Runner/AppDelegate.swift'
+          s = open(p, encoding='utf-8').read()
+          if 'UNUserNotificationCenter.current().delegate' not in s:
+              inject = ('if #available(iOS 10.0, *) {\n'
+                        '      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate\n'
+                        '    }\n'
+                        '    GeneratedPluginRegistrant.register(with: self)')
+              s = s.replace('GeneratedPluginRegistrant.register(with: self)', inject, 1)
+              open(p, 'w', encoding='utf-8').write(s)
+              print('AppDelegate patched')
+          PY
       - name: Get Flutter packages
         script: flutter pub get
       - name: Install CocoaPods dependencies

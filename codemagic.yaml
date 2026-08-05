@@ -96,3 +96,49 @@ workflows:
         # Upload the build (available for internal testing immediately).
         # External beta review is submitted manually once test info is filled.
         submit_to_testflight: false
+
+  android-googleplay:
+    name: Android → Google Play (AAB)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      # Reference to the Android keystore you upload in Codemagic
+      # (Team settings → Code signing identities → Android keystores).
+      # The reference name below MUST match what you name it there.
+      android_signing:
+        - muslimummah_keystore
+      flutter: 3.29.3
+      vars:
+        PACKAGE_NAME: "app.muslimummah.twa"
+    scripts:
+      - name: Create key.properties from the uploaded keystore
+        script: |
+          set -e
+          cat > "$CM_BUILD_DIR/android/key.properties" <<EOF
+          storePassword=$CM_KEYSTORE_PASSWORD
+          keyPassword=$CM_KEY_PASSWORD
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=$CM_KEYSTORE_PATH
+          EOF
+          echo "key.properties written (storeFile=$CM_KEYSTORE_PATH)"
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Build signed release App Bundle (.aab for Google Play)
+        script: flutter build appbundle --release
+      - name: Build signed release APK (for direct install / testing)
+        script: flutter build apk --release
+    artifacts:
+      - build/app/outputs/bundle/release/*.aab
+      - build/app/outputs/flutter-apk/*.apk
+    publishing:
+      email:
+        recipients:
+          - a.alkandari@ktech.edu.kw
+        notify:
+          success: true
+          failure: true
+      # To auto-publish to Google Play later, connect a Google Play service
+      # account in Codemagic and uncomment the block below:
+      # google_play:
+      #   credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+      #   track: internal

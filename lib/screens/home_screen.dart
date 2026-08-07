@@ -147,6 +147,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _wird(BuildContext context, Wird w, bool dark) {
+    final ar = AppState.I.lang == 'ar';
     return Container(
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 10),
       decoration: BoxDecoration(
@@ -172,33 +173,29 @@ class HomeScreen extends StatelessWidget {
           ),
         ]),
         const SizedBox(height: 10),
-        // Always show the Arabic original …
-        Text(w.ar,
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-            style: const TextStyle(
-                fontSize: 21,
-                height: 2.0,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Amiri')),
-        const SizedBox(height: 10),
-        Divider(
-            height: 1,
-            thickness: 1,
-            color: AppColors.sage300.withValues(alpha: 0.4)),
-        const SizedBox(height: 10),
-        // … then the meaning beneath, so the wird is always understood.
-        Text(w.en,
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.ltr,
-            style: TextStyle(
-                fontSize: 14.5,
-                height: 1.55,
-                fontStyle: FontStyle.italic,
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.82))),
+        // Arabic UI shows the Arabic original; English UI shows the meaning —
+        // one language per app language.
+        if (ar)
+          Text(w.ar,
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+              style: const TextStyle(
+                  fontSize: 21,
+                  height: 2.0,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Amiri'))
+        else
+          Text(w.en,
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                  fontSize: 16,
+                  height: 1.6,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.9))),
         const SizedBox(height: 8),
         Align(
           alignment: AlignmentDirectional.centerEnd,

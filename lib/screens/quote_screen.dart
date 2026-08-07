@@ -17,6 +17,7 @@ class QuoteScreen extends StatefulWidget {
 
 class _QuoteScreenState extends State<QuoteScreen> {
   static const _bg = Color(0xFF16302A); // logo background
+  static const _gold = Color(0xFFC8A86B); // muted gold for the author's name
   late int _i;
 
   @override
@@ -43,6 +44,13 @@ class _QuoteScreenState extends State<QuoteScreen> {
         backgroundColor: _bg,
         foregroundColor: AppColors.pearl50,
         elevation: 0,
+        // The global AppBar theme forces a dark-green title colour, which is
+        // invisible on this dark-green screen — override it to a light cream.
+        titleTextStyle: const TextStyle(
+          fontSize: 19,
+          fontWeight: FontWeight.w700,
+          color: AppColors.pearl50,
+        ),
         title: Text(tr('اقتباس اليوم', 'Quote of the Day')),
         actions: [
           if (q != null)
@@ -170,15 +178,16 @@ class _QuoteScreenState extends State<QuoteScreen> {
                     color: AppColors.sage300,
                     fontSize: 13.5,
                     fontWeight: FontWeight.w600)),
-            // … and the author (Sheikh Ali) on his own line beneath.
+            // … and the author (Sheikh Ali) on his own line beneath, in a
+            // muted gold so his name is distinct from the green book title.
             if (_author(q, ar).isNotEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: 5),
               Text(_author(q, ar),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: AppColors.sage300.withValues(alpha: 0.85),
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w500)),
+                  style: const TextStyle(
+                      color: _gold,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600)),
             ],
             // Transparency tag for adapted/summarised excerpts.
             if (q.source['adapted'] == true) ...[

@@ -66,7 +66,7 @@ class ScheduleImage {
         fontSize: 28,
         color: const Color(0xFFA8C3B4),
         weight: FontWeight.w500);
-    _center(c, totalPages > 1 ? '$day · $page/$totalPages' : day,
+    _center(c, totalPages > 1 ? '$day · صفحة $page من $totalPages' : day,
         cx: w / 2,
         top: 90,
         maxWidth: w - 120,

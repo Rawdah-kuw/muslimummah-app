@@ -1155,5 +1155,167 @@
       "bookId": 9,
       "adapted": true
     }
+  },
+  {
+    "ar": "وقد طوَّر الترمذي حقل علم الحديث تطويراً كبيراً، فصَنَّف مرتبةَ «الحسن» المشهورة في تقسيم الحديث.",
+    "en": "At-Tirmidhi greatly developed the field of the Science of Hadith, introducing the famous term of \"Hasan\", used as a grading of Hadith.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
+      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "bookId": 9,
+      "adapted": false
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "ويُقال إنّ سنن الترمذي هو أيسر الأمهات الست وأقربها تناولاً.",
+    "en": "Sunan At-Tirmidhi is said to be the easiest and most accessible of the Ummahat As-Sitt.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
+      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "bookId": 9,
+      "adapted": false
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "وكان الزُّهري (المتوفى سنة 124 هـ) أوَّل من شرع في تدوين الحديث بعد أمر الخليفة.",
+    "en": "Al-Zuhri was the first to begin writing Hadith after the command issued by the Caliph, in 124 Hijri.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
+      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "bookId": 9,
+      "adapted": false
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "نسأل الله أن يكون هذا العمل صدقةً جاريةً له، ومنفعةً لكل من يقرأ ويتعلَّم ويتدبَّر.",
+    "en": "",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
+      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "bookId": 9,
+      "adapted": false
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "تبيَّن أنّ تاريخ الحديث ممتدٌّ ثري، تَوَلَّى أمرَه علماء أفذاذ ذوو ذكاء مذهل.",
+    "en": "It can be seen that the history of Hadith is long and rich, with many astonishingly intelligent Scholars.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
+      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "bookId": 9,
+      "adapted": false
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "ومن مصنَّفاته أيضاً شمائل الترمذي، ويُعرف كذلك بـالشمائل المحمدية، وفيه أحاديث كثيرة في وصف النبي ﷺ خَلقاً وخُلقاً وسيرةً وسلوكاً.",
+    "en": "Another book that At-Tirmidhi produced is Shama’il At-Tirmidhi, also known as Ash-Shama’il Al-Muhamadiyya. The book contains many Hadith describing Mohammed ﷺ, in his physical appearance, his character, his behavior etc.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
+      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "bookId": 9,
+      "adapted": false
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "صحيح البخاري بعد القرآن أصحُّ كتاب.",
+    "en": "After the Quran, Sahih Bukhari is the most authentic book.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "الإمام الذهبي",
+      "authorEn": "Imam Adh-Dhahabi",
+      "bookId": 9,
+      "adapted": false,
+      "cited": true
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "خرجت من بغداد فما خلَّفت بها أحداً أفضل ولا أعلم ولا أفقه ولا أتقى من أحمد بن حنبل.",
+    "en": "I left Baghdad and I did not leave behind me a man better, having more knowledge, or greater understanding, nor having greater piety than Ahmed bin Hanbal.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "الإمام الشافعي",
+      "authorEn": "Imam Al-Shafi'i",
+      "bookId": 9,
+      "adapted": false,
+      "cited": true
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "إنّ الله أعزّ هذا الدين بأبي بكر الصدِّيق يوم الردة، وبأحمد بن حنبل يوم المحنة.",
+    "en": "Allah has aided this religion through Abu Bakr As-Siddiq on the day of apostasy, and through Ahmed bin Hanbal on the day of trial.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "الإمام علي بن المديني",
+      "authorEn": "Imam Ali ibn al-Madini",
+      "bookId": 9,
+      "adapted": false,
+      "cited": true
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "اختار (الإمام مسلم) من المناهج ما يكاد يكون كاملاً، وكان شديد التحرّي في معارفه، ما لا يقدر عليه إلا الأفذاذ من أهل زمانه.",
+    "en": "He (Imam Muslim) chose methods that were near perfect, and he was very cautious with his acquaintances, of which no one could accomplish except a few of his time.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "الإمام النووي",
+      "authorEn": "Imam An-Nawawi",
+      "bookId": 9,
+      "adapted": false,
+      "cited": true
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "الإمام البخاري والإمام مسلم لا يجتمعان على حديث إلا وهو صحيح لا شك فيه.",
+    "en": "Imam Bukhari and Imam Muslim would not agree upon a Hadith except that it is authentic without doubt.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "شيخ الإسلام ابن تيمية",
+      "authorEn": "Shaykh al-Islam Ibn Taymiyyah",
+      "bookId": 9,
+      "adapted": false,
+      "cited": true
+    },
+    "mode": "verbatim"
+  },
+  {
+    "ar": "ما أخرجت خراسان مثل محمد بن إسماعيل.",
+    "en": "Khurasan has not brought out of it the likes of Mohammed ibn Ismail.",
+    "source": {
+      "ar": "مقدمة في علم الحديث",
+      "en": "Introduction to Hadith",
+      "authorAr": "الإمام أحمد بن حنبل",
+      "authorEn": "Imam Ahmad ibn Hanbal",
+      "bookId": 9,
+      "adapted": false,
+      "cited": true
+    },
+    "mode": "verbatim"
   }
 ]

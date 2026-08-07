@@ -41,7 +41,7 @@ workflows:
           p = 'ios/Runner/Info.plist'
           s = open(p, encoding='utf-8').read()
           desc = 'يُستخدم موقعك لتحديد اتجاه القبلة فقط، ولا يُخزَّن ولا يُشارَك.'
-          name = 'أمة الإسلام'
+          name = 'Muslim Ummah'
           if '<key>CFBundleDisplayName</key>' in s:
               s = re.sub(r'(<key>CFBundleDisplayName</key>\s*<string>)[^<]*(</string>)',
                          lambda m: m.group(1) + name + m.group(2), s)

@@ -171,23 +171,46 @@ class _QuoteScreenState extends State<QuoteScreen> {
                       height: 1.6,
                       fontStyle: FontStyle.italic)),
             const SizedBox(height: 22),
-            // Book title on one line …
-            Text(AppState.I.loc(q.source),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: AppColors.sage300,
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w600)),
-            // … and the author (Sheikh Ali) on his own line beneath, in a
-            // muted gold so his name is distinct from the green book title.
-            if (_author(q, ar).isNotEmpty) ...[
-              const SizedBox(height: 5),
-              Text(_author(q, ar),
+            // Attribution. For a cited scholar-saying, show the speaker first
+            // (in gold), then a small "Quoted from the book …" line beneath —
+            // so the words are attributed to their real author, not the book's.
+            if (q.source['cited'] == true) ...[
+              if (_author(q, ar).isNotEmpty)
+                Text(_author(q, ar),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: _gold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700)),
+              const SizedBox(height: 4),
+              Text(
+                  ar
+                      ? 'مقتبَس من كتاب «${AppState.I.loc(q.source)}»'
+                      : 'Quoted from “${AppState.I.loc(q.source)}”',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      color: _gold,
-                      fontSize: 13,
+                      color: AppColors.sage300,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500)),
+            ] else ...[
+              // Book title on one line …
+              Text(AppState.I.loc(q.source),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: AppColors.sage300,
+                      fontSize: 13.5,
                       fontWeight: FontWeight.w600)),
+              // … and the author (Sheikh Ali) on his own line beneath, in a
+              // muted gold so his name is distinct from the green book title.
+              if (_author(q, ar).isNotEmpty) ...[
+                const SizedBox(height: 5),
+                Text(_author(q, ar),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: _gold,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600)),
+              ],
             ],
             // Transparency tag for adapted/summarised excerpts.
             if (q.source['adapted'] == true) ...[

@@ -13,21 +13,32 @@ class QuoteImage {
   static const _bg = Color(0xFF16302A);
   static const _pearl = Color(0xFFF2ECDD);
   static const _sage = Color(0xFF7FA090);
+  static const _gold = Color(0xFFC8A86B);
 
   static Future<void> share(Quote q) async {
     final ar = AppState.I.lang == 'ar';
-    final src =
+    final book =
         ar ? (q.source['ar']?.toString() ?? '') : (q.source['en']?.toString() ?? '');
     final author = ar
         ? (q.source['authorAr']?.toString() ?? '')
         : (q.source['authorEn']?.toString() ?? '');
+    // Cited scholar-saying → speaker first, then "Quoted from the book …".
+    final attribution = q.source['cited'] == true
+        ? [
+            if (author.isNotEmpty) author,
+            if (book.isNotEmpty)
+              (ar ? 'مقتبَس من كتاب «$book»' : 'Quoted from “$book”'),
+          ]
+        : [
+            if (book.isNotEmpty) book,
+            if (author.isNotEmpty) author,
+          ];
     final caption = [
       if (q.ar.isNotEmpty) q.ar,
       if (q.en.isNotEmpty) q.en,
-      if (src.isNotEmpty) src,
-      if (author.isNotEmpty) author,
+      ...attribution,
       '',
-      'أمة الإسلام',
+      ar ? 'أمة الإسلام' : 'Muslim Ummah',
       'https://muslimummah.app',
     ].join('\n');
     try {
@@ -122,18 +133,33 @@ class QuoteImage {
     final author = ar
         ? (q.source['authorAr']?.toString() ?? '')
         : (q.source['authorEn']?.toString() ?? '');
-    if (book.isNotEmpty) {
-      final h = _draw(canvas, book,
-          cx: cx, top: y, maxWidth: maxW, fontSize: 30,
-          color: _sage, weight: FontWeight.w600, family: 'Tajawal', rtl: ar);
-      y += h + 6;
-    }
-    if (author.isNotEmpty) {
-      // Sheikh Ali's name on its own line.
-      _draw(canvas, author,
-          cx: cx, top: y, maxWidth: maxW, fontSize: 26,
-          color: _sage.withValues(alpha: 0.88), weight: FontWeight.w500,
-          family: 'Tajawal', rtl: ar);
+    if (q.source['cited'] == true) {
+      // Scholar saying: speaker first (gold), then "Quoted from the book …".
+      if (author.isNotEmpty) {
+        final h = _draw(canvas, author,
+            cx: cx, top: y, maxWidth: maxW, fontSize: 30,
+            color: _gold, weight: FontWeight.w700, family: 'Tajawal', rtl: ar);
+        y += h + 6;
+      }
+      if (book.isNotEmpty) {
+        _draw(canvas, ar ? 'مقتبَس من كتاب «$book»' : 'Quoted from “$book”',
+            cx: cx, top: y, maxWidth: maxW, fontSize: 24,
+            color: _sage, weight: FontWeight.w500, family: 'Tajawal', rtl: ar);
+      }
+    } else {
+      if (book.isNotEmpty) {
+        final h = _draw(canvas, book,
+            cx: cx, top: y, maxWidth: maxW, fontSize: 30,
+            color: _sage, weight: FontWeight.w600, family: 'Tajawal', rtl: ar);
+        y += h + 6;
+      }
+      if (author.isNotEmpty) {
+        // The author's name on its own line.
+        _draw(canvas, author,
+            cx: cx, top: y, maxWidth: maxW, fontSize: 26,
+            color: _sage.withValues(alpha: 0.88), weight: FontWeight.w500,
+            family: 'Tajawal', rtl: ar);
+      }
     }
 
     _draw(canvas, ar ? 'أمة الإسلام' : 'Muslim Ummah',

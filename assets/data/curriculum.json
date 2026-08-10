@@ -78,8 +78,8 @@
     { "id": 52, "sci": "arabic", "level": 3, "title": { "ar": "٤٠٠ سؤال في الصرف", "en": "400 Questions in Sarf" }, "sources": [{ "ch": "enthusiasts", "url": "https://www.youtube.com/playlist?list=PL8reA9DlO0ofSc0kI-S_S4CRY-gEnnuMM" }] },
     { "id": 53, "sci": "arabic", "level": 3, "title": { "ar": "كتاب المدينة ٣", "en": "Madinah Book 3" }, "sources": [{ "ch": "enthusiasts", "url": "https://www.youtube.com/playlist?list=PL8reA9DlO0oc51vWhYgjTGRwgN1kaJG0M" }] },
     { "id": 54, "sci": "arabic", "level": 3, "title": { "ar": "العربية بين يديك ٣", "en": "Al-Arabiyyah Bayna Yadayk 3" }, "sources": [{ "ch": "enthusiasts", "url": "https://www.youtube.com/playlist?list=PL8reA9DlO0ofo4r_b6MI7dEfedfCMVrWz" }] },
-    { "id": 55, "sci": "worship", "level": 1, "title": { "ar": "تعليم سورة الفاتحة — بصوت علي رحمه الله", "en": "Learning Surah Al-Fatihah — in Ali's voice" }, "sources": [{ "ch": "ali", "url": "https://www.youtube.com/watch?v=Tq27meSEEIs" }] },
-    { "id": 56, "sci": "worship", "level": 1, "title": { "ar": "تعليم الصلاة الإبراهيمية", "en": "Learning the Ibrahimi Prayer (Durood)" }, "sources": [{ "ch": "ali", "url": "https://www.youtube.com/watch?v=6Uy7S27V2vA" }] },
-    { "id": 57, "sci": "worship", "level": 1, "title": { "ar": "التكبيرات", "en": "The Takbeerat" }, "sources": [{ "ch": "ali", "url": "https://www.youtube.com/watch?v=eoM8Z2kLEWs" }] }
+    { "id": 55, "sci": "worship", "level": 1, "title": { "ar": "تعليم سورة الفاتحة — بصوت علي رحمه الله", "en": "Learning Surah Al-Fatihah — in Ali's voice" }, "sources": [{ "ch": "ali", "url": "https://www.youtube.com/watch?v=6Uy7S27V2vA" }] },
+    { "id": 56, "sci": "worship", "level": 1, "title": { "ar": "تعليم الصلاة الإبراهيمية", "en": "Learning the Ibrahimi Prayer (Durood)" }, "sources": [{ "ch": "ali", "url": "https://www.youtube.com/watch?v=eoM8Z2kLEWs" }] },
+    { "id": 57, "sci": "worship", "level": 1, "title": { "ar": "التكبيرات", "en": "The Takbeerat" }, "sources": [{ "ch": "ali", "url": "https://www.youtube.com/watch?v=tAPqFMsfy7Q" }] }
   ]
 }

@@ -61,15 +61,17 @@ class QuoteImage {
 
     // Dark-green logo background + thin frame.
     canvas.drawRect(const Rect.fromLTWH(0, 0, s, s), Paint()..color = _bg);
+    // Inset away from the edges so an Instagram feed post (which crops a square
+    // toward 4:5) still shows the whole frame.
     canvas.drawRect(
-        const Rect.fromLTWH(48, 48, s - 96, s - 96),
+        const Rect.fromLTWH(118, 118, s - 236, s - 236),
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 3
           ..color = _sage.withValues(alpha: 0.5));
 
     const cx = s / 2;
-    const maxW = s - 220;
+    const maxW = s - 300;
 
     // Opening quotation mark.
     _draw(canvas, '❝',

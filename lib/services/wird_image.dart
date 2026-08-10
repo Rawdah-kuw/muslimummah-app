@@ -44,8 +44,10 @@ class WirdImage {
 
     canvas.drawRect(const Rect.fromLTWH(0, 0, s, s),
         Paint()..color = const Color(0xFFFDFBF7));
+    // Inset well away from the edges so an Instagram feed post (which crops a
+    // square toward 4:5) still shows the whole frame.
     canvas.drawRect(
-        const Rect.fromLTWH(48, 48, s - 96, s - 96),
+        const Rect.fromLTWH(118, 118, s - 236, s - 236),
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 4
@@ -69,7 +71,7 @@ class WirdImage {
 
     // One language per app language — Arabic original for the Arabic app,
     // the meaning for the English app (matches the in-app wird card).
-    const maxW = s - 220;
+    const maxW = s - 300;
 
     ui.Paragraph mainPara;
     if (ar) {

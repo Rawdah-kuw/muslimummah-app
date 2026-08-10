@@ -286,16 +286,17 @@
     }
   },
   {
-    "ar": "قال الشيخ ابن عثيمين رحمه الله: ينبغي لطالب العلم أن ينشر الوعي بين الناس بفضل هذه الأيام العشر، فإن الناس عنها غافلون، وبفضلها جاهلون، فهم بحاجةٍ إلى التذكير والفهم والعلم.",
+    "ar": "ينبغي لطالب العلم أن ينشر الوعي بين الناس بفضل هذه الأيام العشر، فإن الناس عنها غافلون، وبفضلها جاهلون، فهم بحاجةٍ إلى التذكير والفهم والعلم.",
     "en": "",
     "mode": "adapted",
     "source": {
       "ar": "العشر الأوائل من ذي الحجّة",
       "en": "The First Ten of Dhul-Hijjah",
-      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
-      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "authorAr": "الشيخ ابن عثيمين رحمه الله",
+      "authorEn": "Shaykh Ibn 'Uthaymeen",
       "bookId": 101,
-      "adapted": true
+      "adapted": true,
+      "cited": true
     }
   },
   {
@@ -325,16 +326,17 @@
     }
   },
   {
-    "ar": "قال ابن عثيمين رحمه الله: في هذه الأيام العشر أكثروا من الأعمال الصالحة، وأكثروا من تلاوة القرآن، وأكثروا من الذكر، وأكثروا من الصدقة، وصوموا أيامها.",
+    "ar": "في هذه الأيام العشر أكثروا من الأعمال الصالحة، وأكثروا من تلاوة القرآن، وأكثروا من الذكر، وأكثروا من الصدقة، وصوموا أيامها.",
     "en": "",
     "mode": "adapted",
     "source": {
       "ar": "العشر الأوائل من ذي الحجّة",
       "en": "The First Ten of Dhul-Hijjah",
-      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
-      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
+      "authorAr": "الشيخ ابن عثيمين رحمه الله",
+      "authorEn": "Shaykh Ibn 'Uthaymeen",
       "bookId": 101,
-      "adapted": true
+      "adapted": true,
+      "cited": true
     }
   },
   {
@@ -429,19 +431,6 @@
     }
   },
   {
-    "ar": "وقال الإمام الذهبي: إنّ صحيح البخاري بعد القرآن أصح كتاب... وعدد أحاديثه بتكرار الأحاديث 7397 حديثاً، وبدون التكرار 2602 حديثاً فريداً.",
-    "en": "",
-    "mode": "adapted",
-    "source": {
-      "ar": "مقدمة في علم الحديث",
-      "en": "Introduction to Hadith",
-      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
-      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
-      "bookId": 9,
-      "adapted": true
-    }
-  },
-  {
     "ar": "أما الذكر، فممَّا يُستحبُّ منه استحبابًا مؤكّدًا: التهليل والتحميد، والتكبير، ومعها التسبيح. وهي على الترتيب: «لا إله إلا الله»، و«الحمد لله»، و«الله أكبر»، و«سبحان الله».",
     "en": "",
     "mode": "adapted",
@@ -468,19 +457,6 @@
     }
   },
   {
-    "ar": "وقال الإمام أحمد بن حنبل: «ما أخرجت خراسان مثل محمد بن إسماعيل (قبله)»، وفي ذلك إشارة إلى أن البخاري كان جبلاً من جبال العلم بين كبار العلماء.",
-    "en": "",
-    "mode": "adapted",
-    "source": {
-      "ar": "مقدمة في علم الحديث",
-      "en": "Introduction to Hadith",
-      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
-      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
-      "bookId": 9,
-      "adapted": true
-    }
-  },
-  {
     "ar": "أفضل الدعاء دعاء يوم عرفة، ومن ثمَّ يُستحب الإكثار من الدعاء في هذا اليوم.",
     "en": "",
     "mode": "adapted",
@@ -503,19 +479,6 @@
       "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
       "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
       "bookId": 102,
-      "adapted": true
-    }
-  },
-  {
-    "ar": "قال الإمام النووي: «اختار الإمام مسلم من المناهج ما يكاد يكون كاملاً، وكان شديد التحري في معارفه، ما لا يقدر عليه إلا الأفذاذ من أهل زمانه».",
-    "en": "",
-    "mode": "adapted",
-    "source": {
-      "ar": "مقدمة في علم الحديث",
-      "en": "Introduction to Hadith",
-      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
-      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
-      "bookId": 9,
       "adapted": true
     }
   },
@@ -776,19 +739,6 @@
       "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
       "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
       "bookId": 102,
-      "adapted": true
-    }
-  },
-  {
-    "ar": "قال الإمام الشافعي عن تلميذه أحمد بن حنبل: «خرجت من بغداد فما خلفت بها أحداً أفضل ولا أعلم ولا أفقه ولا أتقى من أحمد بن حنبل».",
-    "en": "",
-    "mode": "adapted",
-    "source": {
-      "ar": "مقدمة في علم الحديث",
-      "en": "Introduction to Hadith",
-      "authorAr": "علي عبد العزيز الصدّيقي رحمه الله",
-      "authorEn": "Ali Abdulaziz Alseddiqi (may Allah have mercy on him)",
-      "bookId": 9,
       "adapted": true
     }
   },

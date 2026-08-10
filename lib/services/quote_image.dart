@@ -148,17 +148,18 @@ class QuoteImage {
       }
     } else {
       if (book.isNotEmpty) {
+        // Lighter sage so the book title reads clearly on the dark green.
         final h = _draw(canvas, book,
             cx: cx, top: y, maxWidth: maxW, fontSize: 30,
-            color: _sage, weight: FontWeight.w600, family: 'Tajawal', rtl: ar);
+            color: const Color(0xFFA8C3B4), weight: FontWeight.w600,
+            family: 'Tajawal', rtl: ar);
         y += h + 6;
       }
       if (author.isNotEmpty) {
-        // The author's name on its own line.
+        // The author's name in gold — matching the in-app quote card.
         _draw(canvas, author,
-            cx: cx, top: y, maxWidth: maxW, fontSize: 26,
-            color: _sage.withValues(alpha: 0.88), weight: FontWeight.w500,
-            family: 'Tajawal', rtl: ar);
+            cx: cx, top: y, maxWidth: maxW, fontSize: 27,
+            color: _gold, weight: FontWeight.w700, family: 'Tajawal', rtl: ar);
       }
     }
 

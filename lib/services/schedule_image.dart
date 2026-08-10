@@ -46,10 +46,12 @@ class ScheduleImage {
 
   static Future<Uint8List> _render(
       String day, List<Lesson> lessons, int page, int totalPages) async {
+    // Compact sizing so a shared schedule image isn't overly tall in an
+    // Instagram story.
     const w = 1080.0;
-    const headerH = 190.0;
-    const rowH = 200.0;
-    const footerH = 130.0;
+    const headerH = 156.0;
+    const rowH = 164.0;
+    const footerH = 104.0;
     final h = headerH + lessons.length * rowH + footerH;
 
     final rec = ui.PictureRecorder();
@@ -61,16 +63,16 @@ class ScheduleImage {
         Paint()..color = const Color(0xFF1B3B2B));
     _center(c, 'روضة · مجالس ودروس الذكر',
         cx: w / 2,
-        top: 42,
+        top: 34,
         maxWidth: w - 120,
-        fontSize: 28,
+        fontSize: 25,
         color: const Color(0xFFA8C3B4),
         weight: FontWeight.w500);
     _center(c, totalPages > 1 ? '$day · صفحة $page من $totalPages' : day,
         cx: w / 2,
-        top: 90,
+        top: 74,
         maxWidth: w - 120,
-        fontSize: 54,
+        fontSize: 46,
         color: const Color(0xFFFDFBF7),
         weight: FontWeight.w800);
 
@@ -82,16 +84,16 @@ class ScheduleImage {
 
     _center(c, 'جميع الأوقات بتوقيت الكويت (GMT+3)',
         cx: w / 2,
-        top: h - footerH + 28,
+        top: h - footerH + 22,
         maxWidth: w - 120,
-        fontSize: 24,
+        fontSize: 22,
         color: const Color(0xFF94A3B8),
         weight: FontWeight.w400);
     _center(c, 'شبكة أمة الإسلام · muslimummah.app',
         cx: w / 2,
-        top: h - footerH + 66,
+        top: h - footerH + 56,
         maxWidth: w - 120,
-        fontSize: 30,
+        fontSize: 27,
         color: const Color(0xFF1B3B2B),
         weight: FontWeight.w700);
 
@@ -115,8 +117,8 @@ class ScheduleImage {
     // Accent bar on the right edge encodes the audience (rose = women).
     c.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(width - pad - 10, top + 14, 7, cardH - 18),
-            const Radius.circular(4)),
+            Rect.fromLTWH(width - pad - 16, top + 14, 12, cardH - 18),
+            const Radius.circular(6)),
         Paint()..color = accent);
 
     final rightX = width - pad - 28;
@@ -141,16 +143,19 @@ class ScheduleImage {
           color: const Color(0xFF4F7263),
           weight: FontWeight.w600);
     }
-    final info =
-        [l.time, l.area, l.location].where((s) => s.isNotEmpty).join('  ·  ');
+    // Lead the details with the audience so it's obvious at a glance.
+    final aud = women ? 'للنساء' : 'للجميع';
+    final info = [aud, l.time, l.area, l.location]
+        .where((s) => s.isNotEmpty)
+        .join('  ·  ');
     if (info.isNotEmpty) {
       _rtl(c, info,
           rightX: rightX,
           top: top + height * 0.70,
           maxWidth: maxW,
           fontSize: fI,
-          color: const Color(0xFF475569),
-          weight: FontWeight.w400);
+          color: accent,
+          weight: FontWeight.w600);
     }
   }
 

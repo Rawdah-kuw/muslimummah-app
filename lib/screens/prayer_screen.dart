@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../services/prayer_service.dart';
@@ -11,11 +12,23 @@ class PrayerScreen extends StatefulWidget {
 
 class _PrayerScreenState extends State<PrayerScreen> {
   late Future<PrayerData> _future;
+  String? _selectedKey; // the prayer whose countdown shows at the top
+  Timer? _tick;
 
   @override
   void initState() {
     super.initState();
     _future = PrayerService.today();
+    // Keep the countdown fresh.
+    _tick = Timer.periodic(const Duration(minutes: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _tick?.cancel();
+    super.dispose();
   }
 
   @override
@@ -47,12 +60,14 @@ class _PrayerScreenState extends State<PrayerScreen> {
           }
           final d = snap.data!;
           final next = PrayerService.nextPrayer(d);
+          // Show the tapped prayer's countdown at the top; default to next.
+          final selKey = _selectedKey ?? next?.key;
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              _header(context, d, next),
+              _header(context, d, selKey, isNext: selKey == next?.key),
               const SizedBox(height: 16),
-              ...PrayerData.order.map((k) => _row(context, k, d, next)),
+              ...PrayerData.order.map((k) => _row(context, k, d, selKey)),
               const SizedBox(height: 16),
               Center(
                 child: Text(
@@ -72,9 +87,10 @@ class _PrayerScreenState extends State<PrayerScreen> {
     );
   }
 
-  Widget _header(
-      BuildContext context, PrayerData d, MapEntry<String, String>? next) {
+  Widget _header(BuildContext context, PrayerData d, String? selKey,
+      {required bool isNext}) {
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final ar = AppState.I.lang == 'ar';
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -89,7 +105,7 @@ class _PrayerScreenState extends State<PrayerScreen> {
       ),
       child: Column(
         children: [
-          Text(d.hijri(AppState.I.lang == 'ar'),
+          Text(d.hijri(ar),
               style: const TextStyle(
                   color: AppColors.pearl50,
                   fontSize: 18,
@@ -97,12 +113,20 @@ class _PrayerScreenState extends State<PrayerScreen> {
           const SizedBox(height: 2),
           Text(d.gregorian.replaceAll('-', '/'),
               style: const TextStyle(color: AppColors.sage300, fontSize: 13)),
-          const SizedBox(height: 6),
-          if (next != null)
+          if (selKey != null) ...[
+            const SizedBox(height: 12),
+            // Selected prayer (defaults to the next one) + how long remains.
             Text(
-              '${tr('الصلاة القادمة', 'Next')}: ${tr(PrayerData.labelAr[next.key]!, PrayerData.labelEn[next.key]!)} — ${PrayerData.time12(next.value, AppState.I.lang == 'ar')}',
-              style: const TextStyle(color: AppColors.sage300, fontSize: 14),
+              '${isNext ? '${tr('الصلاة القادمة', 'Next')}: ' : ''}${tr(PrayerData.labelAr[selKey]!, PrayerData.labelEn[selKey]!)} — ${PrayerData.time12(d.timings[selKey] ?? '--', ar)}',
+              style: const TextStyle(
+                  color: AppColors.pearl50,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
             ),
+            const SizedBox(height: 3),
+            Text(_untilText(d.timings[selKey]),
+                style: const TextStyle(color: AppColors.sage300, fontSize: 14)),
+          ],
         ],
       ),
     );
@@ -131,26 +155,22 @@ class _PrayerScreenState extends State<PrayerScreen> {
     }
   }
 
-  Widget _row(BuildContext context, String k, PrayerData d,
-      MapEntry<String, String>? next) {
-    final isNext = next != null && next.key == k;
+  Widget _row(BuildContext context, String k, PrayerData d, String? selKey) {
+    final isSelected = k == selKey;
     final ar = AppState.I.lang == 'ar';
     return GestureDetector(
-      onTap: () {
-        final label = tr(PrayerData.labelAr[k]!, PrayerData.labelEn[k]!);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('$label — ${_untilText(d.timings[k])}'),
-          duration: const Duration(seconds: 3),
-        ));
-      },
+      // Tap a prayer → its countdown moves up to the header.
+      onTap: () => setState(() => _selectedKey = k),
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isNext ? AppColors.sage100 : Theme.of(context).cardTheme.color,
+          color: isSelected
+              ? AppColors.sage100
+              : Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-              color: isNext ? AppColors.sage600 : AppColors.pearl200),
+              color: isSelected ? AppColors.sage600 : AppColors.pearl200),
         ),
         child: Row(
           children: [
@@ -163,7 +183,7 @@ class _PrayerScreenState extends State<PrayerScreen> {
             Text(tr(PrayerData.labelAr[k]!, PrayerData.labelEn[k]!),
                 style: TextStyle(
                     fontSize: 16,
-                    fontWeight: isNext ? FontWeight.w800 : FontWeight.w600)),
+                    fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600)),
             const Spacer(),
             Text(PrayerData.time12(d.timings[k] ?? '--', ar),
                 style: const TextStyle(

@@ -33,6 +33,9 @@ class _ReaderScreenState extends State<ReaderScreen> {
   @override
   void initState() {
     super.initState();
+    // Open the edition that matches the app language — an English-app reader
+    // starts on the English PDF (when the book has one), not the Arabic.
+    _showingEn = AppState.I.lang == 'en' && widget.enUrl != null;
     _load();
   }
 

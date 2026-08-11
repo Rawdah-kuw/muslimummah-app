@@ -159,25 +159,35 @@ class _ReminderTileState extends State<_ReminderTile> {
     await Prefs.setBool('notif_${r.key}', _on);
     await Prefs.setInt('notif_${r.key}_h', _h);
     await Prefs.setInt('notif_${r.key}_m', _m);
-    if (_on) {
-      await NotificationService.requestPermissions();
-      if (r.key == 'wird') {
-        // Wird shows the actual daily reminder text (scheduled 14 days ahead).
-        await NotificationService.scheduleWird(_h, _m, AppState.I.lang == 'ar');
+    try {
+      if (_on) {
+        await NotificationService.requestPermissions();
+        if (r.key == 'wird') {
+          // Wird shows the actual daily reminder text (14 days ahead).
+          await NotificationService.scheduleWird(
+              _h, _m, AppState.I.lang == 'ar');
+        } else {
+          await NotificationService.scheduleDaily(
+            r.id,
+            _h,
+            _m,
+            AppState.I.lang == 'ar' ? r.titleAr : r.titleEn,
+            AppState.I.lang == 'ar' ? r.bodyAr : r.bodyEn,
+          );
+        }
       } else {
-        await NotificationService.scheduleDaily(
-          r.id,
-          _h,
-          _m,
-          AppState.I.lang == 'ar' ? r.titleAr : r.titleEn,
-          AppState.I.lang == 'ar' ? r.bodyAr : r.bodyEn,
-        );
+        if (r.key == 'wird') {
+          await NotificationService.cancelWird();
+        } else {
+          await NotificationService.cancel(r.id);
+        }
       }
-    } else {
-      if (r.key == 'wird') {
-        await NotificationService.cancelWird();
-      } else {
-        await NotificationService.cancel(r.id);
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(tr('تعذّر ضبط التذكير. حاول مرة أخرى.',
+              'Could not set the reminder. Please try again.')),
+        ));
       }
     }
   }

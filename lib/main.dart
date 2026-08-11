@@ -16,30 +16,35 @@ Future<void> main() async {
   await Prefs.init();
   await AppState.I.load();
   await ContentRepo.load();
-  await NotificationService.init();
-  // Keep the daily-Wird notification series topped up with each day's text.
-  if (Prefs.getBool('notif_wird', false)) {
-    await NotificationService.scheduleWird(
-      Prefs.getInt('notif_wird_h', 7),
-      Prefs.getInt('notif_wird_m', 0),
-      AppState.I.lang == 'ar',
-    );
-  }
   await Supabase.initialize(
     url: Config.supabaseUrl,
     anonKey: Config.supabaseAnonKey,
   );
-  // Refresh the five-prayer reminders with today's exact times (best effort).
-  if (Prefs.getBool('notif_prayers', false)) {
-    () async {
-      try {
-        final pd = await PrayerService.today();
-        await NotificationService.schedulePrayers(
-            pd.timings, AppState.I.lang == 'ar');
-      } catch (_) {/* offline — keep the existing schedule */}
-    }();
-  }
+  // Show the UI immediately, then top up the reminders in the background.
   runApp(const MuslimUmmahApp());
+  _refreshReminders();
+}
+
+/// Refreshes scheduled reminders AFTER the app is running, fully guarded so a
+/// notification/plugin/timezone error can never block or crash startup.
+/// (A crash here before runApp() would freeze the app on every launch — and,
+/// with the setting restored by Android backup, even after a reinstall.)
+Future<void> _refreshReminders() async {
+  try {
+    await NotificationService.init();
+    if (Prefs.getBool('notif_wird', false)) {
+      await NotificationService.scheduleWird(
+        Prefs.getInt('notif_wird_h', 7),
+        Prefs.getInt('notif_wird_m', 0),
+        AppState.I.lang == 'ar',
+      );
+    }
+    if (Prefs.getBool('notif_prayers', false)) {
+      final pd = await PrayerService.today();
+      await NotificationService.schedulePrayers(
+          pd.timings, AppState.I.lang == 'ar');
+    }
+  } catch (_) {/* reminders are best-effort — never let them break the app */}
 }
 
 class MuslimUmmahApp extends StatelessWidget {

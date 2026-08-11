@@ -79,6 +79,7 @@ class _DhikrCardState extends State<_DhikrCard> {
     final src = english && d.sourceEn.isNotEmpty ? d.sourceEn : d.source;
     final text = [
       if (d.prefix.isNotEmpty) d.prefix,
+      if (english && d.prefixEn.isNotEmpty) d.prefixEn,
       d.ar,
       if (english && d.en.isNotEmpty) d.en,
       if (src.isNotEmpty) src,
@@ -163,6 +164,18 @@ class _DhikrCardState extends State<_DhikrCard> {
                           .onSurface
                           .withValues(alpha: 0.7)),
                 ),
+                if (english && d.prefixEn.isNotEmpty)
+                  Text(
+                    d.prefixEn,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 12.5,
+                        fontStyle: FontStyle.italic,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6)),
+                  ),
                 const SizedBox(height: 4),
               ],
               Text(

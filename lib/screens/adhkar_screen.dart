@@ -4,6 +4,7 @@ import '../app_state.dart';
 import '../data/content.dart';
 import '../models/models.dart';
 import '../theme.dart';
+import '../widgets/common.dart';
 
 class AdhkarScreen extends StatelessWidget {
   final int initialTab;
@@ -71,10 +72,31 @@ class _DhikrCardState extends State<_DhikrCard> {
     if (_done == widget.d.count) HapticFeedback.mediumImpact();
   }
 
+  void _share() {
+    final d = widget.d;
+    final english = AppState.I.lang == 'en';
+    final benefit = english && d.noteEn.isNotEmpty ? d.noteEn : d.note;
+    final src = english && d.sourceEn.isNotEmpty ? d.sourceEn : d.source;
+    final text = [
+      if (d.prefix.isNotEmpty) d.prefix,
+      d.ar,
+      if (english && d.en.isNotEmpty) d.en,
+      if (src.isNotEmpty) src,
+      if (benefit.isNotEmpty) benefit,
+      '',
+      english ? 'Muslim Ummah' : 'أمة الإسلام',
+      kSiteUrl,
+    ].join('\n');
+    shareText(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     final d = widget.d;
     final complete = _done >= d.count;
+    final english = AppState.I.lang == 'en';
+    final benefit = english && d.noteEn.isNotEmpty ? d.noteEn : d.note;
+    final src = english && d.sourceEn.isNotEmpty ? d.sourceEn : d.source;
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
@@ -100,6 +122,16 @@ class _DhikrCardState extends State<_DhikrCard> {
                             color: AppColors.sage700)),
                   ),
                   const Spacer(),
+                  IconButton(
+                    onPressed: _share,
+                    icon: const Icon(Icons.ios_share, size: 20),
+                    color: AppColors.sage700,
+                    tooltip: tr('مشاركة', 'Share'),
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                  const SizedBox(width: 14),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -117,22 +149,55 @@ class _DhikrCardState extends State<_DhikrCard> {
                 ],
               ),
               const SizedBox(height: 12),
+              // Basmala / isti'adha on its own centred line — it is not a verse.
+              if (d.prefix.isNotEmpty) ...[
+                Text(
+                  d.prefix,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 18,
+                      height: 1.9,
+                      fontFamily: 'Amiri',
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.7)),
+                ),
+                const SizedBox(height: 4),
+              ],
               Text(
                 d.ar,
                 textAlign: TextAlign.right,
                 style: const TextStyle(
                     fontSize: 21, height: 2.1, fontFamily: 'Amiri'),
               ),
-              if (d.source.isNotEmpty || d.note.isNotEmpty) ...[
+              // English translation (shown in the English app).
+              if (english && d.en.isNotEmpty) ...[
                 const SizedBox(height: 10),
-                if (d.note.isNotEmpty)
-                  Text(d.note,
-                      style: TextStyle(
+                Text(
+                  d.en,
+                  textAlign: TextAlign.left,
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                      fontSize: 15,
+                      height: 1.55,
+                      fontStyle: FontStyle.italic,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.82)),
+                ),
+              ],
+              if (src.isNotEmpty || benefit.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                if (benefit.isNotEmpty)
+                  Text(benefit,
+                      style: const TextStyle(
                           fontSize: 12.5,
                           color: AppColors.sage700,
                           height: 1.6)),
-                if (d.source.isNotEmpty)
-                  Text(d.source,
+                if (src.isNotEmpty)
+                  Text(src,
                       style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context)

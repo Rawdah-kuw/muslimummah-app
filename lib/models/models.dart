@@ -115,15 +115,24 @@ class Quote {
 
 class Dhikr {
   final String ar;
+  final String prefix; // basmala / isti'adha — shown centred above, not a verse
+  final String en; // English translation (English app)
   final int count;
   final String source;
-  final String note;
-  Dhikr(this.ar, this.count, this.source, this.note);
+  final String sourceEn; // reference (English)
+  final String note; // benefit (Arabic)
+  final String noteEn; // benefit (English)
+  Dhikr(this.ar, this.prefix, this.en, this.count, this.source, this.sourceEn,
+      this.note, this.noteEn);
   factory Dhikr.fromJson(Map j) => Dhikr(
         (j['ar'] ?? '').toString(),
+        (j['prefix'] ?? '').toString(),
+        (j['en'] ?? '').toString(),
         (j['count'] ?? 1) as int,
         (j['source'] ?? '').toString(),
+        (j['sourceEn'] ?? '').toString(),
         (j['note'] ?? '').toString(),
+        (j['noteEn'] ?? '').toString(),
       );
 }
 

@@ -4,7 +4,7 @@ import '../app_state.dart';
 import '../data/content.dart';
 import '../models/models.dart';
 import '../theme.dart';
-import '../widgets/common.dart';
+import '../services/adhkar_image.dart';
 
 class AdhkarScreen extends StatelessWidget {
   final int initialTab;
@@ -72,24 +72,7 @@ class _DhikrCardState extends State<_DhikrCard> {
     if (_done == widget.d.count) HapticFeedback.mediumImpact();
   }
 
-  void _share() {
-    final d = widget.d;
-    final english = AppState.I.lang == 'en';
-    final benefit = english && d.noteEn.isNotEmpty ? d.noteEn : d.note;
-    final src = english && d.sourceEn.isNotEmpty ? d.sourceEn : d.source;
-    final text = [
-      if (d.prefix.isNotEmpty) d.prefix,
-      if (english && d.prefixEn.isNotEmpty) d.prefixEn,
-      d.ar,
-      if (english && d.en.isNotEmpty) d.en,
-      if (src.isNotEmpty) src,
-      if (benefit.isNotEmpty) benefit,
-      '',
-      english ? 'Muslim Ummah' : 'أمة الإسلام',
-      kSiteUrl,
-    ].join('\n');
-    shareText(text);
-  }
+  void _share() => AdhkarImage.share(widget.d);
 
   @override
   Widget build(BuildContext context) {

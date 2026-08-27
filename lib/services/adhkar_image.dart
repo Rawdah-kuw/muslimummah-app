@@ -66,16 +66,30 @@ class AdhkarImage {
     final note = ar ? d.note : (d.noteEn.isNotEmpty ? d.noteEn : d.note);
 
     // Header label.
-    _draw(c, ar ? 'من الأذكار 🌿' : 'Daily Adhkar 🌿',
+    _draw(c, ar ? 'من الأذكار' : 'Daily Adhkar',
         cx: cx, top: 150, maxWidth: maxW, fontSize: 32,
         color: _sage, weight: FontWeight.w500, family: 'Tajawal', rtl: ar);
 
-    // Build the paragraphs (prefix, Arabic, English) and auto-fit to a budget.
-    double arSize = 52, enSize = 30, preSize = 30;
+    // Source + benefit are measured too, so the whole block (including them) is
+    // centred and never collides with the footer (fixes long adhkar overlap).
+    final srcPara = src.isEmpty
+        ? null
+        : _para(src,
+            fontSize: 28, weight: FontWeight.w600, color: _sage,
+            family: 'Tajawal', rtl: ar, maxWidth: maxW, height: 1.4);
+    final notePara = note.isEmpty
+        ? null
+        : _para(note,
+            fontSize: 23, weight: FontWeight.w400, color: _muted,
+            family: 'Tajawal', rtl: ar, maxWidth: maxW, height: 1.5);
+    final tailH = (srcPara != null ? 40 + srcPara.height : 0) +
+        (notePara != null ? 12 + notePara.height : 0);
+
+    double arSize = 50, enSize = 30, preSize = 28;
     ui.Paragraph? prePara;
     late ui.Paragraph arPara;
     ui.Paragraph? enPara;
-    for (var pass = 0; pass < 14; pass++) {
+    for (var pass = 0; pass < 20; pass++) {
       prePara = prefix.isEmpty
           ? null
           : _para(prefix,
@@ -90,19 +104,19 @@ class AdhkarImage {
               fontSize: enSize, weight: FontWeight.w500,
               color: const Color(0xFF44603F), family: null, rtl: false,
               maxWidth: maxW, height: 1.4);
-      final total = (prePara?.height ?? 0) +
+      final content = (prePara != null ? prePara.height + 14 : 0) +
           arPara.height +
-          (enPara != null ? enPara.height + 24 : 0);
-      if (total <= 560) break;
+          (enPara != null ? 20 + enPara.height : 0);
+      if (content + tailH <= 540 || arSize <= 24) break;
       arSize -= 3;
-      enSize -= 2;
-      preSize -= 2;
+      if (enSize > 22) enSize -= 2;
+      if (preSize > 20) preSize -= 2;
     }
 
-    final blockH = (prePara != null ? prePara.height + 14 : 0) +
+    final content = (prePara != null ? prePara.height + 14 : 0) +
         arPara.height +
-        (enPara != null ? 26 + enPara.height : 0);
-    var y = ((240 + 720) / 2) - blockH / 2;
+        (enPara != null ? 20 + enPara.height : 0);
+    var y = 468 - (content + tailH) / 2;
     if (prePara != null) {
       c.drawParagraph(prePara, Offset(cx - maxW / 2, y));
       y += prePara.height + 14;
@@ -110,29 +124,26 @@ class AdhkarImage {
     c.drawParagraph(arPara, Offset(cx - maxW / 2, y));
     y += arPara.height;
     if (enPara != null) {
-      y += 26;
+      y += 20;
       c.drawParagraph(enPara, Offset(cx - maxW / 2, y));
       y += enPara.height;
     }
-    y += 24;
-
-    if (src.isNotEmpty) {
-      final h = _draw(c, src,
-          cx: cx, top: y, maxWidth: maxW, fontSize: 28,
-          color: _sage, weight: FontWeight.w600, family: 'Tajawal', rtl: ar);
-      y += h + 6;
+    if (srcPara != null) {
+      y += 40;
+      c.drawParagraph(srcPara, Offset(cx - maxW / 2, y));
+      y += srcPara.height;
     }
-    if (note.isNotEmpty) {
-      _draw(c, note,
-          cx: cx, top: y, maxWidth: maxW, fontSize: 24,
-          color: _muted, weight: FontWeight.w400, family: 'Tajawal', rtl: ar);
+    if (notePara != null) {
+      y += 12;
+      c.drawParagraph(notePara, Offset(cx - maxW / 2, y));
+      y += notePara.height;
     }
 
     _draw(c, ar ? 'شبكة أمة الإسلام' : 'Muslim Ummah Network',
-        cx: cx, top: 800, maxWidth: s - 264, fontSize: 38,
+        cx: cx, top: 858, maxWidth: s - 264, fontSize: 38,
         color: _pine, weight: FontWeight.w700, family: 'Tajawal', rtl: ar);
     _draw(c, 'muslimummah.app',
-        cx: cx, top: 900, maxWidth: s - 264, fontSize: 26,
+        cx: cx, top: 906, maxWidth: s - 264, fontSize: 26,
         color: _muted, weight: FontWeight.w400, family: 'Tajawal', rtl: false);
 
     final img = await rec.endRecording().toImage(s.toInt(), s.toInt());

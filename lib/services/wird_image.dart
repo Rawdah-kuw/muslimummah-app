@@ -47,7 +47,7 @@ class WirdImage {
     // Inset well away from the edges so an Instagram feed post (which crops a
     // square toward 4:5) still shows the whole frame.
     canvas.drawRect(
-        const Rect.fromLTWH(118, 118, s - 236, s - 236),
+        const Rect.fromLTWH(132, 132, s - 264, s - 264),
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 4
@@ -69,57 +69,28 @@ class WirdImage {
         family: 'Tajawal',
         rtl: ar);
 
-    // One language per app language — Arabic original for the Arabic app,
-    // the meaning for the English app (matches the in-app wird card).
-    const maxW = s - 300;
-
-    ui.Paragraph mainPara;
-    if (ar) {
-      var size = 60.0;
-      mainPara = _para(w.ar,
-          fontSize: size,
-          weight: FontWeight.w700,
-          color: const Color(0xFF1B3B2B),
-          family: 'Amiri',
-          rtl: true,
-          maxWidth: maxW,
-          height: 1.8);
-      while (mainPara.height > 460 && size > 28) {
-        size -= 4;
-        mainPara = _para(w.ar,
-            fontSize: size,
-            weight: FontWeight.w700,
-            color: const Color(0xFF1B3B2B),
-            family: 'Amiri',
-            rtl: true,
-            maxWidth: maxW,
-            height: 1.8);
-      }
-    } else {
-      var size = 44.0;
-      mainPara = _para(w.en,
-          fontSize: size,
-          weight: FontWeight.w500,
-          color: const Color(0xFF1B3B2B),
-          family: null,
-          rtl: false,
-          maxWidth: maxW,
-          height: 1.5);
-      while (mainPara.height > 460 && size > 22) {
-        size -= 3;
-        mainPara = _para(w.en,
-            fontSize: size,
-            weight: FontWeight.w500,
-            color: const Color(0xFF1B3B2B),
-            family: null,
-            rtl: false,
-            maxWidth: maxW,
-            height: 1.5);
-      }
+    // One language per app language, sized to FILL the card: large for short
+    // texts, shrinking only when a long passage needs it (fixes tiny text
+    // floating in empty space).
+    const maxW = s - 284;
+    final text = ar ? w.ar : w.en;
+    final family = ar ? 'Amiri' : null;
+    final weight = ar ? FontWeight.w700 : FontWeight.w500;
+    final lineH = ar ? 1.8 : 1.5;
+    final minSize = ar ? 30.0 : 26.0;
+    var size = ar ? 96.0 : 64.0;
+    ui.Paragraph mainPara = _para(text,
+        fontSize: size, weight: weight, color: const Color(0xFF1B3B2B),
+        family: family, rtl: ar, maxWidth: maxW, height: lineH);
+    while (mainPara.height > 480 && size > minSize) {
+      size -= 5;
+      mainPara = _para(text,
+          fontSize: size, weight: weight, color: const Color(0xFF1B3B2B),
+          family: family, rtl: ar, maxWidth: maxW, height: lineH);
     }
 
     // Centre the single block in the 250–800 band.
-    var y = ((250 + 800) / 2) - mainPara.height / 2;
+    var y = ((240 + 720) / 2) - mainPara.height / 2;
     canvas.drawParagraph(mainPara, Offset(cx - maxW / 2, y));
     y += mainPara.height + 24;
 
@@ -140,8 +111,8 @@ class WirdImage {
 
     _draw(canvas, ar ? 'شبكة أمة الإسلام' : 'Muslim Ummah Network',
         cx: cx,
-        top: 872,
-        maxWidth: s - 140,
+        top: 800,
+        maxWidth: s - 264,
         fontSize: 40,
         color: const Color(0xFF1B3B2B),
         weight: FontWeight.w700,
@@ -153,8 +124,8 @@ class WirdImage {
             ? 'صدقة جارية عن علي عبد العزيز الصدّيقي رحمه الله'
             : 'A sadaqah jariyah for Ali Abdulaziz Alseddiqi',
         cx: cx,
-        top: 930,
-        maxWidth: s - 120,
+        top: 856,
+        maxWidth: s - 264,
         fontSize: 27,
         color: const Color(0xFF94A3B8),
         weight: FontWeight.w400,
@@ -162,8 +133,8 @@ class WirdImage {
         rtl: ar);
     _draw(canvas, 'muslimummah.app',
         cx: cx,
-        top: 974,
-        maxWidth: s - 160,
+        top: 900,
+        maxWidth: s - 264,
         fontSize: 27,
         color: const Color(0xFF94A3B8),
         weight: FontWeight.w400,

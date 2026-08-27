@@ -52,7 +52,7 @@ class AdhkarImage {
     c.drawRect(const Rect.fromLTWH(0, 0, s, s), Paint()..color = _bg);
     // Frame inset well away from the edges (Instagram feed crop-safe).
     c.drawRect(
-        const Rect.fromLTWH(118, 118, s - 236, s - 236),
+        const Rect.fromLTWH(132, 132, s - 264, s - 264),
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 4
@@ -102,7 +102,7 @@ class AdhkarImage {
     final blockH = (prePara != null ? prePara.height + 14 : 0) +
         arPara.height +
         (enPara != null ? 26 + enPara.height : 0);
-    var y = ((250 + 820) / 2) - blockH / 2;
+    var y = ((240 + 720) / 2) - blockH / 2;
     if (prePara != null) {
       c.drawParagraph(prePara, Offset(cx - maxW / 2, y));
       y += prePara.height + 14;
@@ -129,10 +129,10 @@ class AdhkarImage {
     }
 
     _draw(c, ar ? 'شبكة أمة الإسلام' : 'Muslim Ummah Network',
-        cx: cx, top: 892, maxWidth: s - 240, fontSize: 38,
+        cx: cx, top: 800, maxWidth: s - 264, fontSize: 38,
         color: _pine, weight: FontWeight.w700, family: 'Tajawal', rtl: ar);
     _draw(c, 'muslimummah.app',
-        cx: cx, top: 950, maxWidth: s - 240, fontSize: 26,
+        cx: cx, top: 900, maxWidth: s - 264, fontSize: 26,
         color: _muted, weight: FontWeight.w400, family: 'Tajawal', rtl: false);
 
     final img = await rec.endRecording().toImage(s.toInt(), s.toInt());

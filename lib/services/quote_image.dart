@@ -64,14 +64,14 @@ class QuoteImage {
     // Inset away from the edges so an Instagram feed post (which crops a square
     // toward 4:5) still shows the whole frame.
     canvas.drawRect(
-        const Rect.fromLTWH(118, 118, s - 236, s - 236),
+        const Rect.fromLTWH(132, 132, s - 264, s - 264),
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 3
           ..color = _sage.withValues(alpha: 0.5));
 
     const cx = s / 2;
-    const maxW = s - 300;
+    const maxW = s - 284;
 
     // Opening quotation mark.
     _draw(canvas, '❝',
@@ -79,11 +79,11 @@ class QuoteImage {
         color: _sage.withValues(alpha: 0.55), rtl: false);
 
     // Arabic — auto-fit.
-    var arSize = 58.0;
+    var arSize = 92.0;
     var arPara = _para(q.ar,
         fontSize: arSize, weight: FontWeight.w700, color: _pearl,
         family: 'Amiri', rtl: true, maxWidth: maxW, height: 1.75);
-    while (arPara.height > 360 && arSize > 26) {
+    while (arPara.height > 470 && arSize > 30) {
       arSize -= 4;
       arPara = _para(q.ar,
           fontSize: arSize, weight: FontWeight.w700, color: _pearl,
@@ -91,12 +91,12 @@ class QuoteImage {
     }
 
     // English — a touch larger for readability.
-    var enSize = 39.0;
+    var enSize = 62.0;
     var enPara = _para(q.en,
         fontSize: enSize, weight: FontWeight.w500,
         color: _pearl.withValues(alpha: 0.88), family: null, rtl: false,
         maxWidth: maxW, height: 1.45);
-    while (enPara.height > 250 && enSize > 24) {
+    while (enPara.height > 470 && enSize > 26) {
       enSize -= 3;
       enPara = _para(q.en,
           fontSize: enSize, weight: FontWeight.w500,
@@ -112,7 +112,7 @@ class QuoteImage {
     if (hasAr) blockH += arPara.height;
     if (hasAr && hasEn) blockH += gap + 2 + gap;
     if (hasEn) blockH += enPara.height;
-    var y = ((300 + 800) / 2) - blockH / 2;
+    var y = ((250 + 720) / 2) - blockH / 2;
     if (hasAr) {
       canvas.drawParagraph(arPara, Offset(cx - maxW / 2, y));
       y += arPara.height;
@@ -168,10 +168,10 @@ class QuoteImage {
     }
 
     _draw(canvas, ar ? 'أمة الإسلام' : 'Muslim Ummah',
-        cx: cx, top: 900, maxWidth: s - 140, fontSize: 38,
+        cx: cx, top: 838, maxWidth: s - 264, fontSize: 38,
         color: _pearl, weight: FontWeight.w700, family: 'Tajawal', rtl: ar);
     _draw(canvas, 'muslimummah.app',
-        cx: cx, top: 958, maxWidth: s - 160, fontSize: 26,
+        cx: cx, top: 896, maxWidth: s - 264, fontSize: 26,
         color: _sage.withValues(alpha: 0.9), family: 'Tajawal', rtl: false);
 
     final pic = recorder.endRecording();

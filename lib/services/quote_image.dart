@@ -104,7 +104,9 @@ class QuoteImage {
           maxWidth: maxW, height: 1.45);
     }
 
-    final hasAr = q.ar.isNotEmpty, hasEn = q.en.isNotEmpty;
+    // One language per app language (matches the on-screen quote card).
+    final english = AppState.I.lang == 'en';
+    final hasAr = !english && q.ar.isNotEmpty, hasEn = english && q.en.isNotEmpty;
     const gap = 34.0;
     var blockH = 0.0;
     if (hasAr) blockH += arPara.height;

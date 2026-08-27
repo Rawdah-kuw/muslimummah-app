@@ -20,23 +20,39 @@ class _QuoteScreenState extends State<QuoteScreen> {
   static const _gold = Color(0xFFC8A86B); // muted gold for the author's name
   late int _i;
 
+  /// Quotes for the current language. The English app shows only quotes that
+  /// have an English text (verbatim excerpts from the book itself), never the
+  /// Arabic-only adapted summaries.
+  List<Quote> _quotes() {
+    final all = ContentRepo.quotes;
+    if (AppState.I.lang == 'ar') return all;
+    return all.where((q) => q.en.isNotEmpty).toList();
+  }
+
   @override
   void initState() {
     super.initState();
-    final q = ContentRepo.quoteOfToday();
-    final idx = q == null ? 0 : ContentRepo.quotes.indexOf(q);
+    final list = _quotes();
+    final today = ContentRepo.quoteOfToday();
+    var idx = today == null ? -1 : list.indexOf(today);
+    if (idx < 0 && list.isNotEmpty) {
+      final d = DateTime.now();
+      final doy = d.difference(DateTime(d.year, 1, 1)).inDays;
+      idx = (doy + 3) % list.length;
+    }
     _i = idx < 0 ? 0 : idx;
   }
 
   void _next() {
-    if (ContentRepo.quotes.isEmpty) return;
-    setState(() => _i = (_i + 1) % ContentRepo.quotes.length);
+    final list = _quotes();
+    if (list.isEmpty) return;
+    setState(() => _i = (_i + 1) % list.length);
   }
 
   @override
   Widget build(BuildContext context) {
     final ar = AppState.I.lang == 'ar';
-    final quotes = ContentRepo.quotes;
+    final quotes = _quotes();
     final q = quotes.isEmpty ? null : quotes[_i % quotes.length];
     return Scaffold(
       backgroundColor: _bg,
@@ -143,7 +159,9 @@ class _QuoteScreenState extends State<QuoteScreen> {
                     height: 0.8,
                     color: AppColors.sage300.withValues(alpha: 0.6))),
             const SizedBox(height: 8),
-            if (q.ar.isNotEmpty)
+            // One language per app language: Arabic page → Arabic; English
+            // page → the book's English text.
+            if (ar && q.ar.isNotEmpty)
               Text(q.ar,
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,
@@ -153,23 +171,15 @@ class _QuoteScreenState extends State<QuoteScreen> {
                       height: 1.9,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Amiri')),
-            if (q.ar.isNotEmpty && q.en.isNotEmpty) ...[
-              const SizedBox(height: 18),
-              Container(
-                  width: 60,
-                  height: 1,
-                  color: AppColors.sage300.withValues(alpha: 0.4)),
-              const SizedBox(height: 18),
-            ],
-            if (q.en.isNotEmpty)
+            if (!ar && q.en.isNotEmpty)
               Text(q.en,
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                      color: AppColors.pearl50.withValues(alpha: 0.88),
-                      fontSize: 17.5,
-                      height: 1.6,
-                      fontStyle: FontStyle.italic)),
+                  style: const TextStyle(
+                      color: AppColors.pearl50,
+                      fontSize: 20,
+                      height: 1.7,
+                      fontWeight: FontWeight.w500)),
             const SizedBox(height: 22),
             // Attribution. For a cited scholar-saying, show the speaker first
             // (in gold), then a small "Quoted from the book …" line beneath —

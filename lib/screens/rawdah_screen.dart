@@ -362,11 +362,13 @@ class _LessonCard extends StatelessWidget {
           '${l.day.isNotEmpty ? ' (${l.day}${l.time.isNotEmpty ? ' ${l.time}' : ''})' : ''}. جزاكم الله خيرًا.');
       final askUrl = digits.isNotEmpty
           ? 'https://wa.me/965$digits?text=$askMsg'
-          : l.instagram.isNotEmpty
-              ? 'https://instagram.com/${l.instagram}'
-              : (l.channelLink.isNotEmpty
-                  ? l.channelLink
-                  : RawdahService.groupLink);
+          : l.telegramLink.isNotEmpty
+              ? l.telegramLink
+              : l.instagram.isNotEmpty
+                  ? 'https://instagram.com/${l.instagram}'
+                  : (l.channelLink.isNotEmpty
+                      ? l.channelLink
+                      : RawdahService.groupLink);
       buttons.add(FilledButton.icon(
         onPressed: () => openUrl(context, askUrl),
         icon: const Icon(Icons.chat, size: 18),
@@ -383,6 +385,10 @@ class _LessonCard extends StatelessWidget {
       final digits = l.phone.replaceAll(RegExp(r'\D'), '');
       buttons.add(_outlined(context, Icons.chat_bubble_outline,
           tr('واتساب', 'WhatsApp'), 'https://wa.me/965$digits'));
+    }
+    if (l.telegramLink.isNotEmpty) {
+      buttons.add(_outlined(
+          context, Icons.send, tr('تيليجرام', 'Telegram'), l.telegramLink));
     }
 
     buttons.add(OutlinedButton.icon(

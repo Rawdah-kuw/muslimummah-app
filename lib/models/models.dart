@@ -184,6 +184,7 @@ class Lesson {
   final String channelLink;
   final String zoomLink;
   final String zoomPasscode;
+  final String telegramLink;
   final String? lessonDate;
   final bool isRecurring;
 
@@ -202,6 +203,7 @@ class Lesson {
     required this.channelLink,
     required this.zoomLink,
     required this.zoomPasscode,
+    required this.telegramLink,
     required this.lessonDate,
     required this.isRecurring,
   });
@@ -231,6 +233,7 @@ class Lesson {
       channelLink: s('channel_link'),
       zoomLink: s('zoom_link'),
       zoomPasscode: s('zoom_passcode'),
+      telegramLink: s('telegram_link'),
       lessonDate: (j['lesson_date'] == null || s('lesson_date').isEmpty)
           ? null
           : s('lesson_date'),

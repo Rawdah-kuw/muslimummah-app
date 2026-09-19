@@ -34,8 +34,8 @@ class QuoteImage {
             if (author.isNotEmpty) author,
           ];
     final encourage = ar
-        ? '📖 لمزيد من القراءة، الكتاب متاح مجانًا على muslimummah.app'
-        : '📖 For more, read the full book free at muslimummah.app';
+        ? '📖 لمزيد من القراءة، الكتاب متاح مجانًا على www.muslimummah.app'
+        : '📖 For more, read the full book free at www.muslimummah.app';
     final caption = [
       if (q.ar.isNotEmpty) q.ar,
       if (q.en.isNotEmpty) q.en,

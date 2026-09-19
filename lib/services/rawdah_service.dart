@@ -31,7 +31,9 @@ class RawdahService {
     final rows = await _db.from('lessons').select().eq('is_published', true);
 
     final todayKw = _todayKuwaitStr();
-    final horizonKw = _dateStr(_kuwaitNow().add(const Duration(days: 7)));
+    // One week only: today + next 6 days = each weekday once. (+7 also pulled in
+    // next week's same weekday, so the schedule looked like two weeks.)
+    final horizonKw = _dateStr(_kuwaitNow().add(const Duration(days: 6)));
 
     final seen = <String>{};
     final out = <Lesson>[];

@@ -66,15 +66,15 @@ class HomeScreen extends StatelessWidget {
         ]),
         const SizedBox(height: 12),
         _RawdahCard(onOpen: () => onTab(4)),
+        const SizedBox(height: 12),
+        _foundation(
+            Scenes.toolClay,
+            tr('منارات', 'Beacons'),
+            tr('حسابات ونوافذ مختارة', 'Curated voices & channels'),
+            () => _push(context, const AccountsScreen())),
         const SizedBox(height: 16),
 
         _PrayerMini(),
-        const SizedBox(height: 16),
-
-        _label(_isMorning
-            ? tr('أذكار الصباح', 'Morning Adhkar')
-            : tr('أذكار المساء', 'Evening Adhkar')),
-        _adhkarNow(context),
         const SizedBox(height: 16),
 
         _continueReading(context),
@@ -264,48 +264,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _adhkarNow(BuildContext context) {
-    final scene = _isMorning ? Scenes.morningSky : Scenes.eveningIndigo;
-    return GestureDetector(
-      onTap: () =>
-          _push(context, AdhkarScreen(initialTab: _isMorning ? 0 : 1)),
-      child: Container(
-        height: 92,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: scene.colors,
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(children: [
-          Positioned.fill(child: PearlBackdrop(scene)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                    _isMorning
-                        ? tr('أذكار الصباح', 'Morning Adhkar')
-                        : tr('أذكار المساء', 'Evening Adhkar'),
-                    style: TextStyle(
-                        color: scene.onColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800)),
-                const SizedBox(height: 3),
-                Text(tr('حان وقتها الآن — اضغط للبدء', "It's time — tap to begin"),
-                    style: TextStyle(color: scene.subColor, fontSize: 12.5)),
-              ],
-            ),
-          ),
-        ]),
-      ),
-    );
-  }
-
   Widget _continueReading(BuildContext context) {
     final id = Prefs.lastBook();
     final book = id < 0 ? null : ContentRepo.bookById(id);
@@ -413,8 +371,8 @@ class HomeScreen extends StatelessWidget {
             () => _push(context, const TasbihScreen())),
         tile(tr('ذكّرني', 'Remind me'), Scenes.toolSlate,
             () => _push(context, const NotificationsScreen())),
-        tile(tr('منارات', 'Beacons'), Scenes.toolClay,
-            () => _push(context, const AccountsScreen())),
+        tile(tr('الأذكار', 'Adhkar'), Scenes.toolClay,
+            () => _push(context, AdhkarScreen(initialTab: _isMorning ? 0 : 1))),
         tile(tr('المحفوظات', 'Saved'), Scenes.toolSand,
             () => _push(context, const BookmarksScreen())),
         tile(tr('الخصوصية', 'Privacy'), Scenes.toolMoss,

@@ -29,7 +29,7 @@ class AdhkarImage {
       if (note.isNotEmpty) note,
       '',
       ar ? 'أمة الإسلام' : 'Muslim Ummah',
-      'https://muslimummah.app',
+      'www.muslimummah.app',
     ].join('\n');
     try {
       final bytes = await _render(d, ar);

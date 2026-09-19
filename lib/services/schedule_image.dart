@@ -15,7 +15,7 @@ class ScheduleImage {
 
   static Future<void> share(String day, List<Lesson> lessons) async {
     final caption =
-        'جدول دروس $day — روضة · أمة الإسلام\nجميع الأوقات بتوقيت الكويت (GMT+3)\nhttps://muslimummah.app';
+        'جدول دروس $day — روضة · أمة الإسلام\nجميع الأوقات بتوقيت الكويت (GMT+3)\nwww.muslimummah.app';
     const origin = Rect.fromLTWH(0, 0, 100, 100);
     try {
       if (lessons.isEmpty) {

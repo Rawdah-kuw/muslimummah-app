@@ -23,7 +23,7 @@ class WirdImage {
     // the meaning for the English app.
     final body = ar ? w.ar : w.en;
     final caption =
-        '$body\n$src\n\nأمة الإسلام\nhttps://muslimummah.app';
+        '$body\n$src\n\nأمة الإسلام\nwww.muslimummah.app';
     try {
       final bytes = await _render(w, ar);
       final dir = await getTemporaryDirectory();

@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
         _RawdahCard(onOpen: () => onTab(4)),
         const SizedBox(height: 12),
         _foundation(
-            Scenes.toolClay,
+            Scenes.beacons,
             tr('منارات', 'Beacons'),
             tr('حسابات ونوافذ مختارة', 'Curated voices & channels'),
             () => _push(context, const AccountsScreen())),

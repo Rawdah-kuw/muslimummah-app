@@ -27,6 +27,10 @@ class Scenes {
   static const curCard = CardScene([Color(0xFF54786A), Color(0xFF3E5A4E)], true);
   static const rawdahCard =
       CardScene([Color(0xFFD3E3D9), Color(0xFFB4CDBD)], false);
+  // Beacons — palest sage, one step lighter than Rawdah (keeps the graduated
+  // green family instead of the old clay/brown), with dark text.
+  static const beacons =
+      CardScene([Color(0xFFEDF5F0), Color(0xFFDBE9E1)], false);
   // Maghrib sunset — warm amber into dusky plum.
   static const dusk = CardScene([Color(0xFFCB6E45), Color(0xFF5A3A58)], true);
   static const night = CardScene([Color(0xFF223452), Color(0xFF14251E)], true);

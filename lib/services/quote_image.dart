@@ -33,13 +33,15 @@ class QuoteImage {
             if (book.isNotEmpty) book,
             if (author.isNotEmpty) author,
           ];
+    final encourage = ar
+        ? '📖 لمزيد من القراءة، الكتاب متاح مجانًا على muslimummah.app'
+        : '📖 For more, read the full book free at muslimummah.app';
     final caption = [
       if (q.ar.isNotEmpty) q.ar,
       if (q.en.isNotEmpty) q.en,
       ...attribution,
       '',
-      ar ? 'أمة الإسلام' : 'Muslim Ummah',
-      'https://muslimummah.app',
+      encourage,
     ].join('\n');
     try {
       final bytes = await _render(q);

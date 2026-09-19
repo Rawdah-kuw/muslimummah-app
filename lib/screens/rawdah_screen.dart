@@ -345,17 +345,11 @@ class _LessonCard extends StatelessWidget {
               style: const TextStyle(fontSize: 12.5)),
         ));
       }
-    } else if (women && l.channelLink.isNotEmpty) {
-      buttons.add(FilledButton.icon(
-        onPressed: () => openUrl(context, l.channelLink),
-        icon: const Icon(Icons.chat, size: 18),
-        label: Text(tr('انضمي للقناة', 'Join channel'),
-            style: const TextStyle(fontSize: 12.5)),
-      ));
     } else {
       // No Zoom link set → send people straight to the organizer (da‘iyah /
-      // sponsor) to request it, with a ready WhatsApp message, instead of a
-      // channel where the link is hard to find. Falls back to Instagram/group.
+      // sponsor) to request it, with a ready WhatsApp message, instead of the
+      // lesson channel where the link is hard to find. Falls back to Instagram,
+      // then the lesson channel, then the general group.
       final digits = l.phone.replaceAll(RegExp(r'\D'), '');
       final askMsg = Uri.encodeComponent(
           'السلام عليكم، أرجو تزويدي برابط زوم لدرس «${l.title.isNotEmpty ? l.title : 'الدرس'}»'
@@ -372,7 +366,7 @@ class _LessonCard extends StatelessWidget {
       buttons.add(FilledButton.icon(
         onPressed: () => openUrl(context, askUrl),
         icon: const Icon(Icons.chat, size: 18),
-        label: Text(tr('اطلب رابط الزوم', 'Request the Zoom link'),
+        label: Text(tr('تواصل مع الداعية للرابط', 'Contact for the link'),
             style: const TextStyle(fontSize: 12.5)),
       ));
     }
@@ -389,6 +383,10 @@ class _LessonCard extends StatelessWidget {
     if (l.telegramLink.isNotEmpty) {
       buttons.add(_outlined(
           context, Icons.send, tr('تيليجرام', 'Telegram'), l.telegramLink));
+    }
+    if (l.channelLink.isNotEmpty) {
+      buttons.add(_outlined(
+          context, Icons.chat, tr('القناة', 'Channel'), l.channelLink));
     }
 
     buttons.add(OutlinedButton.icon(

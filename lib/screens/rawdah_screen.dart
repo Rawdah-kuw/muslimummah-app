@@ -353,10 +353,24 @@ class _LessonCard extends StatelessWidget {
             style: const TextStyle(fontSize: 12.5)),
       ));
     } else {
+      // No Zoom link set → send people straight to the organizer (da‘iyah /
+      // sponsor) to request it, with a ready WhatsApp message, instead of a
+      // channel where the link is hard to find. Falls back to Instagram/group.
+      final digits = l.phone.replaceAll(RegExp(r'\D'), '');
+      final askMsg = Uri.encodeComponent(
+          'السلام عليكم، أرجو تزويدي برابط زوم لدرس «${l.title.isNotEmpty ? l.title : 'الدرس'}»'
+          '${l.day.isNotEmpty ? ' (${l.day}${l.time.isNotEmpty ? ' ${l.time}' : ''})' : ''}. جزاكم الله خيرًا.');
+      final askUrl = digits.isNotEmpty
+          ? 'https://wa.me/965$digits?text=$askMsg'
+          : l.instagram.isNotEmpty
+              ? 'https://instagram.com/${l.instagram}'
+              : (l.channelLink.isNotEmpty
+                  ? l.channelLink
+                  : RawdahService.groupLink);
       buttons.add(FilledButton.icon(
-        onPressed: () => openUrl(context, RawdahService.groupLink),
-        icon: const Icon(Icons.videocam, size: 18),
-        label: Text(tr('لرابط الزوم', 'For the Zoom link'),
+        onPressed: () => openUrl(context, askUrl),
+        icon: const Icon(Icons.chat, size: 18),
+        label: Text(tr('اطلب رابط الزوم', 'Request the Zoom link'),
             style: const TextStyle(fontSize: 12.5)),
       ));
     }

@@ -212,6 +212,19 @@
   ],
   "instagram": [
     {
+      "id": 200,
+      "handle": "muslimummah.app",
+      "url": "https://www.instagram.com/muslimummah.app",
+      "name": {
+        "ar": "أمة الإسلام",
+        "en": "Muslim Ummah"
+      },
+      "focus": {
+        "ar": "الحساب الرسمي لشبكة أمة الإسلام",
+        "en": "The official Muslim Ummah Network account"
+      }
+    },
+    {
       "id": 35,
       "handle": "nussaahpodcast",
       "url": "https://www.instagram.com/nussaahpodcast",

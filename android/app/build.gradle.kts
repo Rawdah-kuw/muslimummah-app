@@ -35,7 +35,10 @@ android {
         // Must match the package already on Google Play so we can update the
         // existing listing (and keep the closed-testing progress).
         applicationId = "app.muslimummah.twa"
-        minSdk = flutter.minSdkVersion
+        // Raised to 24 (Android 7.0) so Google Play's automatic protection
+        // (anti-redistribution integrity, which injects code needing API 24+)
+        // can be kept enabled. Flutter's default (flutter.minSdkVersion) is 21.
+        minSdk = 24
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName

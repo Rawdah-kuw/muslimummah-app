@@ -145,7 +145,13 @@ class _AskTabState extends State<_AskTab> {
   }
 
   Widget _answer(AskResult r) {
-    if (r.notFound || r.answer.trim().isEmpty) {
+    final hasAnswer = r.answer.trim().isNotEmpty;
+    final hasSources = r.sources.isNotEmpty;
+    // Only a true "nothing found" when the server says so, or there is neither
+    // a generated answer nor any matching source pages. (The endpoint often
+    // returns relevant book pages with an empty answer — show those, like the
+    // website does, instead of claiming nothing was found.)
+    if (r.notFound || (!hasAnswer && !hasSources)) {
       return Card(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -160,10 +166,15 @@ class _AskTabState extends State<_AskTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(r.answer, style: const TextStyle(fontSize: 15, height: 1.8)),
-            if (r.sources.isNotEmpty) ...[
-              const Divider(height: 26),
-              Text(tr('المصادر', 'Sources'),
+            if (hasAnswer)
+              Text(r.answer, style: const TextStyle(fontSize: 15, height: 1.8)),
+            if (hasSources) ...[
+              if (hasAnswer) const Divider(height: 26),
+              Text(
+                  hasAnswer
+                      ? tr('المصادر', 'Sources')
+                      : tr('صفحات ذات صلة في الكتب',
+                          'Relevant pages in the books'),
                   style: const TextStyle(fontWeight: FontWeight.w700)),
               const SizedBox(height: 6),
               ...r.sources.map((s) => ListTile(

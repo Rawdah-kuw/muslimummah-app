@@ -124,6 +124,8 @@ class RawdahService {
     MapEntry(r'قبل\s*العصر', 870),
     MapEntry(r'(?:بعد|عقب)\s*الظهر', 750),
     MapEntry(r'قبل\s*الظهر', 690),
+    MapEntry(r'(?:بعد|عقب)\s*الجمعه', 735), // بعد صلاة الجمعة ~12:15
+    MapEntry(r'قبل\s*الجمعه', 675),
     MapEntry(r'(?:بعد|عقب)\s*الضحي', 540),
     MapEntry(r'(?:بعد|عقب)\s*(?:الاشراق|الشروق)', 420),
     MapEntry(r'(?:بعد|عقب)\s*الفجر', 330),
@@ -131,6 +133,7 @@ class RawdahService {
     MapEntry(r'المغرب', 1105),
     MapEntry(r'العصر', 955),
     MapEntry(r'الظهر', 745),
+    MapEntry(r'الجمعه', 705), // خطبة/صلاة الجمعة ~11:45
     MapEntry(r'الشروق|الاشراق', 415),
     MapEntry(r'الفجر', 325),
   ];

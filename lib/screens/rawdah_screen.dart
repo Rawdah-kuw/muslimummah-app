@@ -7,6 +7,16 @@ import '../services/schedule_image.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 
+/// Normalize a Telegram value (bare handle, @handle, or t.me/… ) to a full URL,
+/// so a stored username doesn't fail to open.
+String _tgUrl(String v) {
+  final s = v.trim();
+  if (s.isEmpty) return s;
+  if (RegExp(r'^https?://', caseSensitive: false).hasMatch(s)) return s;
+  if (RegExp(r'^t\.me/', caseSensitive: false).hasMatch(s)) return 'https://$s';
+  return 'https://t.me/${s.replaceFirst(RegExp(r'^@'), '')}';
+}
+
 /// Weekly guide to Rawdah dhikr circles. Mirrors the website's Rawdah rules:
 /// day chips starting from today, audience filter, search, time-sorted cards.
 class RawdahScreen extends StatefulWidget {
@@ -357,7 +367,7 @@ class _LessonCard extends StatelessWidget {
       final askUrl = digits.isNotEmpty
           ? 'https://wa.me/965$digits?text=$askMsg'
           : l.telegramLink.isNotEmpty
-              ? l.telegramLink
+              ? _tgUrl(l.telegramLink)
               : l.instagram.isNotEmpty
                   ? 'https://instagram.com/${l.instagram}'
                   : (l.channelLink.isNotEmpty
@@ -382,7 +392,7 @@ class _LessonCard extends StatelessWidget {
     }
     if (l.telegramLink.isNotEmpty) {
       buttons.add(_outlined(
-          context, Icons.send, tr('تيليجرام', 'Telegram'), l.telegramLink));
+          context, Icons.send, tr('تيليجرام', 'Telegram'), _tgUrl(l.telegramLink)));
     }
     if (l.channelLink.isNotEmpty) {
       buttons.add(_outlined(

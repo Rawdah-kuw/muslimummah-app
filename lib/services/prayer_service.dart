@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'prefs.dart';
 
@@ -82,8 +83,20 @@ class PrayerService {
       } catch (_) {/* fall through to fetch */}
     }
 
-    final url = Uri.parse(
-        'https://api.aladhan.com/v1/timingsByCity?city=$_city&country=$_country&method=$_method');
+    // Prefer the device's own location (correct anywhere); fall back to Kuwait.
+    Position? pos;
+    try {
+      pos = await _position();
+    } catch (_) {/* fall back to Kuwait */}
+
+    final Uri url;
+    if (pos != null) {
+      url = Uri.parse(
+          'https://api.aladhan.com/v1/timings?latitude=${pos.latitude}&longitude=${pos.longitude}&method=3');
+    } else {
+      url = Uri.parse(
+          'https://api.aladhan.com/v1/timingsByCity?city=$_city&country=$_country&method=$_method');
+    }
     final resp = await http.get(url).timeout(const Duration(seconds: 20));
     if (resp.statusCode != 200) {
       throw Exception('prayer fetch failed');
@@ -102,10 +115,34 @@ class PrayerService {
         '${hijri['day']} ${hijri['month']['en']} ${hijri['year']} AH';
     final greg = (data['date']['gregorian']['date'] ?? '').toString();
 
-    final pd = PrayerData(timings, hijriAr, hijriEn, greg, _city);
+    // Label the city: from the location's timezone, else the Kuwait fallback.
+    var city = _city;
+    if (pos != null) {
+      final tz = (data['meta']?['timezone'] ?? '').toString();
+      if (tz.contains('/')) city = tz.split('/').last.replaceAll('_', ' ');
+    }
+
+    final pd = PrayerData(timings, hijriAr, hijriEn, greg, city);
     await Prefs.setString('prayer_cache', jsonEncode(pd.toJson()));
     await Prefs.setString('prayer_date', todayKey);
     return pd;
+  }
+
+  /// The device's current position, or null if location is off / denied /
+  /// unavailable — in which case callers fall back to Kuwait City.
+  static Future<Position?> _position() async {
+    if (!await Geolocator.isLocationServiceEnabled()) return null;
+    var perm = await Geolocator.checkPermission();
+    if (perm == LocationPermission.denied) {
+      perm = await Geolocator.requestPermission();
+    }
+    if (perm == LocationPermission.denied ||
+        perm == LocationPermission.deniedForever) {
+      return null;
+    }
+    return Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.low),
+    ).timeout(const Duration(seconds: 8));
   }
 
   static String _dateKey() {

@@ -189,6 +189,15 @@
       "sourceEn": "Abu Dawud & At-Tirmidhi"
     },
     {
+      "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا",
+      "count": 1,
+      "source": "رواه ابن ماجه",
+      "note": "تُقال بعد صلاة الفجر",
+      "en": "O Allah, I ask You for knowledge that is beneficial, provision that is good, and deeds that are accepted.",
+      "noteEn": "To be said after the Fajr (dawn) prayer.",
+      "sourceEn": "Ibn Majah"
+    },
+    {
       "ar": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
       "count": 100,
       "source": "رواه البخاري ومسلم",
@@ -241,15 +250,6 @@
       "en": "How perfect Allah is, and I praise Him, by the number of His creation, by the extent of His pleasure, by the weight of His throne, and by the ink of His words.",
       "noteEn": "",
       "sourceEn": "Muslim"
-    },
-    {
-      "ar": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا",
-      "count": 1,
-      "source": "رواه ابن ماجه",
-      "note": "تُقال بعد صلاة الفجر",
-      "en": "O Allah, I ask You for knowledge that is beneficial, provision that is good, and deeds that are accepted.",
-      "noteEn": "To be said after the Fajr (dawn) prayer.",
-      "sourceEn": "Ibn Majah"
     }
   ],
   "evening": [

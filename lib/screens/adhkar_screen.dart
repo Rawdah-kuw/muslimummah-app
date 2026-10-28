@@ -29,8 +29,8 @@ class AdhkarScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            _AdhkarList(ContentRepo.adhkarMorning),
-            _AdhkarList(ContentRepo.adhkarEvening),
+            _AdhkarPager(ContentRepo.adhkarMorning),
+            _AdhkarPager(ContentRepo.adhkarEvening),
           ],
         ),
       ),
@@ -38,17 +38,132 @@ class AdhkarScreen extends StatelessWidget {
   }
 }
 
-class _AdhkarList extends StatelessWidget {
+/// Horizontal swipeable pager — one dhikr per view, with a peek of the next
+/// card and a prominent "next" arrow (mirrors the website's adhkar carousel).
+class _AdhkarPager extends StatefulWidget {
   final List<Dhikr> items;
-  const _AdhkarList(this.items);
+  const _AdhkarPager(this.items);
+  @override
+  State<_AdhkarPager> createState() => _AdhkarPagerState();
+}
+
+class _AdhkarPagerState extends State<_AdhkarPager> {
+  late final PageController _pc;
+  int _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pc = PageController(viewportFraction: 0.9);
+  }
+
+  @override
+  void dispose() {
+    _pc.dispose();
+    super.dispose();
+  }
+
+  void _go(int i) {
+    final n = i.clamp(0, widget.items.length - 1);
+    _pc.animateToPage(n,
+        duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(16),
-      itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (_, i) => _DhikrCard(items[i], i + 1, items.length),
+    final ar = AppState.I.lang != 'en';
+    final total = widget.items.length;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
+          child: Text(
+            ar
+                ? '👆 اضغط للعدّ · اسحب للجنب أو استخدم السهم للذكر التالي'
+                : '👆 Tap to count · swipe or use the arrow for the next',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 12.5, color: onSurface.withValues(alpha: 0.55)),
+          ),
+        ),
+        Expanded(
+          child: PageView.builder(
+            controller: _pc,
+            reverse: ar, // RTL: first dhikr on the right, swipe right→left
+            onPageChanged: (i) => setState(() => _page = i),
+            itemCount: total,
+            itemBuilder: (_, i) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: _DhikrCard(widget.items[i], i + 1, total),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 6, 16, 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _NavArrow(
+                icon: ar ? Icons.chevron_right : Icons.chevron_left,
+                filled: false,
+                onTap: _page > 0 ? () => _go(_page - 1) : null,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text('${_page + 1} / $total',
+                    textDirection: TextDirection.ltr,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: onSurface.withValues(alpha: 0.55))),
+              ),
+              _NavArrow(
+                icon: ar ? Icons.chevron_left : Icons.chevron_right,
+                filled: true,
+                onTap: _page < total - 1 ? () => _go(_page + 1) : null,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// A round navigation arrow. `filled` = the prominent "next" button.
+class _NavArrow extends StatelessWidget {
+  final IconData icon;
+  final bool filled;
+  final VoidCallback? onTap;
+  const _NavArrow({required this.icon, required this.filled, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onTap != null;
+    return Opacity(
+      opacity: enabled ? 1 : 0.3,
+      child: Material(
+        color: filled ? AppColors.sage600 : Colors.white,
+        shape: CircleBorder(
+            side: filled
+                ? BorderSide.none
+                : const BorderSide(color: AppColors.pearl200)),
+        elevation: enabled ? 2 : 0,
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: onTap,
+          child: SizedBox(
+            width: 48,
+            height: 48,
+            child: Icon(icon,
+                size: 30, color: filled ? Colors.white : AppColors.sage700),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -49,10 +49,11 @@ class ScheduleImage {
     // Compact sizing so a shared schedule image isn't overly tall in an
     // Instagram story.
     const w = 1080.0;
-    const headerH = 156.0;
-    const rowH = 164.0;
+    const headerH = 150.0;
+    const hadithH = 186.0; // "رياض الجنة" hadith band, like the website
+    const rowH = 192.0;
     const footerH = 104.0;
-    final h = headerH + lessons.length * rowH + footerH;
+    final h = headerH + hadithH + lessons.length * rowH + footerH;
 
     final rec = ui.PictureRecorder();
     final c = Canvas(rec, Rect.fromLTWH(0, 0, w, h));
@@ -63,20 +64,49 @@ class ScheduleImage {
         Paint()..color = const Color(0xFF1B3B2B));
     _center(c, 'روضة · مجالس ودروس الذكر',
         cx: w / 2,
-        top: 34,
+        top: 30,
         maxWidth: w - 120,
-        fontSize: 25,
+        fontSize: 24,
         color: const Color(0xFFA8C3B4),
         weight: FontWeight.w500);
     _center(c, totalPages > 1 ? '$day · صفحة $page من $totalPages' : day,
         cx: w / 2,
-        top: 74,
+        top: 68,
         maxWidth: w - 120,
-        fontSize: 46,
+        fontSize: 44,
         color: const Color(0xFFFDFBF7),
         weight: FontWeight.w800);
 
-    var y = headerH;
+    // "رياض الجنة" hadith header (Amiri so the ﷺ ligature renders).
+    _center(c, 'قال رسول الله ﷺ:',
+        cx: w / 2,
+        top: headerH + 22,
+        maxWidth: w - 120,
+        fontSize: 26,
+        color: const Color(0xFF4F7263),
+        weight: FontWeight.w600,
+        fontFamily: 'Amiri');
+    _center(c, '«إذا مَرَرْتُم برياضِ الجنةِ فارْتَعُوا»',
+        cx: w / 2,
+        top: headerH + 62,
+        maxWidth: w - 90,
+        fontSize: 37,
+        color: const Color(0xFF1B3B2B),
+        weight: FontWeight.w700,
+        fontFamily: 'Amiri');
+    _center(c, 'قيل: وما رياضُ الجنة؟ قال: «حِلَقُ الذِّكْر» — رواه الترمذي',
+        cx: w / 2,
+        top: headerH + 118,
+        maxWidth: w - 110,
+        fontSize: 23,
+        color: const Color(0xFF64748B),
+        weight: FontWeight.w400,
+        maxLines: 2,
+        fontFamily: 'Amiri');
+    c.drawRect(Rect.fromLTWH(w * 0.32, headerH + hadithH - 12, w * 0.36, 2),
+        Paint()..color = const Color(0xFFD8CCB6));
+
+    var y = headerH + hadithH;
     for (final l in lessons) {
       _row(c, l, top: y, width: w, height: rowH);
       y += rowH;
@@ -123,13 +153,13 @@ class ScheduleImage {
 
     final rightX = width - pad - 28;
     final maxW = width - 2 * pad - 56;
-    final fT = (height * 0.28).clamp(26.0, 38.0).toDouble();
-    final fS = (height * 0.20).clamp(20.0, 28.0).toDouble();
-    final fI = (height * 0.17).clamp(17.0, 24.0).toDouble();
+    const fT = 36.0;
+    const fS = 27.0;
+    const fI = 22.0;
 
     _rtl(c, l.title,
         rightX: rightX,
-        top: top + height * 0.12,
+        top: top + height * 0.09,
         maxWidth: maxW,
         fontSize: fT,
         color: const Color(0xFF1B3B2B),
@@ -137,13 +167,14 @@ class ScheduleImage {
     if (l.teacher.isNotEmpty) {
       _rtl(c, l.teacher,
           rightX: rightX,
-          top: top + height * 0.44,
+          top: top + height * 0.33,
           maxWidth: maxW,
           fontSize: fS,
           color: const Color(0xFF4F7263),
           weight: FontWeight.w600);
     }
     // Lead the details with the audience so it's obvious at a glance.
+    // Wraps to TWO lines so the mosque / place name is never cut off.
     final aud = women ? 'للنساء' : 'للجميع';
     final info = [aud, l.time, l.area, l.location]
         .where((s) => s.isNotEmpty)
@@ -151,11 +182,12 @@ class ScheduleImage {
     if (info.isNotEmpty) {
       _rtl(c, info,
           rightX: rightX,
-          top: top + height * 0.70,
+          top: top + height * 0.53,
           maxWidth: maxW,
           fontSize: fI,
           color: accent,
-          weight: FontWeight.w600);
+          weight: FontWeight.w600,
+          maxLines: 2);
     }
   }
 
@@ -165,13 +197,17 @@ class ScheduleImage {
       required double maxWidth,
       required double fontSize,
       required Color color,
-      FontWeight weight = FontWeight.w400}) {
+      FontWeight weight = FontWeight.w400,
+      int maxLines = 1,
+      String? fontFamily}) {
     final p = _para(text,
         align: TextAlign.center,
         fontSize: fontSize,
         color: color,
         weight: weight,
-        maxWidth: maxWidth);
+        maxWidth: maxWidth,
+        maxLines: maxLines,
+        fontFamily: fontFamily);
     c.drawParagraph(p, Offset(cx - maxWidth / 2, top));
   }
 
@@ -181,13 +217,17 @@ class ScheduleImage {
       required double maxWidth,
       required double fontSize,
       required Color color,
-      FontWeight weight = FontWeight.w400}) {
+      FontWeight weight = FontWeight.w400,
+      int maxLines = 1,
+      String? fontFamily}) {
     final p = _para(text,
         align: TextAlign.right,
         fontSize: fontSize,
         color: color,
         weight: weight,
-        maxWidth: maxWidth);
+        maxWidth: maxWidth,
+        maxLines: maxLines,
+        fontFamily: fontFamily);
     c.drawParagraph(p, Offset(rightX - maxWidth, top));
   }
 
@@ -196,17 +236,23 @@ class ScheduleImage {
       required double fontSize,
       required Color color,
       required FontWeight weight,
-      required double maxWidth}) {
+      required double maxWidth,
+      int maxLines = 1,
+      String? fontFamily}) {
     final pb = ui.ParagraphBuilder(ui.ParagraphStyle(
       textAlign: align,
       textDirection: ui.TextDirection.rtl,
       fontSize: fontSize,
       fontWeight: weight,
-      maxLines: 1,
+      fontFamily: fontFamily,
+      maxLines: maxLines,
       ellipsis: '…',
     ))
-      ..pushStyle(
-          ui.TextStyle(color: color, fontSize: fontSize, fontWeight: weight))
+      ..pushStyle(ui.TextStyle(
+          color: color,
+          fontSize: fontSize,
+          fontWeight: weight,
+          fontFamily: fontFamily))
       ..addText(text);
     return pb.build()..layout(ui.ParagraphConstraints(width: maxWidth));
   }

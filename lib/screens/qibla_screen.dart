@@ -57,9 +57,12 @@ class _QiblaScreenState extends State<QiblaScreen> {
         if (mounted) setState(() => _status = 'denied');
         return;
       }
+      // Coarse/low accuracy is plenty for a Qibla bearing (the direction to
+      // Mecca barely changes over a few km) and matches our approximate-only
+      // location permission.
       final pos = await Geolocator.getCurrentPosition(
         locationSettings:
-            const LocationSettings(accuracy: LocationAccuracy.medium),
+            const LocationSettings(accuracy: LocationAccuracy.low),
       );
       final b = _bearing(pos.latitude, pos.longitude, _kaabaLat, _kaabaLon);
       if (mounted) {

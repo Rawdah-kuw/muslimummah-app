@@ -1,12 +1,16 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- Network access (Rawdah, books, search, prayer times) -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Daily reminders (flutter_local_notifications) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!-- Qibla: device location to compute the direction to the Kaaba -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- Approximate location only: enough for prayer times (city-level) and the
+         Qibla bearing (insensitive to a few km). Avoids the ACCESS_FINE_LOCATION
+         Play Console declaration (Location policy, Jan 2027) and is more private. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- Ensure no dependency re-introduces fine location into the merged manifest. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove"/>
     <application
         android:label="Muslim Ummah"
         android:name="${applicationName}"

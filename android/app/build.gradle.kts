@@ -64,6 +64,15 @@ android {
             }
         }
     }
+
+    // Store native libraries uncompressed so they are 16 KB page-aligned on
+    // 64-bit devices — required by Google Play from Feb 1, 2027. With AGP 8.5.1+
+    // and Flutter 3.29+ this is already the default; set explicitly to lock it in.
+    packaging {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
 }
 
 kotlin {
